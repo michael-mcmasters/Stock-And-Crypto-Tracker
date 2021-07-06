@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 
 export const COLORS = {
   lightMode: {
-    blue: "#90D76F",
+    blue: "#00E8C5",
     green: "#689557",
     purple: "#9942B6",
     yellow: "#E9D466",
@@ -10,7 +10,7 @@ export const COLORS = {
     white: "#C6C6C6"
   },
   darkMode: {
-    blue: "#90D76F",
+    blue: "#00E8C5",
     green: "#689557",
     purple: "#9942B6",
     yellow: "#E9D466",

@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from "styled-components"
+import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 
 const Button = () => {
-  return (
-    <>
-      <Input></Input>
-      <But>
+  const colors = useContext(ColorThemeContext);
 
+  return (
+    <Container>
+      <Input colors={colors}></Input>
+      <But colors={colors}>
+        +
       </But>
-    </>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  width: fit-content;
+  margin: 0 auto;
+`;
+
 const Input = styled.input`
-  
+
 `;
 
 const But = styled.button`
-  color: blue;
+  border: none;
+  border-radius: 9999px;
+  width: 2em;
+  height: 2em;
+  background-color: ${props => props.colors.blue};
+  color: white;
+  font-size: 2em;
 `;
 
 export default Button;
