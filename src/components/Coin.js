@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import React from 'react';
 
-const Coin = () => {
+const Coin = ({ coinTicker, price }) => {
   return (
     <Container>
-      <CoinTicker>Btc</CoinTicker>
-      <Price>$33,786.51</Price>
+      <CoinTicker>{coinTicker}</CoinTicker>
+      <Price>{price}</Price>
     </Container>
   );
 };

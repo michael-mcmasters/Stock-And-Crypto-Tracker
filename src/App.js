@@ -5,8 +5,8 @@ import './App.css';
 function App() {
   return (
     <Container>
-      <Coin />
-      <Coin />
+      <Coin coinTicker={"BTC"} price={"$33,786.51"} />
+      <Coin coinTicker={"ETH"} price={"$2,221.79"} />
       <Coin />
     </Container>
   );
