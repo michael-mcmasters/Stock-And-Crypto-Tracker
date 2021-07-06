@@ -7,7 +7,7 @@ function App() {
     <Container>
       <Coin coinTicker={"BTC"} price={"$33,786.51"} />
       <Coin coinTicker={"ETH"} price={"$2,221.79"} />
-      <Coin />
+      <Coin coinTicker={"DOGE"} price={"$0.234209"} />
     </Container>
   );
 }

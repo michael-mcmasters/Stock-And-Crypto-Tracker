@@ -4,7 +4,7 @@ import React from 'react';
 const Coin = ({ coinTicker, price }) => {
   return (
     <Container>
-      <CoinTicker>{coinTicker}</CoinTicker>
+      <CoinTicker>{coinTicker.toUpperCase()}</CoinTicker>
       <Price>{price}</Price>
     </Container>
   );
