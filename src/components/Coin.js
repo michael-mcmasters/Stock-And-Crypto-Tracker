@@ -12,7 +12,7 @@ const colors = {
 
 const Coin = ({ coinTicker, price }) => {
   return (
-    <Container>
+    <Container colors={colors}>
       <CoinTicker>{coinTicker.toUpperCase()}</CoinTicker>
       <Price>{price}</Price>
     </Container>
@@ -21,17 +21,17 @@ const Coin = ({ coinTicker, price }) => {
 
 const Container = styled.div`
   width: 10em;
-  border: 1px solid blue;
   border-radius: 10px;
   margin: 1em;
   text-align: center;
   color: green;
   padding-top: 1em;
   padding-bottom: 1em;
-  background-color: #C6C6C6;
-`;
+  background-color: ${props => props.colors.blue};
+  `;
 
 const CoinTicker = styled.div`
+  font-weight: bold;
   color: green;
 `;
 
