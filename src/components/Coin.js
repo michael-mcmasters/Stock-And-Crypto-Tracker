@@ -1,12 +1,25 @@
+import styled from "styled-components";
 import React from 'react';
 
 const Coin = () => {
   return (
-    <div>
-      <h4>Btc</h4>
-      <p>$99</p>
-    </div>
+    <Container>
+      <CoinTicker>Btc</CoinTicker>
+      <Price>$99</Price>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  color: green;
+`;
+
+const CoinTicker = styled.div`
+  color: green;
+`;
+
+const Price = styled.div`
+  color: green;
+`;
 
 export default Coin;
