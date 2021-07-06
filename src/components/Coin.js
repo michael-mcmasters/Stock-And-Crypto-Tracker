@@ -1,6 +1,15 @@
 import styled from "styled-components";
 import React from 'react';
 
+const colors = {
+  blue: "#90D76F",
+  green: "#689557",
+  purple: "#9942B6",
+  yellow: "#E9D466",
+  black: "#23262E",
+  white: "#C6C6C6"
+}
+
 const Coin = ({ coinTicker, price }) => {
   return (
     <Container>
@@ -19,6 +28,7 @@ const Container = styled.div`
   color: green;
   padding-top: 1em;
   padding-bottom: 1em;
+  background-color: #C6C6C6;
 `;
 
 const CoinTicker = styled.div`
