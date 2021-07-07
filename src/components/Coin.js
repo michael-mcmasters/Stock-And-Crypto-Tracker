@@ -2,14 +2,14 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Coin = ({ coinTicker, price, getPrice }) => {
+const Coin = ({ coinTicker, price, getTickerColors }) => {
   const colors = useContext(ColorThemeContext);
 
-  const getTickerColors = (price) => {
-    if (price < 0.5)
-      return [colors.brightRed, colors.darkRed];
-    return [colors.green, colors.regularGreen];
-  }
+  // const getTickerColors = (price) => {
+  //   if (price < 0.5)
+  //     return [colors.brightRed, colors.darkRed];
+  //   return [colors.green, colors.regularGreen];
+  // }
 
   const [bgColor, fontColor] = getTickerColors(Math.random());
 
