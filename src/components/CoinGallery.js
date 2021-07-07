@@ -9,38 +9,52 @@ function CoinGallery() {
   const [tickersArr, setTickersArr] = useState([
     {
       ticker: "BTC",
-      price: 0
+      price: 0,
+      prevPrice: 0
     },
     {
       ticker: "ETH",
-      price: 0
+      price: 0,
+      prevPrice: 0
     },
     {
       ticker: "DOGE",
-      price: 0
+      price: 0,
+      prevPrice: 0
     },
   ]);
 
 
-  const getTickerColors = (price) => {
-    if (price < 0.5)
-      return [colors.brightRed, colors.darkRed];
-    return [colors.green, colors.regularGreen];
-  }
-
   // Fetches price and updates array of objects so that they rerender.
   // ToDo: Maybe create bullet toggle to load prices all at same time, or to do separately.
-  const updatePrice = (index) => {
+  const updateRandomPrice = (index) => {
     const arr = [...tickersArr];
+    arr[index].prevPrice = tickersArr[index].price;
     arr[index].price = (Math.random() * 10).toFixed(6);
     setTickersArr(arr);
   }
 
+  const updateAllPrices = () => {
+    let arr = [...tickersArr];
+    for (let i = 0; i < tickersArr.length; i++) {
+      arr[i].prevPrice = tickersArr[i].price;
+      arr[i].price = (Math.random() * 10).toFixed(6);
+    }
+    setTickersArr(arr);
+  }
+
+  const getTickerColors = (price, prevPrice) => {
+    if (price < prevPrice)
+      return [colors.brightRed, colors.darkRed];
+    return [colors.green, colors.regularGreen];
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * tickersArr.length);
-      updatePrice(randomIndex);
-    }, 1000);
+      // const randomIndex = Math.floor(Math.random() * tickersArr.length);
+      // updateRandomPrice(randomIndex);
+      updateAllPrices();
+    }, 2000);
     return () => clearInterval(interval);
   })
 
@@ -51,6 +65,7 @@ function CoinGallery() {
           key={keyIndex}
           coinTicker={t.ticker}
           price={t.price}
+          prevPrice={t.prevPrice}
           getTickerColors={getTickerColors}
         />)
       )}
