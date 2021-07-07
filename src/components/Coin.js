@@ -30,11 +30,9 @@ const Container = styled.div`
   color: green;
   padding-top: 1em;
   padding-bottom: 1em;
-  /* color: ${props => props.colors.white}; */
+  border: 1px solid ${props => props.fontColor};
   color: ${props => props.fontColor};
-  /* color: green; */
   background-color: ${props => props.bgColor};
-  /* background-color: green; */
   `;
 
 const CoinTicker = styled.div`
