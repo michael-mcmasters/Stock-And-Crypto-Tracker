@@ -2,20 +2,20 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-// const colors = {
-//   blue: "#90D76F",
-//   green: "#689557",
-//   purple: "#9942B6",
-//   yellow: "#E9D466",
-//   black: "#23262E",
-//   white: "#C6C6C6"
-// }
-
 const Coin = ({ coinTicker, price }) => {
   const colors = useContext(ColorThemeContext);
 
+  const getColors = (price) => {
+    if (price < 0.5)
+      return [colors.brightRed, "darkred"];
+    return [colors.green, "green"];
+  }
+
+  const [bgColor, fontColor] = getColors(Math.random());
+
+
   return (
-    <Container colors={colors}>
+    <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
       <CoinTicker>{coinTicker.toUpperCase()}</CoinTicker>
       <Price>{price}</Price>
     </Container>
@@ -30,18 +30,21 @@ const Container = styled.div`
   color: green;
   padding-top: 1em;
   padding-bottom: 1em;
-  background-color: ${props => props.colors.green};
-  /* background-color: #689557; */
+  /* color: ${props => props.colors.white}; */
+  color: ${props => props.fontColor};
+  /* color: green; */
+  background-color: ${props => props.bgColor};
+  /* background-color: green; */
   `;
 
 const CoinTicker = styled.div`
   font-weight: bold;
-  color: green;
+  /* color: green; */
 `;
 
 const Price = styled.div`
   margin-top: 0.5em;
-  color: green;
+  /* color: green; */
 `;
 
 export default Coin;
