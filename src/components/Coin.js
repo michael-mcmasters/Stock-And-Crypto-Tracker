@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Coin = ({ coinTicker, price }) => {
+const Coin = ({ coinTicker, price, getPrice }) => {
   const colors = useContext(ColorThemeContext);
 
   const getTickerColors = (price) => {
@@ -17,7 +17,7 @@ const Coin = ({ coinTicker, price }) => {
   return (
     <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
       <CoinTicker>{coinTicker.toUpperCase()}</CoinTicker>
-      <Price>{price}</Price>
+      <Price>${getPrice()}</Price>
     </Container>
   );
 };

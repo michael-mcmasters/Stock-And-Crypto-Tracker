@@ -5,6 +5,9 @@ import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 const Button = () => {
   const colors = useContext(ColorThemeContext);
 
+  // ToDo: Click button, then dropdown for stock/crypto pops up.
+  // And an input field to enter the ticker.
+
   return (
     <Container>
       <Input colors={colors}></Input>
