@@ -5,13 +5,13 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 const Coin = ({ coinTicker, price }) => {
   const colors = useContext(ColorThemeContext);
 
-  const getColors = (price) => {
+  const getTickerColors = (price) => {
     if (price < 0.5)
-      return [colors.brightRed, "darkred"];
-    return [colors.green, "green"];
+      return [colors.brightRed, colors.darkRed];
+    return [colors.green, colors.regularGreen];
   }
 
-  const [bgColor, fontColor] = getColors(Math.random());
+  const [bgColor, fontColor] = getTickerColors(Math.random());
 
 
   return (
