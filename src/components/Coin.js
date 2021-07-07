@@ -17,7 +17,7 @@ const Coin = ({ coinTicker, price, getPrice }) => {
   return (
     <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
       <CoinTicker>{coinTicker.toUpperCase()}</CoinTicker>
-      <Price>${getPrice()}</Price>
+      <Price>${price}</Price>
     </Container>
   );
 };

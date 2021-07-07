@@ -21,29 +21,26 @@ function CoinGallery() {
 
   // ToDo: Maybe create bullet toggle to load prices all at same time, or to do separately.
 
-  const getPrice = () => {
-    return (Math.random() * 10).toFixed(6);
+  const getPrice = (index) => {
+    const arr = [...tickersArr];
+    arr[index].price = (Math.random() * 10).toFixed(6);
+    setTickersArr(arr);
+    return arr[index].price;
   }
 
   useEffect(() => {
     const interval = setInterval(() => {
       console.log("ok");
+      getPrice(0);
     }, 4000);
     return () => clearInterval(interval);
   })
 
   return (
     <Container>
-      {/* <Coin coinTicker={"BTC"} price={"$33,786.51"} />
-      <Coin coinTicker={"ETH"} price={"$2,221.79"} />
-      <Coin coinTicker={"DOGE"} price={"$0.234209"} /> */}
-
-      {/* <Coin coinTicker={"BTC"} price={getPrice()} />
-      <Coin coinTicker={"ETH"} price={getPrice()} />
-      <Coin coinTicker={"DOGE"} price={getPrice()} /> */}
-
-      {tickersArr.map(t => (
+      {tickersArr.map((t, i) => (
         <Coin
+          key={i}
           coinTicker={t.ticker}
           price={t.price}
           getPrice={getPrice}
