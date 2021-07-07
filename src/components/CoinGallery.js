@@ -21,26 +21,27 @@ function CoinGallery() {
 
   // ToDo: Maybe create bullet toggle to load prices all at same time, or to do separately.
 
+  // Fetches price and updates array of objects so that they rerender.
   const getPrice = (index) => {
     const arr = [...tickersArr];
     arr[index].price = (Math.random() * 10).toFixed(6);
     setTickersArr(arr);
-    return arr[index].price;
   }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("ok");
-      getPrice(0);
-    }, 4000);
+      const index = Math.floor(Math.random() * tickersArr.length);
+      console.log(index);
+      getPrice(index);
+    }, 1000);
     return () => clearInterval(interval);
   })
 
   return (
     <Container>
-      {tickersArr.map((t, i) => (
+      {tickersArr.map((t, keyIndex) => (
         <Coin
-          key={i}
+          key={keyIndex}
           coinTicker={t.ticker}
           price={t.price}
           getPrice={getPrice}
