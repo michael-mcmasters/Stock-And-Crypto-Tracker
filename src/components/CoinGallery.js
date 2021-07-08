@@ -26,15 +26,7 @@ function CoinGallery() {
 
 
   // Fetches price and updates array of objects so that they rerender.
-  // ToDo: Maybe create bullet toggle to load prices all at same time, or to do separately.
-  const updateRandomPrice = (index) => {
-    const arr = [...tickersArr];
-    arr[index].prevPrice = tickersArr[index].price;
-    arr[index].price = (Math.random() * 10).toFixed(6);
-    setTickersArr(arr);
-  }
-
-  const updateAllPrices = () => {
+  const updatePrices = () => {
     let arr = [...tickersArr];
     for (let i = 0; i < tickersArr.length; i++) {
       arr[i].prevPrice = tickersArr[i].price;
@@ -51,10 +43,8 @@ function CoinGallery() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // const randomIndex = Math.floor(Math.random() * tickersArr.length);
-      // updateRandomPrice(randomIndex);
-      updateAllPrices();
-    }, 2000);
+      updatePrices();
+    }, 5000);
     return () => clearInterval(interval);
   })
 
