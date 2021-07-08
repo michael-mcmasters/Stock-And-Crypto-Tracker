@@ -9,16 +9,19 @@ function CoinGallery() {
   const [tickersArr, setTickersArr] = useState([
     {
       ticker: "BTC",
+      type: "crypto",
       price: 0,
       prevPrice: 0
     },
     {
       ticker: "ETH",
+      type: "crypto",
       price: 0,
       prevPrice: 0
     },
     {
       ticker: "DOGE",
+      type: "crypto",
       price: 0,
       prevPrice: 0
     },
