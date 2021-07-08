@@ -29,13 +29,36 @@ function CoinGallery() {
 
 
   // Fetches price and updates array of objects so that they rerender.
-  const updatePrices = () => {
-    let arr = [...tickersArr];
-    for (let i = 0; i < tickersArr.length; i++) {
-      arr[i].prevPrice = tickersArr[i].price;
-      arr[i].price = (Math.random() * 10).toFixed(6);
+  // const updatePrices = () => {
+  //   let arr = [...tickersArr];
+  //   for (let i = 0; i < tickersArr.length; i++) {
+  //     arr[i].prevPrice = tickersArr[i].price;
+  //     arr[i].price = (Math.random() * 10).toFixed(6);
+  //   }
+  //   setTickersArr(arr);
+  // }
+
+  const updatePrices = (debugRandumPrices = true) => {
+    if (debugRandumPrices) {
+      let arr = [...tickersArr];
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].prevPrice = tickersArr[i].price;
+        arr[i].price = (Math.random() * 10).toFixed(6);
+      }
+      setTickersArr(arr);
+
+    } else {
+      let arr = [...tickersArr];
+      for (let i = 0; i < arr.length; i++) {
+        fetch("http://localhost:8080/" + arr[i].type + "/" + arr[i].ticker)
+          .then(res => res.json())
+          .then(res => {
+            arr[i].prevPrice = tickersArr[i].prevPrice;
+            arr[i].price = res.price;
+          });
+      }
+      setTickersArr(arr);
     }
-    setTickersArr(arr);
   }
 
   const getTickerColors = (price, prevPrice) => {
@@ -47,7 +70,7 @@ function CoinGallery() {
   useEffect(() => {
     const interval = setInterval(() => {
       updatePrices();
-    }, 5000);
+    }, 10000);
     return () => clearInterval(interval);
   })
 
