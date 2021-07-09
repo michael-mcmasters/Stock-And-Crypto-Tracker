@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Coin from "./Coin";
 import Button from "./Button";
 
+const MAX_ALLOWED_TICKERS = 12;
+const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
+
 function CoinGallery() {
 
   const colors = useContext(ColorThemeContext);
@@ -89,23 +92,26 @@ function CoinGallery() {
   }
 
   const getTickerColors = (price, prevPrice) => {
-    if (price > prevPrice) {
+    if (price > prevPrice)
       return [colors.green, colors.regularGreen];
-    }
+
     return [colors.brightRed, colors.darkRed];
   }
 
   const handleAddTicker = (tickerName, type) => {
+    if (tickersArr.length >= MAX_ALLOWED_TICKERS)
+      return;
+
     let arr = [...tickersArr];
     arr.push({ tickerName: tickerName, type: type });
     setTickersArr(arr);
   }
 
   useEffect(() => {
-    const intervalDelayTime = 5000;
     const interval = setInterval(() => {
       updatePrices(true);
-    }, intervalDelayTime);
+    }, PRICE_UPDATE_DELAY);
+
     return () => clearInterval(interval);
   })
 
