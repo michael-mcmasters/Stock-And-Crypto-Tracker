@@ -26,6 +26,42 @@ function CoinGallery() {
       price: 0,
       prevPrice: 0
     },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
   ]);
 
   const updatePrices = (useFakeData = false) => {
@@ -92,7 +128,9 @@ function CoinGallery() {
 const Container = styled.div`
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   width: 70%;
+  max-width: 775px;
   margin: 3em auto 0 auto;
 `;
 
