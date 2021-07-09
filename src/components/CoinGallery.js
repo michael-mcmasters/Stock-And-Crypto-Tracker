@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import styled from "styled-components";
 import Coin from "./Coin";
+import Button from "./Button";
 
 function CoinGallery() {
 
@@ -67,17 +68,20 @@ function CoinGallery() {
   })
 
   return (
-    <Container>
-      {tickersArr.map((t, keyIndex) => (
-        <Coin
-          key={keyIndex}
-          coinTicker={t.ticker}
-          price={t.price}
-          prevPrice={t.prevPrice}
-          getTickerColors={getTickerColors}
-        />)
-      )}
-    </Container>
+    <>
+      <Container>
+        {tickersArr.map((t, keyIndex) => (
+          <Coin
+            key={keyIndex}
+            coinTicker={t.ticker}
+            price={t.price}
+            prevPrice={t.prevPrice}
+            getTickerColors={getTickerColors}
+          />)
+        )}
+      </Container>
+      <Button />
+    </>
   );
 }
 
