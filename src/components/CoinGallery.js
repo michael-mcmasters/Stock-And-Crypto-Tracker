@@ -59,10 +59,16 @@ function CoinGallery() {
     return [colors.brightRed, colors.darkRed];
   }
 
+  const handleAddTicker = (tickerName, type) => {
+    let arr = [...tickersArr];
+    arr.push({ ticker: tickerName, type: type });
+    setTickersArr(arr);
+  }
+
   useEffect(() => {
     const intervalDelayTime = 5000;
     const interval = setInterval(() => {
-      updatePrices();
+      updatePrices(true);
     }, intervalDelayTime);
     return () => clearInterval(interval);
   })
@@ -80,7 +86,7 @@ function CoinGallery() {
           />)
         )}
       </Container>
-      <Button />
+      <Button handleAddTicker={handleAddTicker} />
     </>
   );
 }
