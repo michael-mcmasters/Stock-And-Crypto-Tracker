@@ -132,6 +132,10 @@ const Container = styled.div`
   width: 70%;
   max-width: 775px;
   margin: 3em auto 0 auto;
+  
+  @media (max-width: 850px) {
+    width: 100%;
+  }
 `;
 
 export default CoinGallery;
