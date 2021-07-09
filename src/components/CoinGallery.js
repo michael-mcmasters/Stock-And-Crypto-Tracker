@@ -9,19 +9,19 @@ function CoinGallery() {
   const colors = useContext(ColorThemeContext);
   const [tickersArr, setTickersArr] = useState([
     {
-      ticker: "BTC",
+      tickerName: "BTC",
       type: "crypto",
       price: 0,
       prevPrice: 0
     },
     {
-      ticker: "ETH",
+      tickerName: "ETH",
       type: "crypto",
       price: 0,
       prevPrice: 0
     },
     {
-      ticker: "DOGE",
+      tickerName: "DOGE",
       type: "crypto",
       price: 0,
       prevPrice: 0
@@ -40,7 +40,7 @@ function CoinGallery() {
     } else {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
-        fetch(`http://localhost:8080/${arr[i].type}/${arr[i].ticker}`)
+        fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`)
           .then(res => res.json())
           .then(res => {
             arr[i].prevPrice = tickersArr[i].price;
@@ -61,7 +61,7 @@ function CoinGallery() {
 
   const handleAddTicker = (tickerName, type) => {
     let arr = [...tickersArr];
-    arr.push({ ticker: tickerName, type: type });
+    arr.push({ tickerName: tickerName, type: type });
     setTickersArr(arr);
   }
 
@@ -79,9 +79,7 @@ function CoinGallery() {
         {tickersArr.map((t, keyIndex) => (
           <Coin
             key={keyIndex}
-            coinTicker={t.ticker}
-            price={t.price}
-            prevPrice={t.prevPrice}
+            tickerObj={t}
             getTickerColors={getTickerColors}
           />)
         )}
