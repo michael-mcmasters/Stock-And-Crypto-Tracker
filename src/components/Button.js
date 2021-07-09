@@ -5,7 +5,7 @@ import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 const Button = ({ handleAddTicker }) => {
   const colors = useContext(ColorThemeContext);
   const [tickerInput, setTickerInput] = useState('');
-  const [typeInput, setTypeInput] = useState('stock');
+  const [typeInput, setTypeInput] = useState('stocks');
 
 
   const handleOnClick = (tickerInput, typeInput) => {
@@ -18,7 +18,7 @@ const Button = ({ handleAddTicker }) => {
     <Container>
       <Input colors={colors} onInput={e => setTickerInput(e.target.value)}></Input>
       <select onChange={e => setTypeInput(e.target.value)}>
-        <option value="stock">Stock</option>
+        <option value="stocks">Stock</option>
         <option value="crypto">Crypto</option>
       </select>
       <But colors={colors} onClick={() => handleOnClick(tickerInput, typeInput)}>

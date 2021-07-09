@@ -6,6 +6,7 @@ import Button from "./Button";
 
 const MAX_ALLOWED_TICKERS = 12;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
+const DEBUG_USE_FAKE_PRICES = false;
 
 function CoinGallery() {
 
@@ -67,8 +68,8 @@ function CoinGallery() {
     },
   ]);
 
-  const updatePrices = (useFakeData = false) => {
-    if (useFakeData) {
+  const updatePrices = () => {
+    if (DEBUG_USE_FAKE_PRICES) {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
         arr[i].prevPrice = tickersArr[i].price;
@@ -83,8 +84,10 @@ function CoinGallery() {
           .then(res => res.json())
           .then(res => {
             arr[i].prevPrice = tickersArr[i].price;
-            let price = res.price.replace(",", "");
-            arr[i].price = Number(price);
+            let price = res.price?.replace(",", "");
+            if (price != null) {
+              arr[i].price = Number(price);
+            }
           });
       }
       setTickersArr(arr);
@@ -103,13 +106,13 @@ function CoinGallery() {
       return;
 
     let arr = [...tickersArr];
-    arr.push({ tickerName: tickerName, type: type });
+    arr.push({ tickerName: tickerName, type: type, price: 0, prevPrice: 0 });
     setTickersArr(arr);
   }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      updatePrices(true);
+      updatePrices();
     }, PRICE_UPDATE_DELAY);
 
     return () => clearInterval(interval);
