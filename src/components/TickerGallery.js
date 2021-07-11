@@ -40,10 +40,10 @@ function TickerGallery() {
     }
   }
 
-  const getTickerColors = (price, prevPrice) => {
-    if (price > prevPrice)
+  const getTickerFontAndBGColors = (price, prevPrice) => {
+    if (price > prevPrice) {
       return [colors.green, colors.basicGreen];
-
+    }
     return [colors.brightRed, colors.darkRed];
   }
 
@@ -72,7 +72,7 @@ function TickerGallery() {
             <Ticker
               key={keyIndex}
               tickerObj={t}
-              getTickerColors={getTickerColors}
+              getTickerFontAndBGColors={getTickerFontAndBGColors}
             />)
           )}
         </GridContainer>

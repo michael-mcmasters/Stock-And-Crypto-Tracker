@@ -2,11 +2,11 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerObj, getTickerColors }) => {
+const Ticker = ({ tickerObj, getTickerFontAndBGColors }) => {
 
   const { tickerName, type, price, prevPrice } = tickerObj;
   const colors = useContext(ColorThemeContext);
-  const [bgColor, fontColor] = getTickerColors(price, prevPrice);
+  const [bgColor, fontColor] = getTickerFontAndBGColors(price, prevPrice);
 
   return (
     <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
