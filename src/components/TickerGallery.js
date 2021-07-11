@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { detect } from 'detect-browser';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import styled from "styled-components";
 import Ticker from "./Ticker";
@@ -10,6 +11,13 @@ const DEBUG_USE_FAKE_PRICES = true;
 
 
 function TickerGallery() {
+
+  const browser = detect();
+  if (browser) {
+    console.log(browser.name);
+    console.log(browser.version);
+    console.log(browser.os);
+  }
 
   const colors = useContext(ColorThemeContext);
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
