@@ -19,7 +19,7 @@ const Ticker = ({ tickerObj, getTickerColors }) => {
 const Container = styled.div`
   width: 10em;
   border-radius: 10px;
-  margin: 1em;
+  margin: 1em 0;
   text-align: center;
   color: green;
   padding-top: 1em;

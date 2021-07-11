@@ -21,15 +21,16 @@ const AddTickerInputField = ({ handleAddTicker }) => {
         <option value="stocks">Stock</option>
         <option value="crypto">Crypto</option>
       </Select>
-      <But colors={colors} onClick={() => handleOnClick(tickerInput, typeInput)}>
+      <Button colors={colors} onClick={() => handleOnClick(tickerInput, typeInput)}>
         +
-      </But>
+      </Button>
     </Container>
   );
 };
 
 const Container = styled.div`
   /* border: 1px solid red; */
+  margin-top: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,6 +39,7 @@ const Container = styled.div`
 const Input = styled.input`
   height: 1.7rem;
   width: auto;
+  margin-left: auto;
 `;
 
 const Select = styled.select`
@@ -45,7 +47,7 @@ const Select = styled.select`
   width: auto;
 `;
 
-const But = styled.button`
+const Button = styled.button`
   border: none;
   border-radius: 9999px;
   width: 3rem;
@@ -53,6 +55,9 @@ const But = styled.button`
   background-color: ${props => props.colors.blue};
   color: white;
   font-size: 2em;
+  margin-left: 2rem;
+  justify-self: flex-end;
+  align-self: flex-end;
 `;
 
 export default AddTickerInputField;

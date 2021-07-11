@@ -121,23 +121,23 @@ function TickerGallery() {
   return (
     <>
       <Container>
-        {tickersArr.map((t, keyIndex) => (
-          <Ticker
-            key={keyIndex}
-            tickerObj={t}
-            getTickerColors={getTickerColors}
-          />)
-        )}
+        <TickerContainer>
+          {tickersArr.map((t, keyIndex) => (
+            <Ticker
+              key={keyIndex}
+              tickerObj={t}
+              getTickerColors={getTickerColors}
+            />)
+          )}
+        </TickerContainer>
+        <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
-      <AddTickerInputField handleAddTicker={handleAddTicker} />
     </>
   );
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  /* border: 1px solid green; */
   width: 70%;
   max-width: 775px;
   margin: 3em auto 0 auto;
@@ -145,6 +145,13 @@ const Container = styled.div`
   @media (max-width: 850px) {
     width: 100%;
   }
+`;
+
+const TickerContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
 `;
 
 export default TickerGallery;
