@@ -12,13 +12,14 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   const handleOnClick = (tickerInput, typeInput) => {
     if (tickerInput == null || typeInput == null || tickerInput == "" || typeInput == null)
       return;
+    setTickerName("");
     handleAddTicker(tickerInput.toUpperCase(), typeInput);
   }
 
   return (
     <Container>
       <InputContainer>
-        <Input colors={colors} placeholder={"Ticker..."} onInput={e => setTickerName(e.target.value)}></Input>
+        <Input colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value)}></Input>
         <Select browser={browser} onChange={e => setTickerType(e.target.value)}>
           <option value="stock">Stock</option>
           <option value="crypto">Crypto</option>
