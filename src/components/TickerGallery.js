@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Ticker from "./Ticker";
 import AddTickerInputField from "./AddTickerInputField";
 
-const MAX_ALLOWED_TICKERS = 12;
+const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
 const DEBUG_USE_FAKE_PRICES = true;
 
