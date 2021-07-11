@@ -5,8 +5,8 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 const Ticker = ({ tickerObj, getTickerFontAndBGColors }) => {
 
   const { tickerName, type, price, prevPrice } = tickerObj;
-  const colors = useContext(ColorThemeContext);
   const [bgColor, fontColor] = getTickerFontAndBGColors(price, prevPrice);
+  const colors = useContext(ColorThemeContext);
 
   return (
     <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
