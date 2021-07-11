@@ -6,67 +6,13 @@ import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 12;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
+
 
 function TickerGallery() {
 
   const colors = useContext(ColorThemeContext);
-  const [tickersArr, setTickersArr] = useState([
-    {
-      tickerName: "BTC",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "ETH",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0
-    },
-  ]);
+  const [tickersArr, setTickersArr] = useState(getTickerObjects());
 
   const updatePrices = () => {
     if (DEBUG_USE_FAKE_PRICES) {
@@ -121,7 +67,7 @@ function TickerGallery() {
   return (
     <>
       <Container>
-        <TickerContainer>
+        <GridContainer>
           {tickersArr.map((t, keyIndex) => (
             <Ticker
               key={keyIndex}
@@ -129,7 +75,7 @@ function TickerGallery() {
               getTickerColors={getTickerColors}
             />)
           )}
-        </TickerContainer>
+        </GridContainer>
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
     </>
@@ -137,21 +83,97 @@ function TickerGallery() {
 }
 
 const Container = styled.div`
-  /* border: 1px solid green; */
-  width: 70%;
-  max-width: 775px;
-  margin: 3em auto 0 auto;
+  width: min-content;
+  margin: 0 auto;
+`;
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
   
-  @media (max-width: 850px) {
-    width: 100%;
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
   }
 `;
 
-const TickerContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  /* justify-content: space-between; */
-  flex-wrap: wrap;
-`;
+
+function getTickerObjects() {
+  return [
+    {
+      tickerName: "BTC",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "ETH",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+    {
+      tickerName: "DOGE",
+      type: "crypto",
+      price: 0,
+      prevPrice: 0
+    },
+  ]
+}
 
 export default TickerGallery;

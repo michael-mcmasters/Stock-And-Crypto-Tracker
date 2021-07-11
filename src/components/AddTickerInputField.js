@@ -56,6 +56,7 @@ const Button = styled.button`
   color: white;
   font-size: 2em;
   margin-left: 2rem;
+  margin-right: 1rem;
   justify-self: flex-end;
   align-self: flex-end;
 `;

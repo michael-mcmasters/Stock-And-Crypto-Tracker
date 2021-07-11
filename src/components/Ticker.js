@@ -19,7 +19,7 @@ const Ticker = ({ tickerObj, getTickerColors }) => {
 const Container = styled.div`
   width: 10em;
   border-radius: 10px;
-  margin: 1em 0;
+  margin: 1em 1em;
   text-align: center;
   color: green;
   padding-top: 1em;
@@ -31,12 +31,10 @@ const Container = styled.div`
 
 const CoinTicker = styled.div`
   font-weight: bold;
-  /* color: green; */
 `;
 
 const Price = styled.div`
   margin-top: 0.5em;
-  /* color: green; */
 `;
 
 export default Ticker;
