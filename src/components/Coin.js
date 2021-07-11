@@ -27,7 +27,7 @@ const Container = styled.div`
   border: 1px solid ${props => props.fontColor};
   color: ${props => props.fontColor};
   background-color: ${props => props.bgColor};
-  `;
+`;
 
 const CoinTicker = styled.div`
   font-weight: bold;

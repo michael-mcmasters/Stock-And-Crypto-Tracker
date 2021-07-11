@@ -11,7 +11,7 @@ const Button = ({ handleAddTicker }) => {
   const handleOnClick = (tickerInput, typeInput) => {
     if (tickerInput == null || typeInput == null || tickerInput == "" || typeInput == null)
       return;
-    handleAddTicker(tickerInput, typeInput)
+    handleAddTicker(tickerInput, typeInput);
   }
 
   return (
