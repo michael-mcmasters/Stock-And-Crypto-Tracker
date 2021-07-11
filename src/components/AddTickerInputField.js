@@ -44,15 +44,14 @@ const Input = styled.input`
   height: 1.5rem;
   border: none;
   border-right: 1px solid black;
-  /* border-radius: 100px; */
-  /* margin-right: 0.7rem; */
+  border-radius: 7px 0 0 7px;
 `;
 
 const Select = styled.select`
   height: 1.6rem;
   padding-left: 0.4rem;
   border: none;
-  /* border-radius: 100px; */
+  border-radius: 0 7px 7px 0;
 `;
 
 const Button = styled.button`
