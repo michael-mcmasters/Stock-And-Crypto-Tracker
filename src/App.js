@@ -1,13 +1,11 @@
 import { ColorThemeProvider } from "./components/custom_hooks/ColorThemeContext";
-import CoinGallery from "./components/CoinGallery";
+import TickerGallery from "./components/TickerGallery";
 
 function App() {
   return (
     <>
       <ColorThemeProvider>
-        <CoinGallery />
-        {/* <CoinGallery /> */}
-        {/* <CoinGallery /> */}
+        <TickerGallery />
       </ColorThemeProvider>
     </>
   );

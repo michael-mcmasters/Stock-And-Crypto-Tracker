@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import styled from "styled-components";
-import Coin from "./Coin";
+import Ticker from "./Ticker";
 import Button from "./Button";
 
 const MAX_ALLOWED_TICKERS = 12;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
 const DEBUG_USE_FAKE_PRICES = false;
 
-function CoinGallery() {
+function TickerGallery() {
 
   const colors = useContext(ColorThemeContext);
   const [tickersArr, setTickersArr] = useState([
@@ -106,7 +106,7 @@ function CoinGallery() {
       return;
 
     let arr = [...tickersArr];
-    arr.push({ tickerName: tickerName, type: type, price: 0, prevPrice: 0 });
+    arr.push({ tickerName, type: type, price: 0, prevPrice: 0 });
     setTickersArr(arr);
   }
 
@@ -122,7 +122,7 @@ function CoinGallery() {
     <>
       <Container>
         {tickersArr.map((t, keyIndex) => (
-          <Coin
+          <Ticker
             key={keyIndex}
             tickerObj={t}
             getTickerColors={getTickerColors}
@@ -147,4 +147,4 @@ const Container = styled.div`
   }
 `;
 
-export default CoinGallery;
+export default TickerGallery;

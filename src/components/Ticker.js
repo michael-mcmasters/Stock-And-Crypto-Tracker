@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Coin = ({ tickerObj, getTickerColors }) => {
+const Ticker = ({ tickerObj, getTickerColors }) => {
 
   const { tickerName, type, price, prevPrice } = tickerObj;
   const colors = useContext(ColorThemeContext);
@@ -39,4 +39,4 @@ const Price = styled.div`
   /* color: green; */
 `;
 
-export default Coin;
+export default Ticker;
