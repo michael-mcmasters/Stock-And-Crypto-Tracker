@@ -33,16 +33,14 @@ const AddTickerInputField = ({ handleAddTicker }) => {
 const Container = styled.div`
   margin-top: 2rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const InputContainer = styled.div`
-  margin: 1rem 1.9rem 0 auto;
+  margin: 1.4rem 1.9rem 0 auto;
 `;
 
 const Input = styled.input`
-  height: 2rem;
+  height: 1.97rem;
   border: none;
   border-right: 1px solid black;
 `;
