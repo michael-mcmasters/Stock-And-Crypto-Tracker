@@ -42,7 +42,7 @@ function TickerGallery() {
 
   const getTickerColors = (price, prevPrice) => {
     if (price > prevPrice)
-      return [colors.green, colors.regularGreen];
+      return [colors.green, colors.basicGreen];
 
     return [colors.brightRed, colors.darkRed];
   }

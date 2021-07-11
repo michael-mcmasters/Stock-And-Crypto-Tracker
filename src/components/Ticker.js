@@ -17,16 +17,14 @@ const Ticker = ({ tickerObj, getTickerColors }) => {
 };
 
 const Container = styled.div`
-  width: 10em;
-  border-radius: 10px;
   margin: 1em 1em;
-  text-align: center;
-  color: green;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding: 1em 0;
   border: 1px solid ${props => props.fontColor};
+  border-radius: 10px;
+  width: 10em;
   color: ${props => props.fontColor};
   background-color: ${props => props.bgColor};
+  text-align: center;
 `;
 
 const CoinTicker = styled.div`
