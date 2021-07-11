@@ -26,6 +26,7 @@ function TickerGallery() {
     } else {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
+        // Example URI: http://localhost:8080/stock/botz
         fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`)
           .then(res => res.json())
           .then(res => {

@@ -6,8 +6,8 @@ import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 const AddTickerInputField = ({ handleAddTicker }) => {
   const browser = detect();
   const colors = useContext(ColorThemeContext);
-  const [tickerInput, setTickerInput] = useState('');
-  const [typeInput, setTypeInput] = useState('stocks');
+  const [tickerName, setTickerName] = useState('');
+  const [tickerType, setTickerType] = useState('stock');
 
   const handleOnClick = (tickerInput, typeInput) => {
     if (tickerInput == null || typeInput == null || tickerInput == "" || typeInput == null)
@@ -18,13 +18,13 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <InputContainer>
-        <Input colors={colors} placeholder={"Ticker..."} onInput={e => setTickerInput(e.target.value)}></Input>
-        <Select browser={browser} onChange={e => setTypeInput(e.target.value)}>
-          <option value="stocks">Stock</option>
+        <Input colors={colors} placeholder={"Ticker..."} onInput={e => setTickerName(e.target.value)}></Input>
+        <Select browser={browser} onChange={e => setTickerType(e.target.value)}>
+          <option value="stock">Stock</option>
           <option value="crypto">Crypto</option>
         </Select>
       </InputContainer>
-      <Button colors={colors} onClick={() => handleOnClick(tickerInput, typeInput)}>
+      <Button colors={colors} onClick={() => handleOnClick(tickerName, tickerType)}>
         +
       </Button>
     </Container>
@@ -54,7 +54,7 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
-  -webkit-appearance: ${props => props.browser.name == "safari" ? "none" : ""}
+  -webkit-appearance: ${props => props.browser.name == "safari" ? "none" : ""};
 `;
 
 // ToDo: Check if Safari and if so, set to webkit-appearance: none.
