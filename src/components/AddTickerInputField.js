@@ -17,10 +17,10 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <Input colors={colors} onInput={e => setTickerInput(e.target.value)}></Input>
-      <select onChange={e => setTypeInput(e.target.value)}>
+      <Select onChange={e => setTypeInput(e.target.value)}>
         <option value="stocks">Stock</option>
         <option value="crypto">Crypto</option>
-      </select>
+      </Select>
       <But colors={colors} onClick={() => handleOnClick(tickerInput, typeInput)}>
         +
       </But>
@@ -29,19 +29,27 @@ const AddTickerInputField = ({ handleAddTicker }) => {
 };
 
 const Container = styled.div`
-  width: fit-content;
-  margin: 0 auto;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Input = styled.input`
+  height: 1.7rem;
+  width: auto;
+`;
 
+const Select = styled.select`
+  height: 2.1rem;
+  width: auto;
 `;
 
 const But = styled.button`
   border: none;
   border-radius: 9999px;
-  width: 2em;
-  height: 2em;
+  width: 3rem;
+  height: 3rem;
   background-color: ${props => props.colors.blue};
   color: white;
   font-size: 2em;
