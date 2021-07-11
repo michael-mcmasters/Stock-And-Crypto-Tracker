@@ -54,6 +54,7 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
+  width: ${props => props.browser.name == "safari" ? "3.5rem" : ""};
   -webkit-appearance: ${props => props.browser.name == "safari" ? "none" : ""};
 `;
 
