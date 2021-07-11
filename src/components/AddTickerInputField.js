@@ -1,12 +1,13 @@
+import { detect } from 'detect-browser';
 import React, { useState, useContext } from 'react';
 import styled from "styled-components"
 import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 
 const AddTickerInputField = ({ handleAddTicker }) => {
+  const browser = detect();
   const colors = useContext(ColorThemeContext);
   const [tickerInput, setTickerInput] = useState('');
   const [typeInput, setTypeInput] = useState('stocks');
-
 
   const handleOnClick = (tickerInput, typeInput) => {
     if (tickerInput == null || typeInput == null || tickerInput == "" || typeInput == null)
@@ -18,7 +19,7 @@ const AddTickerInputField = ({ handleAddTicker }) => {
     <Container>
       <InputContainer>
         <Input colors={colors} placeholder={"Ticker..."} onInput={e => setTickerInput(e.target.value)}></Input>
-        <Select onChange={e => setTypeInput(e.target.value)}>
+        <Select browser={browser} onChange={e => setTypeInput(e.target.value)}>
           <option value="stocks">Stock</option>
           <option value="crypto">Crypto</option>
         </Select>
@@ -53,8 +54,7 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
-  
-  /* -webkit-appearance: none; */
+  -webkit-appearance: ${props => props.browser.name == "safari" ? "none" : ""}
 `;
 
 // ToDo: Check if Safari and if so, set to webkit-appearance: none.
