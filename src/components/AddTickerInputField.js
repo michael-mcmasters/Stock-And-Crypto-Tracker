@@ -17,7 +17,7 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <InputContainer>
-        <Input colors={colors} placeholder={"Ticker"} onInput={e => setTickerInput(e.target.value)}></Input>
+        <Input colors={colors} placeholder={"Ticker..."} onInput={e => setTickerInput(e.target.value)}></Input>
         <Select onChange={e => setTypeInput(e.target.value)}>
           <option value="stocks">Stock</option>
           <option value="crypto">Crypto</option>
@@ -53,7 +53,11 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
+  
+  /* -webkit-appearance: none; */
 `;
+
+// ToDo: Check if Safari and if so, set to webkit-appearance: none.
 
 const Button = styled.button`
   border: none;
