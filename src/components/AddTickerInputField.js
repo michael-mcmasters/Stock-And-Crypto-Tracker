@@ -47,6 +47,7 @@ const Input = styled.input`
 
 const Select = styled.select`
   height: 2.1rem;
+  padding-left: 0.4rem;
   border: none;
 `;
 
