@@ -36,20 +36,23 @@ const Container = styled.div`
 `;
 
 const InputContainer = styled.div`
-  margin: 1.6rem 1.9rem 0 auto;
+  margin: 2rem 1.6rem 0 auto;
 `;
 
 const Input = styled.input`
-  width: 4.3rem;
-  height: 1.87rem;
+  width: 4rem;
+  height: 1.5rem;
   border: none;
   border-right: 1px solid black;
+  /* border-radius: 100px; */
+  /* margin-right: 0.7rem; */
 `;
 
 const Select = styled.select`
-  height: 2rem;
+  height: 1.6rem;
   padding-left: 0.4rem;
   border: none;
+  /* border-radius: 100px; */
 `;
 
 const Button = styled.button`
