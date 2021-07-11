@@ -47,6 +47,11 @@ const Input = styled.input`
   border-right: 1px solid black;
   border-radius: 7px 0 0 7px;
   text-align: center;
+  
+  /* Hide placeholder text when clicked */
+  :focus::placeholder {
+    color: transparent;
+  }
 `;
 
 const Select = styled.select`
