@@ -36,17 +36,18 @@ const Container = styled.div`
 `;
 
 const InputContainer = styled.div`
-  margin: 1.4rem 1.9rem 0 auto;
+  margin: 1.6rem 1.9rem 0 auto;
 `;
 
 const Input = styled.input`
-  height: 1.97rem;
+  width: 4.3rem;
+  height: 1.87rem;
   border: none;
   border-right: 1px solid black;
 `;
 
 const Select = styled.select`
-  height: 2.1rem;
+  height: 2rem;
   padding-left: 0.4rem;
   border: none;
 `;
