@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import styled from "styled-components";
 import Ticker from "./Ticker";
-import Button from "./Button";
+import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 12;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
@@ -129,7 +129,7 @@ function TickerGallery() {
           />)
         )}
       </Container>
-      <Button handleAddTicker={handleAddTicker} />
+      <AddTickerInputField handleAddTicker={handleAddTicker} />
     </>
   );
 }

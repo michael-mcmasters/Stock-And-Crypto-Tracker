@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from "styled-components"
 import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 
-const Button = ({ handleAddTicker }) => {
+const AddTickerInputField = ({ handleAddTicker }) => {
   const colors = useContext(ColorThemeContext);
   const [tickerInput, setTickerInput] = useState('');
   const [typeInput, setTypeInput] = useState('stocks');
@@ -47,4 +47,4 @@ const But = styled.button`
   font-size: 2em;
 `;
 
-export default Button;
+export default AddTickerInputField;
