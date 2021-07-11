@@ -17,7 +17,7 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <InputContainer>
-        <Input colors={colors} onInput={e => setTickerInput(e.target.value)}></Input>
+        <Input colors={colors} placeholder={"Ticker"} onInput={e => setTickerInput(e.target.value)}></Input>
         <Select onChange={e => setTypeInput(e.target.value)}>
           <option value="stocks">Stock</option>
           <option value="crypto">Crypto</option>
@@ -45,6 +45,7 @@ const Input = styled.input`
   border: none;
   border-right: 1px solid black;
   border-radius: 7px 0 0 7px;
+  text-align: center;
 `;
 
 const Select = styled.select`
