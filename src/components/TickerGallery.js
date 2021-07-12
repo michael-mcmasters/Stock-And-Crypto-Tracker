@@ -68,6 +68,9 @@ function TickerGallery() {
   return (
     <>
       <Container>
+        <Head>
+          Today | Week | Month | Year | All Time
+        </Head>
         <GridContainer>
           {tickersArr.map((t, keyIndex) => (
             <Ticker
@@ -82,6 +85,12 @@ function TickerGallery() {
     </>
   );
 }
+
+const Head = styled.div`
+  display: flex;
+  color: white;
+  margin-left: 1rem;
+`;
 
 const Container = styled.div`
   width: min-content;
