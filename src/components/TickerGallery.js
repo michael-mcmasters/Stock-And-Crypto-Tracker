@@ -68,8 +68,23 @@ function TickerGallery() {
   return (
     <>
       <Container>
-        <Head>
+        {/* <Head>
           Today | Week | Month | Year | All Time
+        </Head> */}
+        {/* <Head>
+          1 DAY | 5 DAY | 1 MONTH | 3 MONTH | 1 YEAR | YTD
+        </Head> */}
+        {/* <Head>
+          {"1 DAY | 5 DAY | 1 MONTH | 3 MONTH | 1 YEAR | YTD".toLowerCase()}
+        </Head> */}
+        {/* <Head>
+          1D | 5D | 1M | 3M | 1Y | YTD
+        </Head> */}
+        {/* <Head>
+          Today | Week | Month | 6 Months | YTD | Year
+        </Head> */}
+        <Head>
+          Today | Week | Month | YTD | Year
         </Head>
         <GridContainer>
           {tickersArr.map((t, keyIndex) => (
