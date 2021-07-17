@@ -6,7 +6,8 @@ import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
-const DEBUG_USE_FAKE_PRICES = true;
+// const PRICE_UPDATE_DELAY = 100000;
+const DEBUG_USE_FAKE_PRICES = false;
 
 
 function TickerGallery() {
@@ -32,6 +33,8 @@ function TickerGallery() {
           .then(res => {
             arr[i].prevPrice = tickersArr[i].price;
             arr[i].price = res.currentPrice;
+            arr[i].day.priceDifference = res.day.priceDifference;
+            arr[i].day.percentage = res.day.percentage;
           });
       }
       setTickersArr(arr);
@@ -87,7 +90,11 @@ function TickerGallery() {
           {tickersArr.map((t, keyIndex) => (
             <Ticker
               key={keyIndex}
-              tickerObj={t}
+              tickerName={t.tickerName}
+              type={t.type}
+              price={t.price}
+              prevPrice={t.prevPrice}
+              priceDifference={t.day.priceDifference}
               getTickerFontAndBGColors={getTickerFontAndBGColors}
             />)
           )}
@@ -132,73 +139,121 @@ function getTickerObjects() {
       tickerName: "BTC",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "ETH",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       price: 0,
-      prevPrice: 0
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
     },
   ]
 }
