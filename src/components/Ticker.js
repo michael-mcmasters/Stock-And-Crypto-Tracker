@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useContext } from 'react';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, type, price, prevPrice, priceDifference, getTickerFontAndBGColors }) => {
+const Ticker = ({ tickerName, type, price, prevPrice, priceDifference, percentage, getTickerFontAndBGColors }) => {
 
   const colors = useContext(ColorThemeContext);
   const [bgColor, fontColor] = getTickerFontAndBGColors(price, prevPrice);
@@ -10,7 +10,8 @@ const Ticker = ({ tickerName, type, price, prevPrice, priceDifference, getTicker
   return (
     <Container colors={colors} fontColor={fontColor} bgColor={bgColor}>
       <CoinTicker>{tickerName}</CoinTicker>
-      <Price>${price} ({priceDifference}%)</Price>
+      <Price>${price}</Price>
+      <div>{priceDifference} ({percentage}%)</div>
     </Container>
   );
 };

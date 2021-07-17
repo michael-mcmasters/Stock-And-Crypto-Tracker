@@ -5,8 +5,8 @@ import Ticker from "./Ticker";
 import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
-// const PRICE_UPDATE_DELAY = 100000;
+// const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
+const PRICE_UPDATE_DELAY = 100000;
 const DEBUG_USE_FAKE_PRICES = false;
 
 
@@ -36,7 +36,7 @@ function TickerGallery() {
             arr[i].prevPrice = tickersArr[i].currentPrice;
             arr[i].currentPrice = res.currentPrice;
             arr[i].day.priceDifference = res.day?.priceDifference;
-            arr[i].day.percentage = res.day?.percentage;
+            arr[i].day.percentage = res.day?.percentage.toFixed(2);
           });
       }
       setTickersArr(arr);
@@ -97,6 +97,7 @@ function TickerGallery() {
               price={t.currentPrice}
               prevPrice={t.prevPrice}
               priceDifference={t.day.priceDifference}
+              percentage={t.day.percentage}
               getTickerFontAndBGColors={getTickerFontAndBGColors}
             />)
           )}
