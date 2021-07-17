@@ -31,10 +31,7 @@ function TickerGallery() {
           .then(res => res.json())
           .then(res => {
             arr[i].prevPrice = tickersArr[i].price;
-            let price = res.price?.replace(",", "");
-            if (price != null) {
-              arr[i].price = Number(price);
-            }
+            arr[i].price = res.currentPrice;
           });
       }
       setTickersArr(arr);
