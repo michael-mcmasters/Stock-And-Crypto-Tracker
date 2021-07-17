@@ -19,8 +19,8 @@ function TickerGallery() {
     if (DEBUG_USE_FAKE_PRICES) {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
-        arr[i].prevPrice = tickersArr[i].price;
-        arr[i].price = (Math.random() * 10).toFixed(6);
+        arr[i].prevPrice = tickersArr[i].currentPrice;
+        arr[i].currentPrice = (Math.random() * 10).toFixed(6);
       }
       setTickersArr(arr);
 
@@ -31,10 +31,12 @@ function TickerGallery() {
         fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`)
           .then(res => res.json())
           .then(res => {
-            arr[i].prevPrice = tickersArr[i].price;
-            arr[i].price = res.currentPrice;
-            arr[i].day.priceDifference = res.day.priceDifference;
-            arr[i].day.percentage = res.day.percentage;
+            if (res.day == null)
+              console.log(res);
+            arr[i].prevPrice = tickersArr[i].currentPrice;
+            arr[i].currentPrice = res.currentPrice;
+            arr[i].day.priceDifference = res.day?.priceDifference;
+            arr[i].day.percentage = res.day?.percentage;
           });
       }
       setTickersArr(arr);
@@ -53,7 +55,7 @@ function TickerGallery() {
       return;
 
     let arr = [...tickersArr];
-    arr.push({ tickerName, type: type, price: 0, prevPrice: 0 });
+    arr.push({ tickerName, type: type, currentPrice: 0, prevPrice: 0 });
     setTickersArr(arr);
   }
 
@@ -92,7 +94,7 @@ function TickerGallery() {
               key={keyIndex}
               tickerName={t.tickerName}
               type={t.type}
-              price={t.price}
+              price={t.currentPrice}
               prevPrice={t.prevPrice}
               priceDifference={t.day.priceDifference}
               getTickerFontAndBGColors={getTickerFontAndBGColors}
@@ -138,7 +140,7 @@ function getTickerObjects() {
     {
       tickerName: "BTC",
       type: "crypto",
-      price: 0,
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -148,7 +150,27 @@ function getTickerObjects() {
     {
       tickerName: "ETH",
       type: "crypto",
-      price: 0,
+      currentPrice: 0,
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
+    },
+    {
+      tickerName: "TWTR",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0
+      }
+    },
+    {
+      tickerName: "YOLO",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -158,7 +180,7 @@ function getTickerObjects() {
     {
       tickerName: "DOGE",
       type: "crypto",
-      price: 0,
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -166,9 +188,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "BOTZ",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -176,9 +198,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "AAPL",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -186,9 +208,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "AMZN",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -196,9 +218,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "GOOGL",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -206,9 +228,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "TSLA",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -216,9 +238,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "VTSAX",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,
@@ -226,29 +248,9 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0
-      }
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
-      prevPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0
-      }
-    },
-    {
-      tickerName: "DOGE",
-      type: "crypto",
-      price: 0,
+      tickerName: "UBER",
+      type: "stock",
+      currentPrice: 0,
       prevPrice: 0,
       day: {
         priceDifference: 0,

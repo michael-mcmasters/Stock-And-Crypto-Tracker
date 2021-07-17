@@ -24,14 +24,14 @@ const Container = styled.div`
       color: ${props => props.fontColor};
       background-color: ${props => props.bgColor};
       text-align: center;
-      `;
+`;
 
 const CoinTicker = styled.div`
       font-weight: bold;
-      `;
+`;
 
 const Price = styled.div`
       margin-top: 0.5em;
-      `;
+`;
 
 export default Ticker;
