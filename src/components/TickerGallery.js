@@ -5,15 +5,14 @@ import Ticker from "./Ticker";
 import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 16;
-// const PRICE_UPDATE_DELAY = 5000;    // 5 seconds
-const PRICE_UPDATE_DELAY = 5000;
+const PRICE_UPDATE_DELAY = 30000; // 5000 is 5 seconds
 const DEBUG_USE_FAKE_PRICES = false;
 
 function TickerGallery() {
   const colors = useContext(ColorThemeContext);
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
 
-  const updatePrices = () => {
+  const updatePrices = async () => {
     if (DEBUG_USE_FAKE_PRICES) {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
@@ -25,15 +24,13 @@ function TickerGallery() {
       let arr = [...tickersArr];
       for (let i = 0; i < arr.length; i++) {
         // Example URI: http://localhost:8080/stock/botz
-        fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`)
-          .then((res) => res.json())
-          .then((res) => {
-            if (res.day == null) console.log(res);
-            arr[i].prevPrice = tickersArr[i].currentPrice;
-            arr[i].currentPrice = res.currentPrice;
-            arr[i].priceDifference = res.day?.priceDifference;
-            arr[i].percentage = res.day?.percentage.toFixed(2);
-          });
+        let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
+        res = await res.json();
+        if (res.day == null) console.log(res);
+        arr[i].prevPrice = tickersArr[i].currentPrice;
+        arr[i].currentPrice = res.currentPrice;
+        arr[i].priceDifference = res.day?.priceDifference;
+        arr[i].percentage = res.day?.percentage.toFixed(2);
       }
       setTickersArr(arr);
     }
