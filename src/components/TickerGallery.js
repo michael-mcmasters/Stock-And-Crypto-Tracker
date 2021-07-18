@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
 import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 30000; // 5000 is 5 seconds
+const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 const DEBUG_USE_FAKE_PRICES = false;
 
 function TickerGallery() {
@@ -44,9 +44,8 @@ function TickerGallery() {
     const interval = setInterval(() => {
       updatePrices();
     }, PRICE_UPDATE_DELAY);
-
     return () => clearInterval(interval);
-  });
+  }, []);
 
   return (
     <>
@@ -180,14 +179,14 @@ function getTickerObjects() {
       priceDifference: 0,
       percentage: 0.0,
     },
-    {
-      tickerName: "VTSAX",
-      type: "stock",
-      currentPrice: 0,
-      prevPrice: 0,
-      priceDifference: 0,
-      percentage: 0.0,
-    },
+    // {
+    //   tickerName: "VTSAX",
+    //   type: "stock",
+    //   currentPrice: 0,
+    //   prevPrice: 0,
+    //   priceDifference: 0,
+    //   percentage: 0.0,
+    // },
     {
       tickerName: "UBER",
       type: "stock",
