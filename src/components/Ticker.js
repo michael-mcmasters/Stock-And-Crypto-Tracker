@@ -22,9 +22,9 @@ const Ticker = ({ tickerName, type, price, prevPrice, priceDifference, percentag
     <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor}>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
-      <div>
+      <PriceChange>
         {priceDifference} ({percentage}%)
-      </div>
+      </PriceChange>
     </Container>
   );
 };
@@ -46,6 +46,11 @@ const CoinTicker = styled.div`
 
 const Price = styled.div`
   margin-top: 0.5em;
+`;
+
+const PriceChange = styled.div`
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
 `;
 
 export default Ticker;
