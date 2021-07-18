@@ -41,10 +41,12 @@ function TickerGallery() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      updatePrices();
-    }, PRICE_UPDATE_DELAY);
-    return () => clearInterval(interval);
+    updatePrices();
+
+    // const interval = setInterval(() => {
+    //   updatePrices();
+    // }, PRICE_UPDATE_DELAY);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
@@ -100,6 +102,38 @@ const GridContainer = styled.div`
 function getTickerObjects() {
   return [
     {
+      tickerName: "TWTR",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      priceDifference: 0,
+      percentage: 0.0,
+    },
+    {
+      tickerName: "AAPL",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      priceDifference: 0,
+      percentage: 0.0,
+    },
+    {
+      tickerName: "BOTZ",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      priceDifference: 0,
+      percentage: 0.0,
+    },
+    {
+      tickerName: "AMZN",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      priceDifference: 0,
+      percentage: 0.0,
+    },
+    {
       tickerName: "BTC",
       type: "crypto",
       currentPrice: 0,
@@ -116,22 +150,6 @@ function getTickerObjects() {
       percentage: 0.0,
     },
     {
-      tickerName: "TWTR",
-      type: "stock",
-      currentPrice: 0,
-      prevPrice: 0,
-      priceDifference: 0,
-      percentage: 0.0,
-    },
-    {
-      tickerName: "YOLO",
-      type: "stock",
-      currentPrice: 0,
-      prevPrice: 0,
-      priceDifference: 0,
-      percentage: 0.0,
-    },
-    {
       tickerName: "DOGE",
       type: "crypto",
       currentPrice: 0,
@@ -140,23 +158,7 @@ function getTickerObjects() {
       percentage: 0.0,
     },
     {
-      tickerName: "BOTZ",
-      type: "stock",
-      currentPrice: 0,
-      prevPrice: 0,
-      priceDifference: 0,
-      percentage: 0.0,
-    },
-    {
-      tickerName: "AAPL",
-      type: "stock",
-      currentPrice: 0,
-      prevPrice: 0,
-      priceDifference: 0,
-      percentage: 0.0,
-    },
-    {
-      tickerName: "AMZN",
+      tickerName: "YOLO",
       type: "stock",
       currentPrice: 0,
       prevPrice: 0,
@@ -189,6 +191,14 @@ function getTickerObjects() {
     // },
     {
       tickerName: "UBER",
+      type: "stock",
+      currentPrice: 0,
+      prevPrice: 0,
+      priceDifference: 0,
+      percentage: 0.0,
+    },
+    {
+      tickerName: "LYFT",
       type: "stock",
       currentPrice: 0,
       prevPrice: 0,
