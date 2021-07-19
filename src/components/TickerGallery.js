@@ -5,7 +5,7 @@ import AddTickerInputField from "./AddTickerInputField";
 
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
 
 function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
@@ -16,6 +16,8 @@ function TickerGallery() {
       for (let i = 0; i < arr.length; i++) {
         arr[i].prevPrice = tickersArr[i].currentPrice;
         arr[i].currentPrice = (Math.random() * 10).toFixed(6);
+        arr[i].priceDifference = (arr[i].currentPrice - arr[i].prevPrice).toFixed(2);
+        arr[i].percentage = (Math.random() * 4).toFixed(2);
       }
     } else {
       for (let i = 0; i < arr.length; i++) {
@@ -43,10 +45,10 @@ function TickerGallery() {
   useEffect(() => {
     updatePrices();
 
-    // const interval = setInterval(() => {
-    //   updatePrices();
-    // }, PRICE_UPDATE_DELAY);
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      updatePrices();
+    }, PRICE_UPDATE_DELAY);
+    return () => clearInterval(interval);
   }, []);
 
   return (
