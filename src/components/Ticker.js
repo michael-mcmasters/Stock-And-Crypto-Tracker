@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, type, price, prevPrice, priceDifference, percentage }) => {
+const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   const COLORS = useContext(ColorThemeContext);
 
   let bgColor, fontColor;

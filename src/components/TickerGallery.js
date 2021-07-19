@@ -14,9 +14,9 @@ function TickerGallery() {
     let arr = [...tickersArr];
     if (DEBUG_USE_FAKE_PRICES) {
       for (let i = 0; i < arr.length; i++) {
-        arr[i].prevPrice = tickersArr[i].currentPrice;
+        const prevPrice = tickersArr[i].currentPrice;
         arr[i].currentPrice = (Math.random() * 10).toFixed(6);
-        arr[i].priceDifference = (arr[i].currentPrice - arr[i].prevPrice).toFixed(2);
+        arr[i].priceDifference = (arr[i].currentPrice - prevPrice).toFixed(2);
         arr[i].percentage = (Math.random() * 4).toFixed(2);
       }
     } else {
@@ -25,7 +25,6 @@ function TickerGallery() {
         let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
         res = await res.json();
         if (res.day == null) console.log(res);
-        arr[i].prevPrice = tickersArr[i].currentPrice;
         arr[i].currentPrice = res.currentPrice;
         arr[i].priceDifference = res.day?.priceDifference;
         arr[i].percentage = res.day?.percentage.toFixed(2);
@@ -62,7 +61,6 @@ function TickerGallery() {
               tickerName={t.tickerName}
               type={t.type}
               price={t.currentPrice}
-              prevPrice={t.prevPrice}
               priceDifference={t.priceDifference}
               percentage={t.percentage}
             />
@@ -107,7 +105,6 @@ function getTickerObjects() {
       tickerName: "TWTR",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -115,7 +112,6 @@ function getTickerObjects() {
       tickerName: "AAPL",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -123,7 +119,6 @@ function getTickerObjects() {
       tickerName: "BOTZ",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -131,7 +126,6 @@ function getTickerObjects() {
       tickerName: "AMZN",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -139,7 +133,6 @@ function getTickerObjects() {
       tickerName: "BTC",
       type: "crypto",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -147,7 +140,6 @@ function getTickerObjects() {
       tickerName: "ETH",
       type: "crypto",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -155,7 +147,6 @@ function getTickerObjects() {
       tickerName: "DOGE",
       type: "crypto",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -163,7 +154,6 @@ function getTickerObjects() {
       tickerName: "YOLO",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -171,7 +161,6 @@ function getTickerObjects() {
       tickerName: "GOOGL",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -179,7 +168,6 @@ function getTickerObjects() {
       tickerName: "TSLA",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -187,7 +175,6 @@ function getTickerObjects() {
     //   tickerName: "VTSAX",
     //   type: "stock",
     //   currentPrice: 0,
-    //   prevPrice: 0,
     //   priceDifference: 0,
     //   percentage: 0.0,
     // },
@@ -195,7 +182,6 @@ function getTickerObjects() {
       tickerName: "UBER",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
@@ -203,7 +189,6 @@ function getTickerObjects() {
       tickerName: "LYFT",
       type: "stock",
       currentPrice: 0,
-      prevPrice: 0,
       priceDifference: 0,
       percentage: 0.0,
     },
