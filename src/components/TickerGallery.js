@@ -21,7 +21,7 @@ function TickerGallery() {
       }
     } else {
       for (let i = 0; i < arr.length; i++) {
-        // Example URI: http://localhost:8080/stock/botz
+        // Example: http://localhost:8080/stock/botz
         let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
         res = await res.json();
         if (res.day == null) console.log(res);
