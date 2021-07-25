@@ -43,6 +43,18 @@ function TickerGallery() {
         arr[i].year.percentage = (Math.random() * 8).toFixed(2);
       }
     }
+
+    for (let i = 0; i < tickersArr.length; i++) {
+      // If ticker has array that arr doens't know about, add it.
+      if (!arr.includes(tickersArr[i])) {
+        arr.push(tickersArr[i]);
+      }
+      // If ticker does not have array that arr does, remove it.
+      if (!tickersArr.includes(arr[i])) {
+        let index = arr.indexOf(tickersArr[i]);
+        arr.splice(index, 1);
+      }
+    }
     setTickersArr(arr);
   };
 
@@ -58,12 +70,13 @@ function TickerGallery() {
   };
 
   useEffect(() => {
+    console.log("CALLED");
     updatePrices();
     const interval = setInterval(() => {
       updatePrices();
     }, PRICE_UPDATE_DELAY);
     return () => clearInterval(interval);
-  }, []);
+  }, [tickersArr]);
 
   return (
     <>
