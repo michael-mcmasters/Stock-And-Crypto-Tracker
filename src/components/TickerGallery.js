@@ -6,7 +6,7 @@ import AddTickerInputField from "./AddTickerInputField";
 
 const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
+const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
 const HISTORY_OPTIONS = {
   TODAY: "day",
@@ -18,7 +18,7 @@ const HISTORY_OPTIONS = {
 
 function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
-  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HISTORY_OPTIONS.TODAY);
+  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HISTORY_OPTIONS.WEEK);
 
   const updatePrices = async () => {
     let arr = [...tickersArr];
@@ -34,11 +34,10 @@ function TickerGallery() {
         // Example URI: http://localhost:8080/stock/botz
         let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
         res = await res.json();
-        console.log(res);
         if (res.day == null) console.log(res);
         arr[i].currentPrice = res.currentPrice;
-        arr[i].priceDifference = res.day?.priceDifference;
-        arr[i].percentage = res.day?.percentage.toFixed(2);
+        arr[i].priceDifference = res[selectedHistoryOption]?.priceDifference;
+        arr[i].percentage = res[selectedHistoryOption]?.percentage.toFixed(2);
       }
     }
     setTickersArr(arr);
