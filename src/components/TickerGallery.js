@@ -5,13 +5,19 @@ import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 
-const DEBUG_USE_FAKE_PRICES = true;
+const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
+const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 
 function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
+
+  const fetchAPI = async (ticker) => {
+    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
+    response = await response.json();
+    return response;
+  }
 
   const updatePrices = async () => {
     let arr = [...tickersArr];
@@ -20,6 +26,7 @@ function TickerGallery() {
         // Example URI: http://localhost:8080/stock/botz
         let response = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
         response = await response.json();
+        // let response = fetchAPI(arr[i]);
         arr[i] = response;
       }
     } else {
@@ -41,11 +48,14 @@ function TickerGallery() {
     setTickersArr(arr);
   };
 
-  const handleAddTicker = (tickerName, type) => {
+  const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS) return;
 
+    let newTicker = await fetchAPI({ tickerName, type });
+    console.log(newTicker);
     let arr = [...tickersArr];
-    arr.push({ tickerName, type: type, currentPrice: 0, prevPrice: 0 });
+    arr.push(newTicker);
+    //arr.push({ tickerName, type: type });
     setTickersArr(arr);
   };
 
