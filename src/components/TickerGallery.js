@@ -13,6 +13,7 @@ function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
+  // Example URI: http://localhost:8080/stock/botz
   const fetchAPI = async (ticker) => {
     let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
     response = await response.json();
@@ -23,10 +24,7 @@ function TickerGallery() {
     let arr = [...tickersArr];
     if (!DEBUG_USE_FAKE_PRICES) {
       for (let i = 0; i < arr.length; i++) {
-        // Example URI: http://localhost:8080/stock/botz
-        let response = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
-        response = await response.json();
-        // let response = fetchAPI(arr[i]);
+        let response = await fetchAPI(arr[i]);
         arr[i] = response;
       }
     } else {
