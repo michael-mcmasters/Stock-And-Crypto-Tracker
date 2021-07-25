@@ -13,10 +13,6 @@ function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
-  const handleClickHistoryOption = (historyOption) => {
-    setSelectedHistoryOption(historyOption);
-  }
-
   const updatePrices = async () => {
     let arr = [...tickersArr];
     if (!DEBUG_USE_FAKE_PRICES) {
@@ -64,7 +60,7 @@ function TickerGallery() {
   return (
     <>
       <Container>
-        <HistoryOptionsGallery handleClickHistoryOption={handleClickHistoryOption} />
+        <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
         <GridContainer>
           {tickersArr.map((t, keyIndex) => (
             <Ticker

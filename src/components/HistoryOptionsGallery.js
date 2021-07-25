@@ -1,39 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
-//import HistoryOptions from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 
-const HistoryOptionsGallery = ({ handleClickHistoryOption }) => {
+const HistoryOptionsGallery = ({ selectedHistoryOption, setSelectedHistoryOption }) => {
   const COLORS = useContext(ColorThemeContext);
 
   return (
-    <div>
+    <>
       <Head>
-        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.DAY)}>
+        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.DAY} onClick={() => setSelectedHistoryOption(HistoryOptions.DAY)}>
           Today
         </Button>
-        {/* <span>|</span> */}
-        <Button colors={COLORS} onClick={() => {
-          console.log("ON cLICK")
-          handleClickHistoryOption(HistoryOptions.WEEK)
-        }}>
+        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.WEEK} onClick={() => setSelectedHistoryOption(HistoryOptions.WEEK)}>
           Week
         </Button>
-        {/* <span>|</span> */}
-        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.MONTH)}>
+        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.MONTH} onClick={() => setSelectedHistoryOption(HistoryOptions.MONTH)}>
           Month
         </Button>
-        {/* <span>|</span> */}
-        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.YTD)}>
+        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.YTD} onClick={() => setSelectedHistoryOption(HistoryOptions.YTD)}>
           YTD
         </Button>
-        {/* <span>|</span> */}
-        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.YEAR)}>
+        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.YEAR} onClick={() => setSelectedHistoryOption(HistoryOptions.YEAR)}>
           Year
         </Button>
       </Head>
-    </div>
+    </>
   );
 };
 
@@ -42,15 +34,6 @@ const Head = styled.div`
   color: white;
   margin-left: 1rem;
   font-size: 1rem;
-  
-  ::nth-child() {
-    border-right: 1px solid white;
-  }
-  
-  ::nth-last-child() {
-    border-right: none;
-
-  }
 `;
 
 const Button = styled.button`
@@ -58,8 +41,9 @@ const Button = styled.button`
   background: none;
   color: white;
   font-size: inherit;
-  /* border-right: 1px solid white; */
   transition: 0.2s;
+  
+  background-color: ${props => props.selected ? props.colors.purple : ""};
   
   :hover {
     cursor: pointer;
