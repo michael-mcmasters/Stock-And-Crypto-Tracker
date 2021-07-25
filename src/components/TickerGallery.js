@@ -1,14 +1,24 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
+import HistoryOptions from "./HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 
+const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
-const DEBUG_USE_FAKE_PRICES = true;
+
+const HISTORY_OPTIONS = {
+  TODAY: "day",
+  WEEK: "week",
+  MONTH: "month",
+  YTD: "ytd",
+  YEAR: "year"
+}
 
 function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
+  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HISTORY_OPTIONS.TODAY);
 
   const updatePrices = async () => {
     let arr = [...tickersArr];
@@ -24,6 +34,7 @@ function TickerGallery() {
         // Example URI: http://localhost:8080/stock/botz
         let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
         res = await res.json();
+        console.log(res);
         if (res.day == null) console.log(res);
         arr[i].currentPrice = res.currentPrice;
         arr[i].priceDifference = res.day?.priceDifference;
@@ -53,7 +64,8 @@ function TickerGallery() {
   return (
     <>
       <Container>
-        <Head>Today | Week | Month | YTD | Year</Head>
+        {/* <Head>Today | Week | Month | YTD | Year</Head> */}
+        <HistoryOptions />
         <GridContainer>
           {tickersArr.map((t, keyIndex) => (
             <Ticker
@@ -71,12 +83,6 @@ function TickerGallery() {
     </>
   );
 }
-
-const Head = styled.div`
-  display: flex;
-  color: white;
-  margin-left: 1rem;
-`;
 
 const Container = styled.div`
   width: min-content;
