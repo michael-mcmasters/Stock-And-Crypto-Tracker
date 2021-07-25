@@ -1,6 +1,6 @@
 import { detect } from 'detect-browser';
 import React, { useState, useContext } from 'react';
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 
 const AddTickerInputField = ({ handleAddTicker }) => {
@@ -19,7 +19,7 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <InputContainer>
-        <Input colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value)}></Input>
+        <Input browser={browser} colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value)}></Input>
         <Select browser={browser} onChange={e => setTickerType(e.target.value)}>
           <option value="stock">Stock</option>
           <option value="crypto">Crypto</option>
@@ -43,7 +43,6 @@ const InputContainer = styled.div`
 
 const Input = styled.input`
   width: 4rem;
-  height: 1.5rem;
   border: none;
   border-right: 1px solid black;
   border-radius: 7px 0 0 7px;
@@ -53,6 +52,28 @@ const Input = styled.input`
   :focus::placeholder {
     color: transparent;
   }
+  
+  /* For some reason, the height changes slightly when the window width changes.
+     This looks at all widths for Chrome and Safari to force the correct height */
+  ${props => props.browser.name === 'chrome' && css`
+    height: 1.4rem;
+    
+    @media (max-width: 650px) {
+      height: 1.5rem;
+    }
+  `}
+  
+  ${props => props.browser.name === 'safari' && css`
+    height: 1.48rem;
+      
+    @media (max-width: 850px) {
+      height: 1.49rem;
+    }
+      
+    @media (max-width: 650px) {
+      height: 1.45rem;
+    }
+  `}
 `;
 
 const Select = styled.select`
@@ -60,11 +81,9 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
-  width: ${props => props.browser.name == "safari" ? "3.5rem" : ""};
-  -webkit-appearance: ${props => props.browser.name == "safari" ? "none" : ""};
+  width: ${(props) => (props.browser.name == "safari" ? "3.5rem" : "")};
+  -webkit-appearance: ${(props) => (props.browser.name == "safari" ? "none" : "")};
 `;
-
-// ToDo: Check if Safari and if so, set to webkit-appearance: none.
 
 const Button = styled.button`
   border: none;
