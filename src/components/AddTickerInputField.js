@@ -53,6 +53,7 @@ const Input = styled.input`
     color: transparent;
   }
   
+  height: 1.4rem;
   /* For some reason, the height changes slightly when the window width changes.
      This looks at all widths for Chrome and Safari to force the correct height */
   ${props => props.browser.name === 'chrome' && css`
