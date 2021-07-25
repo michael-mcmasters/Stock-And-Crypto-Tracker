@@ -1,27 +1,40 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
-import HistoryOptions from "./HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
+import HistoryOptionsGallery from "./HistoryOptionsGallery";
+import HistoryOptions from "../constants/HistoryOptions";
 
 const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
-const HISTORY_OPTIONS = {
-  TODAY: "day",
-  WEEK: "week",
-  MONTH: "month",
-  YTD: "ytd",
-  YEAR: "year"
-}
-
 function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
-  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HISTORY_OPTIONS.WEEK);
+  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
+  const [response, setResponse] = useState([]);
+
+  const handleClickHistoryOption = (historyOption) => {
+    setSelectedHistoryOption(historyOption);
+    update(historyOption);
+    console.log(historyOption);
+  }
+
+  const update = (historyOption) => {
+    let arr = [...tickersArr];
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].currentPrice = response[i].currentPrice;
+      arr[i].priceDifference = response[i][selectedHistoryOption]?.priceDifference;
+      arr[i].percentage = response[i][selectedHistoryOption]?.percentage.toFixed(2);
+    }
+    setTickersArr(arr);
+  }
+
+  console.log("Re-render. selectedHistoryOption is: " + selectedHistoryOption);
 
   const updatePrices = async () => {
     let arr = [...tickersArr];
+    // let response = [];
     if (DEBUG_USE_FAKE_PRICES) {
       for (let i = 0; i < arr.length; i++) {
         const prevPrice = tickersArr[i].currentPrice;
@@ -30,6 +43,7 @@ function TickerGallery() {
         arr[i].percentage = (Math.random() * 4).toFixed(2);
       }
     } else {
+      console.log("updatePrices: selectedHistoryOption is: " + selectedHistoryOption);
       for (let i = 0; i < arr.length; i++) {
         // Example URI: http://localhost:8080/stock/botz
         let res = await fetch(`http://localhost:8080/${arr[i].type}/${arr[i].tickerName}`);
@@ -40,6 +54,7 @@ function TickerGallery() {
         arr[i].percentage = res[selectedHistoryOption]?.percentage.toFixed(2);
       }
     }
+    setResponse(arr);
     setTickersArr(arr);
   };
 
@@ -58,13 +73,12 @@ function TickerGallery() {
       updatePrices();
     }, PRICE_UPDATE_DELAY);
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedHistoryOption]);
 
   return (
     <>
       <Container>
-        {/* <Head>Today | Week | Month | YTD | Year</Head> */}
-        <HistoryOptions />
+        <HistoryOptionsGallery handleClickHistoryOption={handleClickHistoryOption} />
         <GridContainer>
           {tickersArr.map((t, keyIndex) => (
             <Ticker

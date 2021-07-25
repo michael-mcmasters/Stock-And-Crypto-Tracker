@@ -1,30 +1,35 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
+//import HistoryOptions from "./HistoryOptionsGallery";
+import HistoryOptions from "../constants/HistoryOptions";
 
-const HistoryOptions = () => {
+const HistoryOptionsGallery = ({ handleClickHistoryOption }) => {
   const COLORS = useContext(ColorThemeContext);
 
   return (
     <div>
       <Head>
-        <Button colors={COLORS}>
+        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.DAY)}>
           Today
         </Button>
         {/* <span>|</span> */}
-        <Button colors={COLORS}>
+        <Button colors={COLORS} onClick={() => {
+          console.log("ON cLICK")
+          handleClickHistoryOption(HistoryOptions.WEEK)
+        }}>
           Week
         </Button>
         {/* <span>|</span> */}
-        <Button colors={COLORS}>
+        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.MONTH)}>
           Month
         </Button>
         {/* <span>|</span> */}
-        <Button colors={COLORS}>
+        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.YTD)}>
           YTD
         </Button>
         {/* <span>|</span> */}
-        <Button colors={COLORS}>
+        <Button colors={COLORS} onClick={() => handleClickHistoryOption(HistoryOptions.YEAR)}>
           Year
         </Button>
       </Head>
@@ -62,4 +67,4 @@ const Button = styled.button`
   }
 `;
 
-export default HistoryOptions;
+export default HistoryOptionsGallery;
