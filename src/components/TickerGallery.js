@@ -26,6 +26,7 @@ function TickerGallery() {
       for (let i = 0; i < arr.length; i++) {
         let response = await fetchAPI(arr[i]);
         arr[i] = response;
+        arr[i].type = tickersArr[i].type;
       }
     } else {
       for (let i = 0; i < arr.length; i++) {
@@ -55,9 +56,14 @@ function TickerGallery() {
         arr.splice(index, 1);
       }
     }
+
+    console.log(arr.length);
+    console.log(tickersArr.length);
+
     setTickersArr(arr);
   };
 
+  // ToDo
   const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS) return;
 
@@ -76,7 +82,7 @@ function TickerGallery() {
       updatePrices();
     }, PRICE_UPDATE_DELAY);
     return () => clearInterval(interval);
-  }, [tickersArr]);
+  }, [updatePrices]);
 
   return (
     <>
@@ -299,31 +305,6 @@ function getTickerObjects() {
       }
     },
     {
-      tickerName: "YOLO",
-      type: "stock",
-      currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
-      }
-    },
-    {
       tickerName: "GOOGL",
       type: "stock",
       currentPrice: 0,
@@ -382,31 +363,6 @@ function getTickerObjects() {
     // },
     {
       tickerName: "UBER",
-      type: "stock",
-      currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
-      }
-    },
-    {
-      tickerName: "LYFT",
       type: "stock",
       currentPrice: 0,
       day: {
