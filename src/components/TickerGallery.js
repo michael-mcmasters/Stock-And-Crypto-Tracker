@@ -13,76 +13,72 @@ function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
-  // Example URI: http://localhost:8080/stock/botz
-  const fetchAPI = async (ticker) => {
-    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
-    response = await response.json();
-    return response;
-  }
-
-  const updatePrices = async () => {
-    let arr = [...tickersArr];
-    if (!DEBUG_USE_FAKE_PRICES) {
-      for (let i = 0; i < arr.length; i++) {
-        let response = await fetchAPI(arr[i]);
-        arr[i] = response;
-        arr[i].type = tickersArr[i].type;
-      }
-    } else {
-      for (let i = 0; i < arr.length; i++) {
-        const prevPrice = tickersArr[i].currentPrice;
-        arr[i].currentPrice = (Math.random() * 10).toFixed(6);
-        arr[i].day.priceDifference = (arr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
-        arr[i].day.percentage = (Math.random() * 4).toFixed(2);
-        arr[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-        arr[i].week.percentage = (Math.random() * 5).toFixed(2);
-        arr[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-        arr[i].month.percentage = (Math.random() * 6).toFixed(2);
-        arr[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-        arr[i].ytd.percentage = (Math.random() * 7).toFixed(2);
-        arr[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-        arr[i].year.percentage = (Math.random() * 8).toFixed(2);
-      }
-    }
-
-    for (let i = 0; i < tickersArr.length; i++) {
-      // If ticker has array that arr doens't know about, add it.
-      if (!arr.includes(tickersArr[i])) {
-        arr.push(tickersArr[i]);
-      }
-      // If ticker does not have array that arr does, remove it.
-      if (!tickersArr.includes(arr[i])) {
-        let index = arr.indexOf(tickersArr[i]);
-        arr.splice(index, 1);
-      }
-    }
-
-    console.log(arr.length);
-    console.log(tickersArr.length);
-
-    setTickersArr(arr);
-  };
-
   // ToDo
   const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS) return;
 
     let newTicker = await fetchAPI({ tickerName, type });
     console.log(newTicker);
-    let arr = [...tickersArr];
-    arr.push(newTicker);
-    //arr.push({ tickerName, type: type });
-    setTickersArr(arr);
+
+    let tickersArrCopy = [...tickersArr];
+    tickersArrCopy.push(newTicker);
+    setTickersArr(tickersArrCopy);
   };
 
+
+  // Example URI: http://localhost:8080/stock/botz
+  const fetchAPI = async (ticker) => {
+    try {
+      let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
+      response = await response.json();
+      console.log(response);
+      return response;
+    } catch (e) {
+      return ticker;
+    }
+  }
+
   useEffect(() => {
+
+    const fetchUpdatedPrices = async () => {
+      let arr = [...tickersArr];
+      if (!DEBUG_USE_FAKE_PRICES) {
+        for (let i = 0; i < arr.length; i++) {
+          let response = await fetchAPI(arr[i]);
+          arr[i] = response;
+        }
+      } else {
+        for (let i = 0; i < arr.length; i++) {
+          const prevPrice = tickersArr[i].currentPrice;
+          arr[i].currentPrice = (Math.random() * 10).toFixed(6);
+          arr[i].day.priceDifference = (arr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
+          arr[i].day.percentage = (Math.random() * 4).toFixed(2);
+          arr[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          arr[i].week.percentage = (Math.random() * 5).toFixed(2);
+          arr[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          arr[i].month.percentage = (Math.random() * 6).toFixed(2);
+          arr[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          arr[i].ytd.percentage = (Math.random() * 7).toFixed(2);
+          arr[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          arr[i].year.percentage = (Math.random() * 8).toFixed(2);
+        }
+      }
+      return arr;
+    }
+
     console.log("CALLED");
-    updatePrices();
-    const interval = setInterval(() => {
-      updatePrices();
-    }, PRICE_UPDATE_DELAY);
-    return () => clearInterval(interval);
-  }, [updatePrices]);
+    let newTickerAddedBeforeFetchCompleted = false;
+    fetchUpdatedPrices().then(data => {
+      if (!newTickerAddedBeforeFetchCompleted) {   // If new ticker was added, then this async data is outdated and will delete the new ticker, so don't use it.
+        setTickersArr(data);
+      }
+    })
+
+    return () => {
+      newTickerAddedBeforeFetchCompleted = true;
+      console.log("Clearing");
+    }
+  }, [tickersArr]);
 
   return (
     <>
