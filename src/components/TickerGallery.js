@@ -45,6 +45,7 @@ function TickerGallery() {
       if (!DEBUG_USE_FAKE_PRICES) {
         for (let i = 0; i < arr.length; i++) {
           let response = await fetchAPI(arr[i]);
+          // ToDo: Don't assign arr[i] to response because if response is an error, this is assigned to the error and then rendering breaks.
           arr[i] = response;
         }
       } else {
