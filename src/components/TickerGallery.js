@@ -7,7 +7,7 @@ import HistoryOptions from "../constants/HistoryOptions";
 
 const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
+const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
@@ -81,18 +81,17 @@ function TickerGallery() {
       return arr;
     }
 
-    console.log("CALLED");
     let newTickerAdded = false;   // If true, fetched results will be ignored so that new ticker is not deleted.
-    fetchUpdatedPrices().then(data => {
-      if (!newTickerAdded) {
-        setTickersArr(data);
-      }
-    })
+    setTimeout(() => {
+      fetchUpdatedPrices().then(data => {
+        if (!newTickerAdded) {
+          setTickersArr(data);
+        }
+      })
+    }, PRICE_UPDATE_DELAY);
 
-    return () => {
-      newTickerAdded = true;
-      console.log("Clearing");
-    }
+    return () => newTickerAdded = true;
+
   }, [tickersArr]);
 
   return (
