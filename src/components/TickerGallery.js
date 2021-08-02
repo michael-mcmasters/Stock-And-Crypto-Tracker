@@ -16,27 +16,28 @@ function TickerGallery() {
 
   // ToDo
   const handleAddTicker = async (tickerName, type) => {
-    if (tickersArr.length >= MAX_ALLOWED_TICKERS) return;
+    if (tickersArr.length >= MAX_ALLOWED_TICKERS)
+      return;
 
-    let newTicker = await fetchAPI({ tickerName, type });
-    console.log(newTicker);
-
-    let tickersArrCopy = [...tickersArr];
-    tickersArrCopy.push(newTicker);
-    setTickersArr(tickersArrCopy);
+    fetchAPI({ tickerName, type })
+      .then(response => {
+        if (response.ok) {
+          let tickersArrCopy = [...tickersArr];
+          console.log(tickersArrCopy);
+          tickersArrCopy.push(response);
+          setTickersArr(tickersArrCopy);
+        } else {
+          console.log(`Could not add ${tickerName}`);
+        }
+      });
   };
 
 
   // Example URI: http://localhost:8080/stock/botz
   const fetchAPI = async (ticker) => {
-    try {
-      let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
-      response = await response.json();
-      console.log(response);
-      return response;
-    } catch (e) {
-      return ticker;
-    }
+    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
+    response = await response.json();
+    return response;
   }
 
   useEffect(() => {
