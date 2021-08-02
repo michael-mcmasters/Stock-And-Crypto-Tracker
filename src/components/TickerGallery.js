@@ -10,6 +10,7 @@ const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 
 function TickerGallery() {
+
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
@@ -44,9 +45,22 @@ function TickerGallery() {
       let arr = [...tickersArr];
       if (!DEBUG_USE_FAKE_PRICES) {
         for (let i = 0; i < arr.length; i++) {
-          let response = await fetchAPI(arr[i]);
-          // ToDo: Don't assign arr[i] to response because if response is an error, this is assigned to the error and then rendering breaks.
-          arr[i] = response;
+          try {
+            let response = await fetchAPI(arr[i]);
+            arr[i].currentPrice = response.currentPrice;
+            arr[i].day.priceDifference = response.day.priceDifference;
+            arr[i].day.percentage = response.day.percentage;
+            arr[i].week.priceDifference = response.week.priceDifference;
+            arr[i].week.percentage = response.week.percentage;
+            arr[i].month.priceDifference = response.month.priceDifference;
+            arr[i].month.percentage = response.month.percentage;
+            arr[i].ytd.priceDifference = response.ytd.priceDifference;
+            arr[i].ytd.percentage = response.ytd.percentage;
+            arr[i].year.priceDifference = response.year.priceDifference;
+            arr[i].year.percentage = response.year.percentage;
+          } catch (e) {
+            console.log(`Could not fetch ${arr[i].tickerName}`);
+          }
         }
       } else {
         for (let i = 0; i < arr.length; i++) {
@@ -68,15 +82,15 @@ function TickerGallery() {
     }
 
     console.log("CALLED");
-    let newTickerAddedBeforeFetchCompleted = false;
+    let newTickerAdded = false;   // If true, fetched results will be ignored so that new ticker is not deleted.
     fetchUpdatedPrices().then(data => {
-      if (!newTickerAddedBeforeFetchCompleted) {   // If new ticker was added, then this async data is outdated and will delete the new ticker, so don't use it.
+      if (!newTickerAdded) {
         setTickersArr(data);
       }
     })
 
     return () => {
-      newTickerAddedBeforeFetchCompleted = true;
+      newTickerAdded = true;
       console.log("Clearing");
     }
   }, [tickersArr]);
@@ -360,6 +374,56 @@ function getTickerObjects() {
     // },
     {
       tickerName: "UBER",
+      type: "stock",
+      currentPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0,
+      },
+      week: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      month: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      ytd: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      year: {
+        priceDifference: 0,
+        percentage: 0
+      }
+    },
+    {
+      tickerName: "LYFT",
+      type: "stock",
+      currentPrice: 0,
+      day: {
+        priceDifference: 0,
+        percentage: 0.0,
+      },
+      week: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      month: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      ytd: {
+        priceDifference: 0,
+        percentage: 0,
+      },
+      year: {
+        priceDifference: 0,
+        percentage: 0
+      }
+    },
+    {
+      tickerName: "VTSAX",
       type: "stock",
       currentPrice: 0,
       day: {
