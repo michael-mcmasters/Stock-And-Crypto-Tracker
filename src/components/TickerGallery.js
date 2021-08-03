@@ -14,24 +14,20 @@ function TickerGallery() {
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
-  // ToDo
   const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS)
       return;
 
-    fetchAPI({ tickerName, type })
-      .then(response => {
-        if (response.ok) {
-          let tickersArrCopy = [...tickersArr];
-          console.log(tickersArrCopy);
-          tickersArrCopy.push(response);
-          setTickersArr(tickersArrCopy);
-        } else {
-          console.log(`Could not add ${tickerName}`);
-        }
-      });
+    fetchAPI({ tickerName, type }).then(response => {
+      if (response.ok) {
+        let tickersArrCopy = [...tickersArr];
+        tickersArrCopy.push(response);
+        setTickersArr(tickersArrCopy);
+      } else {
+        console.log(`Could not add ${tickerName}`);
+      }
+    });
   };
-
 
   // Example URI: http://localhost:8080/stock/botz
   const fetchAPI = async (ticker) => {
@@ -41,45 +37,44 @@ function TickerGallery() {
   }
 
   useEffect(() => {
-
     const fetchUpdatedPrices = async () => {
-      let arr = [...tickersArr];
+      let tickersArrCopy = [...tickersArr];
       if (!DEBUG_USE_FAKE_PRICES) {
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < tickersArrCopy.length; i++) {
           try {
-            let response = await fetchAPI(arr[i]);
-            arr[i].currentPrice = response.currentPrice;
-            arr[i].day.priceDifference = response.day.priceDifference;
-            arr[i].day.percentage = response.day.percentage;
-            arr[i].week.priceDifference = response.week.priceDifference;
-            arr[i].week.percentage = response.week.percentage;
-            arr[i].month.priceDifference = response.month.priceDifference;
-            arr[i].month.percentage = response.month.percentage;
-            arr[i].ytd.priceDifference = response.ytd.priceDifference;
-            arr[i].ytd.percentage = response.ytd.percentage;
-            arr[i].year.priceDifference = response.year.priceDifference;
-            arr[i].year.percentage = response.year.percentage;
-          } catch (e) {
-            console.log(`Could not fetch ${arr[i].tickerName}`);
+            let response = await fetchAPI(tickersArrCopy[i]);
+            tickersArrCopy[i].currentPrice = response.currentPrice;
+            tickersArrCopy[i].day.priceDifference = response.day.priceDifference;
+            tickersArrCopy[i].day.percentage = response.day.percentage;
+            tickersArrCopy[i].week.priceDifference = response.week.priceDifference;
+            tickersArrCopy[i].week.percentage = response.week.percentage;
+            tickersArrCopy[i].month.priceDifference = response.month.priceDifference;
+            tickersArrCopy[i].month.percentage = response.month.percentage;
+            tickersArrCopy[i].ytd.priceDifference = response.ytd.priceDifference;
+            tickersArrCopy[i].ytd.percentage = response.ytd.percentage;
+            tickersArrCopy[i].year.priceDifference = response.year.priceDifference;
+            tickersArrCopy[i].year.percentage = response.year.percentage;
+          } catch (exc) {
+            console.log(`Could not fetch ${tickersArrCopy[i].tickerName}`);
           }
         }
       } else {
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < tickersArrCopy.length; i++) {
           const prevPrice = tickersArr[i].currentPrice;
-          arr[i].currentPrice = (Math.random() * 10).toFixed(6);
-          arr[i].day.priceDifference = (arr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
-          arr[i].day.percentage = (Math.random() * 4).toFixed(2);
-          arr[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          arr[i].week.percentage = (Math.random() * 5).toFixed(2);
-          arr[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          arr[i].month.percentage = (Math.random() * 6).toFixed(2);
-          arr[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          arr[i].ytd.percentage = (Math.random() * 7).toFixed(2);
-          arr[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          arr[i].year.percentage = (Math.random() * 8).toFixed(2);
+          tickersArrCopy[i].currentPrice = (Math.random() * 10).toFixed(6);
+          tickersArrCopy[i].day.priceDifference = (tickersArrCopy[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
+          tickersArrCopy[i].day.percentage = (Math.random() * 4).toFixed(2);
+          tickersArrCopy[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          tickersArrCopy[i].week.percentage = (Math.random() * 5).toFixed(2);
+          tickersArrCopy[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          tickersArrCopy[i].month.percentage = (Math.random() * 6).toFixed(2);
+          tickersArrCopy[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          tickersArrCopy[i].ytd.percentage = (Math.random() * 7).toFixed(2);
+          tickersArrCopy[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+          tickersArrCopy[i].year.percentage = (Math.random() * 8).toFixed(2);
         }
       }
-      return arr;
+      return tickersArrCopy;
     }
 
     let newTickerAdded = false;   // If true, fetched results will be ignored so that new ticker is not deleted.
