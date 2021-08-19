@@ -16,7 +16,7 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   }
 
   return (
-    <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor}>
+    <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor} draggable="true">
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
       <PriceChange>
@@ -35,6 +35,7 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
+  cursor: move;
 `;
 
 const CoinTicker = styled.div`

@@ -5,7 +5,7 @@ import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
