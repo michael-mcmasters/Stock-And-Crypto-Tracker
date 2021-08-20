@@ -27,6 +27,7 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   }
 
   const handleDragOver = () => {
+    console.log("over")
     setBlueBarRight(true);
   }
 
@@ -38,7 +39,8 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   // This way range can be larger and it will feel more correct since the mouse will need to be on a hitzone instead of over a ticker.
 
   return (
-    <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor} opacity={opacity} blueBarRight={blueBarRight} draggable="true" onMouseDown={handleOnClick} onMouseUp={handleMouseUp} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
+    <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor} opacity={opacity} blueBarRight={blueBarRight} draggable="true" onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
+      <HitBox draggable="true" onDragOver={handleDragOver} onDragLeave={handleDragLeave} />
       <DropTickerIndicator blueBarRight={blueBarRight}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
@@ -62,9 +64,19 @@ const Container = styled.div`
   cursor: move;
 `;
 
-const DropTickerIndicator = styled.div`
+const HitBox = styled.div`
   position: absolute;
   border: 1px solid blue;
+  /* width: 100%; */
+  width: 12em;
+  height: 7em;
+  
+  /* bottom: 10em; */
+  transform: translate(-2.2%, 0);
+`;
+
+const DropTickerIndicator = styled.div`
+  position: absolute;
   width: 100%;
   height: 4em;
   transform: translate(-2.2%, 0);
