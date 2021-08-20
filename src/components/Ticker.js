@@ -82,9 +82,8 @@ const HitBox = styled.div`
 
 const DropTickerIndicator = styled.div`
   position: absolute;
-  width: 100%;
   height: 4em;
-  transform: translate(-2.2%, 0);
+  left: -1.15em;
   border-left: ${props => props.blueBarRight ? "4px solid yellow" : ""};
   /* border-left: 4px solid yellow; */
 `;
