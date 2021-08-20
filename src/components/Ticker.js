@@ -4,8 +4,8 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
 const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   const COLORS = useContext(ColorThemeContext);
-  const [opacity, setOpacity] = useState(false);
-  const [blueBarRight, setBlueBarRight] = useState(false);
+  const [beingDragged, setBeingDragged] = useState(false);
+  const [hitboxUnderTicker, setHitboxUnderTicker] = useState(false);
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -19,29 +19,29 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
 
   const handleOnClick = () => {
     console.log("got click")
-    setOpacity(true);
+    setBeingDragged(true);
   }
 
   const handleMouseUp = () => {
-    setOpacity(false);
+    setBeingDragged(false);
   }
 
   const handleDragOver = () => {
     console.log("over")
-    setBlueBarRight(true);
+    setHitboxUnderTicker(true);
   }
 
   const handleDragLeave = () => {
-    setBlueBarRight(false);
+    setHitboxUnderTicker(false);
   }
 
   // TODO: Put invisible "hit boxes" inbetween tickers. Have them highlight when mouse is over.
   // This way range can be larger and it will feel more correct since the mouse will need to be on a hitzone instead of over a ticker.
 
   return (
-    <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor} opacity={opacity} blueBarRight={blueBarRight} draggable="true" onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
+    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
       <HitBox onDragOver={handleDragOver} onDragLeave={handleDragLeave} />
-      <DropTickerIndicator blueBarRight={blueBarRight}></DropTickerIndicator>
+      <DropTickerIndicator hitboxUnderTicker={hitboxUnderTicker}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
       <PriceChange>
@@ -61,31 +61,25 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
-  opacity: ${props => props.opacity ? "0.3" : "1"};
+  opacity: ${props => props.beingDragged ? "0.3" : "1"};
   cursor: move;
 `;
 
 const HitBox = styled.div`
   position: absolute;
-  /* border: 1px solid blue; */
-  /* width: 100%; */
   width: 12em;
   height: 8em;
-  /* transform: translate(100%, 10%, 10%); */
   bottom: -1em;
-  right: 0em;
+  left: -1.3em;
   z-index: 1;
-  
-  /* bottom: 10em; */
-  /* transform: translate(-2.2%, 0); */
+  /* border: 1px solid blue; */   /* Uncomment to view hitbox */
 `;
 
 const DropTickerIndicator = styled.div`
   position: absolute;
   height: 4em;
   left: -1.15em;
-  border-left: ${props => props.blueBarRight ? "4px solid yellow" : ""};
-  /* border-left: 4px solid yellow; */
+  border-left: ${props => props.hitboxUnderTicker ? "4px solid yellow" : ""};
 `;
 
 const CoinTicker = styled.div`
