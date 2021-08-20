@@ -90,6 +90,13 @@ function TickerGallery() {
 
   }, [tickersArr]);
 
+  const handleTickerReorder = () => {
+    const tickersArrCopy = [...tickersArr];
+    let ticker = tickersArrCopy.pop();
+    tickersArrCopy.unshift(ticker);
+    setTickersArr(tickersArrCopy);
+  }
+
   return (
     <>
       <Container>
@@ -103,6 +110,7 @@ function TickerGallery() {
               price={t.currentPrice}
               priceDifference={t[selectedHistoryOption].priceDifference}
               percentage={t[selectedHistoryOption].percentage}
+              handleTickerReorder={handleTickerReorder}
             />
           ))}
         </GridContainer>
