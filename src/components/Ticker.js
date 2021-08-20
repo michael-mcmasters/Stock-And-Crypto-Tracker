@@ -64,11 +64,12 @@ const Container = styled.div`
 
 const DropTickerIndicator = styled.div`
   position: absolute;
-  width: 1em;
+  border: 1px solid blue;
+  width: 100%;
   height: 4em;
-  transform: translate(750%, 0);
-  border-right: ${props => props.blueBarRight ? "4px solid yellow" : ""};
-  /* border-right: 4px solid yellow; */
+  transform: translate(-2.2%, 0);
+  border-left: ${props => props.blueBarRight ? "4px solid yellow" : ""};
+  /* border-left: 4px solid yellow; */
 `;
 
 const CoinTicker = styled.div`
