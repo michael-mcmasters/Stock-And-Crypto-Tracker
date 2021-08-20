@@ -40,7 +40,7 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
 
   return (
     <Container colors={COLORS} fontColor={fontColor} bgColor={bgColor} opacity={opacity} blueBarRight={blueBarRight} draggable="true" onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
-      <HitBox draggable="true" onDragOver={handleDragOver} onDragLeave={handleDragLeave} />
+      <HitBox onDragOver={handleDragOver} onDragLeave={handleDragLeave} />
       <DropTickerIndicator blueBarRight={blueBarRight}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
@@ -52,6 +52,7 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
 };
 
 const Container = styled.div`
+  position: relative;
   margin: 1em 1em;
   padding: 1em 0;
   border: 1px solid ${(props) => props.fontColor};
@@ -66,13 +67,17 @@ const Container = styled.div`
 
 const HitBox = styled.div`
   position: absolute;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   /* width: 100%; */
   width: 12em;
-  height: 7em;
+  height: 8em;
+  /* transform: translate(100%, 10%, 10%); */
+  bottom: -1em;
+  right: 0em;
+  z-index: 1;
   
   /* bottom: 10em; */
-  transform: translate(-2.2%, 0);
+  /* transform: translate(-2.2%, 0); */
 `;
 
 const DropTickerIndicator = styled.div`
