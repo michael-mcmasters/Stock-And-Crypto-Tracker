@@ -17,17 +17,17 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
     priceDifference = "+" + priceDifference;
   }
 
-  const handleOnClick = () => {
+  const handleOnClick = (event) => {
     console.log("got click")
     setBeingDragged(true);
   }
 
-  const handleMouseUp = () => {
+  const handleDragEnd = () => {
     setBeingDragged(false);
   }
 
   return (
-    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} hitboxDetectingTicker={hitboxDetectingTicker} onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
+    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} hitboxDetectingTicker={hitboxDetectingTicker} onMouseDown={(e) => handleOnClick(e)} onDragEnd={handleDragEnd}>
       <HitBox onDragOver={() => setHitboxDetectingTicker(true)} onDragLeave={() => setHitboxDetectingTicker(false)} />
       <DropTickerIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
