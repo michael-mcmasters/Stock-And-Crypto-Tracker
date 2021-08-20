@@ -5,7 +5,7 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   const COLORS = useContext(ColorThemeContext);
   const [beingDragged, setBeingDragged] = useState(false);
-  const [hitboxUnderTicker, setHitboxUnderTicker] = useState(false);
+  const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -26,22 +26,10 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
     setBeingDragged(false);
   }
 
-  const handleDragOver = () => {
-    console.log("over")
-    setHitboxUnderTicker(true);
-  }
-
-  const handleDragLeave = () => {
-    setHitboxUnderTicker(false);
-  }
-
-  // TODO: Put invisible "hit boxes" inbetween tickers. Have them highlight when mouse is over.
-  // This way range can be larger and it will feel more correct since the mouse will need to be on a hitzone instead of over a ticker.
-
   return (
     <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
-      <HitBox onDragOver={handleDragOver} onDragLeave={handleDragLeave} />
-      <DropTickerIndicator hitboxUnderTicker={hitboxUnderTicker}></DropTickerIndicator>
+      <HitBox onDragOver={() => setHitboxDetectingTicker(true)} onDragLeave={() => setHitboxDetectingTicker(false)} />
+      <DropTickerIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
       <PriceChange>
@@ -65,14 +53,15 @@ const Container = styled.div`
   cursor: move;
 `;
 
+// Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
 const HitBox = styled.div`
+  /* border: 1px solid blue; */
   position: absolute;
   width: 12em;
   height: 8em;
   bottom: -1em;
   left: -1.3em;
   z-index: 1;
-  /* border: 1px solid blue; */   /* Uncomment to view hitbox */
 `;
 
 const DropTickerIndicator = styled.div`
