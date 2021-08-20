@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import React, { useState, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
@@ -27,7 +27,7 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage }) => {
   }
 
   return (
-    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
+    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} hitboxDetectingTicker={hitboxDetectingTicker} onMouseDown={handleOnClick} onMouseUp={handleMouseUp}>
       <HitBox onDragOver={() => setHitboxDetectingTicker(true)} onDragLeave={() => setHitboxDetectingTicker(false)} />
       <DropTickerIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
@@ -43,7 +43,7 @@ const Container = styled.div`
   position: relative;
   margin: 1em 1em;
   padding: 1em 0;
-  border: 1px solid ${(props) => props.fontColor};
+  border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
   width: 10em;
   color: ${(props) => props.fontColor};
@@ -51,6 +51,16 @@ const Container = styled.div`
   text-align: center;
   opacity: ${props => props.beingDragged ? "0.3" : "1"};
   cursor: move;
+
+  ${props => props.beingDragged && css`
+    background-color: yellow;
+    color: yellow;
+    border: yellow;
+  `}
+  
+  ${props => props.hitboxDetectingTicker && css`
+    border: 2px solid yellow;
+  `}
 `;
 
 // Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
