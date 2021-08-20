@@ -49,13 +49,10 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
-  opacity: ${props => props.beingDragged ? "0.3" : "1"};
   cursor: move;
 
   ${props => props.beingDragged && css`
-    background-color: yellow;
-    color: yellow;
-    border: yellow;
+    opacity: 0.3;
   `}
   
   ${props => props.hitboxDetectingTicker && css`
