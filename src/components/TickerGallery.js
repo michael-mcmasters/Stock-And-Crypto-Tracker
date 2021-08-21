@@ -13,6 +13,7 @@ function TickerGallery() {
 
   const [tickersArr, setTickersArr] = useState(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
+  const [itemDrugOverIndex, setItemDrugOverIndex] = useState(-1);
 
   const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS)
@@ -90,11 +91,16 @@ function TickerGallery() {
 
   }, [tickersArr]);
 
-  const handleTickerReorder = () => {
-    const tickersArrCopy = [...tickersArr];
-    let ticker = tickersArrCopy.pop();
-    tickersArrCopy.unshift(ticker);
-    setTickersArr(tickersArrCopy);
+  // When user drags a ticker over another and drops it, this swaps their places.
+  const swapTickers = (droppedTickerIndex) => {
+    const arr = [...tickersArr];
+    const itemDrugOver = arr[itemDrugOverIndex];
+    const droppedTicker = arr[droppedTickerIndex];
+    arr[itemDrugOverIndex] = droppedTicker;
+    arr[droppedTickerIndex] = itemDrugOver;
+
+    setTickersArr(arr);
+    setItemDrugOverIndex(-1);
   }
 
   return (
@@ -105,12 +111,14 @@ function TickerGallery() {
           {tickersArr.map((t, keyIndex) => (
             <Ticker
               key={keyIndex}
+              index={keyIndex}
               tickerName={t.tickerName}
               type={t.type}
               price={t.currentPrice}
               priceDifference={t[selectedHistoryOption].priceDifference}
               percentage={t[selectedHistoryOption].percentage}
-              handleTickerReorder={handleTickerReorder}
+              setItemDrugOver={setItemDrugOverIndex}
+              handleTickerReorder={swapTickers}
             />
           ))}
         </GridContainer>

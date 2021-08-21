@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import React, { useState, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, type, price, priceDifference, percentage, handleTickerReorder }) => {
+const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setItemDrugOver, handleTickerReorder }) => {
   const COLORS = useContext(ColorThemeContext);
   const [beingDragged, setBeingDragged] = useState(false);
   const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
@@ -21,21 +21,39 @@ const Ticker = ({ tickerName, type, price, priceDifference, percentage, handleTi
     setBeingDragged(true);
   }
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (event) => {
+    console.log(event)
     setBeingDragged(false);
-    handleTickerReorder();
+    handleTickerReorder(index);
+  }
+
+  const handleHitboxDetectTicker = () => {
+    setHitboxDetectingTicker(true)
+    setItemDrugOver(index);
+  }
+
+  const handleHitboxUndetectTicker = () => {
+    setHitboxDetectingTicker(false)
   }
 
   return (
-    <Container draggable="true" colors={COLORS} fontColor={fontColor} bgColor={bgColor} beingDragged={beingDragged} hitboxDetectingTicker={hitboxDetectingTicker} onMouseDown={(e) => handleOnClick(e)} onDragEnd={handleDragEnd}>
-      <HitBox onDragOver={() => setHitboxDetectingTicker(true)} onDragLeave={() => setHitboxDetectingTicker(false)} />
+    <Container draggable="true"
+      hitboxDetectingTicker={hitboxDetectingTicker}
+      onMouseDown={(e) => handleOnClick(e)}
+      onDragEnd={(e) => handleDragEnd(e)}
+      colors={COLORS}
+      fontColor={fontColor}
+      bgColor={bgColor}
+      beingDragged={beingDragged}
+    >
+      <HitBox onDragOver={handleHitboxDetectTicker} onDragLeave={handleHitboxUndetectTicker} />
       <DropTickerIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropTickerIndicator>
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
       <PriceChange>
         {priceDifference} ({percentage}%)
       </PriceChange>
-    </Container>
+    </Container >
   );
 };
 
