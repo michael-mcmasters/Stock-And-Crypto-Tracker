@@ -17,12 +17,11 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
     priceDifference = "+" + priceDifference;
   }
 
-  const handleOnClick = (event) => {
+  const handleDragStart = () => {
     setBeingDragged(true);
   }
 
-  const handleDragEnd = (event) => {
-    console.log(event)
+  const handleDragEnd = () => {
     setBeingDragged(false);
     swapTickers(index);
   }
@@ -39,15 +38,18 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   return (
     <Container draggable="true"
       hitboxDetectingTicker={hitboxDetectingTicker}
-      onMouseDown={(e) => handleOnClick(e)}
-      onDragEnd={(e) => handleDragEnd(e)}
+      onMouseDown={handleDragStart}
+      onDragEnd={handleDragEnd}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
       beingDragged={beingDragged}
     >
+
+      {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={handleHitboxDetectTicker} onDragLeave={handleHitboxUndetectTicker} />
-      <DropTickerIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropTickerIndicator>
+      <DropIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropIndicator>
+
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
       <PriceChange>
@@ -89,7 +91,7 @@ const HitBox = styled.div`
   z-index: 1;
 `;
 
-const DropTickerIndicator = styled.div`
+const DropIndicator = styled.div`
   position: absolute;
   height: 4em;
   left: -1.15em;
