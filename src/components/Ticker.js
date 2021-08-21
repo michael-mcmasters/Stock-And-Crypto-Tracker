@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import React, { useState, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setItemDrugOver, handleTickerReorder }) => {
+const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setTickerDrugOver, swapTickers }) => {
   const COLORS = useContext(ColorThemeContext);
   const [beingDragged, setBeingDragged] = useState(false);
   const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
@@ -24,12 +24,12 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   const handleDragEnd = (event) => {
     console.log(event)
     setBeingDragged(false);
-    handleTickerReorder(index);
+    swapTickers(index);
   }
 
   const handleHitboxDetectTicker = () => {
     setHitboxDetectingTicker(true)
-    setItemDrugOver(index);
+    setTickerDrugOver(index);
   }
 
   const handleHitboxUndetectTicker = () => {
