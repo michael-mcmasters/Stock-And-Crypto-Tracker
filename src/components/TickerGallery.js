@@ -5,7 +5,7 @@ import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 
-const DEBUG_USE_FAKE_PRICES = true;
+const DEBUG_USE_FAKE_PRICES = false;
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
@@ -45,18 +45,18 @@ function TickerGallery() {
           try {
             let response = await fetchAPI(tickersArrCopy[i]);
             tickersArrCopy[i].currentPrice = response.currentPrice;
-            tickersArrCopy[i].day.priceDifference = response.day.priceDifference;
-            tickersArrCopy[i].day.percentage = response.day.percentage;
-            tickersArrCopy[i].week.priceDifference = response.week.priceDifference;
-            tickersArrCopy[i].week.percentage = response.week.percentage;
-            tickersArrCopy[i].month.priceDifference = response.month.priceDifference;
-            tickersArrCopy[i].month.percentage = response.month.percentage;
-            tickersArrCopy[i].ytd.priceDifference = response.ytd.priceDifference;
-            tickersArrCopy[i].ytd.percentage = response.ytd.percentage;
-            tickersArrCopy[i].year.priceDifference = response.year.priceDifference;
-            tickersArrCopy[i].year.percentage = response.year.percentage;
+            tickersArrCopy[i].day.priceDifference = response.priceChanges.day.priceDifference;
+            tickersArrCopy[i].day.percentage = response.priceChanges.day.percentage;
+            tickersArrCopy[i].week.priceDifference = response.priceChanges.week.priceDifference;
+            tickersArrCopy[i].week.percentage = response.priceChanges.week.percentage;
+            tickersArrCopy[i].month.priceDifference = response.priceChanges.month.priceDifference;
+            tickersArrCopy[i].month.percentage = response.priceChanges.month.percentage;
+            tickersArrCopy[i].ytd.priceDifference = response.priceChanges.ytd.priceDifference;
+            tickersArrCopy[i].ytd.percentage = response.priceChanges.ytd.percentage;
+            tickersArrCopy[i].year.priceDifference = response.priceChanges.year.priceDifference;
+            tickersArrCopy[i].year.percentage = response.priceChanges.year.percentage;
           } catch (exc) {
-            console.log(`Could not fetch ${tickersArrCopy[i].tickerName}`);
+            console.log(`There was an error handling ${tickersArrCopy[i].tickerName}`);
           }
         }
       } else {
