@@ -7,7 +7,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   const [beingDragged, setBeingDragged] = useState(false);
   const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
 
-  // Edge case fix to make sure tickers don't have beingDragged styling when user drops them.
+  // Edge case fix to make sure beingDragged is set to false when user is no longer dragging them.
   useEffect(() => {
     const handleMouseUp = () => setBeingDragged(false);
     document.addEventListener("mouseup", handleMouseUp);
