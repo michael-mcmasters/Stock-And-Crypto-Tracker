@@ -1,11 +1,19 @@
 import styled, { css } from "styled-components";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
 const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setTickerDrugOver, swapTickers }) => {
   const COLORS = useContext(ColorThemeContext);
   const [beingDragged, setBeingDragged] = useState(false);
   const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
+
+  // Edge case fix to make sure tickers don't have beingDragged styling when user drops them.
+  useEffect(() => {
+    const handleMouseUp = () => setBeingDragged(false);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => document.removeEventListener("mouseup", handleMouseUp);
+  });
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -36,7 +44,8 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   }
 
   return (
-    <Container draggable="true"
+    <Container
+      draggable="true"
       hitboxDetectingTicker={hitboxDetectingTicker}
       onMouseDown={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -48,7 +57,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={handleHitboxDetectTicker} onDragLeave={handleHitboxUndetectTicker} />
-      <DropIndicator hitboxUnderTicker={hitboxDetectingTicker}></DropIndicator>
+      <DropIndicator hitboxDetectingTicker={hitboxDetectingTicker} />
 
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
@@ -95,7 +104,7 @@ const DropIndicator = styled.div`
   position: absolute;
   height: 4em;
   left: -1.15em;
-  border-left: ${props => props.hitboxUnderTicker ? "4px solid yellow" : ""};
+  border-left: ${props => props.hitboxDetectingTicker ? "4px solid yellow" : ""};
 `;
 
 const CoinTicker = styled.div`
