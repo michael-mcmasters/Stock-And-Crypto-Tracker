@@ -91,13 +91,33 @@ function TickerGallery() {
 
   }, [tickersArr]);
 
+  const deleteSwappedAnimations = () => {
+    let arr = [...tickersArr];
+    arr.forEach(t => t.swapped = false);
+    setTickersArr(arr);
+  }
+
   // When user drags a ticker over another and drops it, this swaps their places.
   const swapTickers = (droppedTickerIndex) => {
-    const arr = [...tickersArr];
+    let arr = [...tickersArr];
+    for (let i = 0; i < arr.length; i++) {
+      console.log(" ")
+      console.log("Loop " + i)
+      console.log(arr[i].swapped);
+      arr[i].swapped = false;
+      console.log(arr[i].swapped);
+    }
+
+    //arr.forEach(t => t.swapped = false);
+    console.log(arr);
+
     const tickerDrugOver = arr[tickerDrugOverIndex];
     const droppedTicker = arr[droppedTickerIndex];
     arr[tickerDrugOverIndex] = droppedTicker;
     arr[droppedTickerIndex] = tickerDrugOver;
+
+    arr[tickerDrugOverIndex].swapped = true;
+    arr[droppedTickerIndex].swapped = true;
 
     setTickersArr(arr);
     setTickerDrugOverIndex(-1);
@@ -118,7 +138,9 @@ function TickerGallery() {
               priceDifference={t[selectedHistoryOption].priceDifference}
               percentage={t[selectedHistoryOption].percentage}
               setTickerDrugOver={setTickerDrugOverIndex}
+              deleteSwappedAnimations={deleteSwappedAnimations}
               swapTickers={swapTickers}
+              swapped={t.swapped}
             />
           ))}
         </GridContainer>

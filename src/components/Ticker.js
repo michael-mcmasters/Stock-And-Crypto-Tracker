@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setTickerDrugOver, swapTickers }) => {
+const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setTickerDrugOver, deleteSwappedAnimations, swapTickers, swapped }) => {
   const COLORS = useContext(ColorThemeContext);
   const [beingDragged, setBeingDragged] = useState(false);
   const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
@@ -26,6 +26,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   }
 
   const handleDragStart = () => {
+    deleteSwappedAnimations();
     setBeingDragged(true);
   }
 
@@ -53,6 +54,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
       fontColor={fontColor}
       bgColor={bgColor}
       beingDragged={beingDragged}
+      swapped={swapped}
     >
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
@@ -68,6 +70,10 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
   );
 };
 
+const FlashYellowAnimation = keyframes`
+  50% { background-color: yellow; }
+`;
+
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
@@ -79,13 +85,18 @@ const Container = styled.div`
   background-color: ${(props) => props.bgColor};
   text-align: center;
   cursor: move;
-
+  
   ${props => props.beingDragged && css`
     opacity: 0.3;
   `}
   
   ${props => props.hitboxDetectingTicker && css`
     border: 2px solid yellow;
+  `}
+  
+  ${props => props.swapped == true && css`
+    animation-name: ${FlashYellowAnimation};
+    animation-duration: 0.8s;
   `}
 `;
 
