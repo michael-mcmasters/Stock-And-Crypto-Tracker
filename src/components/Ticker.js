@@ -1,19 +1,25 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, setTickerDrugOver, swapTickers }) => {
+const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, dragAndDropFunctions }) => {
+
   const COLORS = useContext(ColorThemeContext);
-  const [beingDragged, setBeingDragged] = useState(false);
-  const [hitboxDetectingTicker, setHitboxDetectingTicker] = useState(false);
+  const {
+    handleDragStart,
+    handleDragEnd,
+    handleHitboxDetectTicker,
+    handleHitboxUndetectTicker,
+    setTickerDrugOverIndex,
+    swap,
+    getBeingDragged,
+    getHitboxDetectTicker,
+    getSwapped
+  } = dragAndDropFunctions;
 
-  // Edge case fix to make sure tickers don't have beingDragged styling when user drops them.
-  useEffect(() => {
-    const handleMouseUp = () => setBeingDragged(false);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => document.removeEventListener("mouseup", handleMouseUp);
-  });
+  let beingDragged = getBeingDragged(index)
+  let hitboxDetectTicker = getHitboxDetectTicker(index);
+  let swapped = getSwapped(index);
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -25,39 +31,22 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
     priceDifference = "+" + priceDifference;
   }
 
-  const handleDragStart = () => {
-    setBeingDragged(true);
-  }
-
-  const handleDragEnd = () => {
-    setBeingDragged(false);
-    swapTickers(index);
-  }
-
-  const handleHitboxDetectTicker = () => {
-    setHitboxDetectingTicker(true)
-    setTickerDrugOver(index);
-  }
-
-  const handleHitboxUndetectTicker = () => {
-    setHitboxDetectingTicker(false)
-  }
-
   return (
     <Container
       draggable="true"
-      hitboxDetectingTicker={hitboxDetectingTicker}
-      onMouseDown={handleDragStart}
-      onDragEnd={handleDragEnd}
+      hitboxDetectingTicker={hitboxDetectTicker}
+      onMouseDown={() => handleDragStart(index)}
+      onDragEnd={() => handleDragEnd(index)}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
       beingDragged={beingDragged}
+      swapped={swapped}
     >
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
-      <HitBox onDragOver={handleHitboxDetectTicker} onDragLeave={handleHitboxUndetectTicker} />
-      <DropIndicator hitboxDetectingTicker={hitboxDetectingTicker} />
+      <HitBox onDragOver={() => handleHitboxDetectTicker(index)} onDragLeave={() => handleHitboxUndetectTicker(index)} />
+      <DropIndicator hitboxDetectingTicker={hitboxDetectTicker} />
 
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
@@ -67,6 +56,10 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, s
     </Container >
   );
 };
+
+const FlashYellowAnimation = keyframes`
+  50% { background-color: yellow; }
+`;
 
 const Container = styled.div`
   position: relative;
@@ -79,13 +72,18 @@ const Container = styled.div`
   background-color: ${(props) => props.bgColor};
   text-align: center;
   cursor: move;
-
+  
   ${props => props.beingDragged && css`
     opacity: 0.3;
   `}
   
   ${props => props.hitboxDetectingTicker && css`
     border: 2px solid yellow;
+  `}
+  
+  ${props => props.swapped == true && css`
+    animation-name: ${FlashYellowAnimation};
+    animation-duration: 0.8s;
   `}
 `;
 

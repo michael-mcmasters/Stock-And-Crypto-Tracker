@@ -4,16 +4,16 @@ import Ticker from "./Ticker";
 import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
+import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
-  const [tickersArr, setTickersArr] = useState(getTickerObjects());
+  const [tickersArr, setTickersArr, dragAndDropFunctions] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  const [tickerDrugOverIndex, setTickerDrugOverIndex] = useState(-1);
 
   const handleAddTicker = async (tickerName, type) => {
     if (tickersArr.length >= MAX_ALLOWED_TICKERS)
@@ -91,18 +91,6 @@ function TickerGallery() {
 
   }, [tickersArr]);
 
-  // When user drags a ticker over another and drops it, this swaps their places.
-  const swapTickers = (droppedTickerIndex) => {
-    const arr = [...tickersArr];
-    const tickerDrugOver = arr[tickerDrugOverIndex];
-    const droppedTicker = arr[droppedTickerIndex];
-    arr[tickerDrugOverIndex] = droppedTicker;
-    arr[droppedTickerIndex] = tickerDrugOver;
-
-    setTickersArr(arr);
-    setTickerDrugOverIndex(-1);
-  }
-
   return (
     <>
       <Container>
@@ -117,8 +105,7 @@ function TickerGallery() {
               price={t.currentPrice}
               priceDifference={t[selectedHistoryOption].priceDifference}
               percentage={t[selectedHistoryOption].percentage}
-              setTickerDrugOver={setTickerDrugOverIndex}
-              swapTickers={swapTickers}
+              dragAndDropFunctions={dragAndDropFunctions}
             />
           ))}
         </GridContainer>
