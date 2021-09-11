@@ -14,15 +14,15 @@ const useDragAndDrop = (initialItemsArr) => {
   const [drugOverIndex, setDrugOverIndex] = useState(-1);
 
 
-  const swapItems = (droppedIndex) => {
+  const swapItems = (firstIndex, secondIndex) => {
     const copyArr = [...itemsArr];
-    if (drugOverIndex != -1) {
-      const tickerDrugOver = copyArr[drugOverIndex];
-      const droppedTicker = copyArr[droppedIndex];
-      copyArr[drugOverIndex] = droppedTicker;
-      copyArr[droppedIndex] = tickerDrugOver;
-      copyArr[drugOverIndex].swapped = true;
-      copyArr[droppedIndex].swapped = true;
+    if (drugOverIndex > -1) {
+      const droppedItem = copyArr[firstIndex];
+
+      copyArr[firstIndex] = copyArr[secondIndex];
+      copyArr[secondIndex] = droppedItem;
+      copyArr[firstIndex].swapped = true;
+      copyArr[secondIndex].swapped = true;
     }
     return copyArr;
   }
@@ -33,13 +33,13 @@ const useDragAndDrop = (initialItemsArr) => {
 
     handleDragStart: (index) => {
       let copyArr = [...itemsArr];
-      copyArr[index].beingDragged = true;
       copyArr.forEach(i => i.swapped = false);
+      copyArr[index].beingDragged = true;
       setItemsArr(copyArr);
     },
 
     handleDragEnd: (droppedTickerIndex) => {
-      const copyArr = swapItems(droppedTickerIndex);
+      const copyArr = swapItems(droppedTickerIndex, drugOverIndex);
       copyArr.forEach((i) => {
         i.hitboxDetectingTicker = false;
         i.beingDragged = false;
