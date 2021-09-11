@@ -5,91 +5,112 @@ import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
+import useFetchTickers from "./custom_hooks/UseFetchTickers";
 
-const DEBUG_USE_FAKE_PRICES = true;
 const MAX_ALLOWED_TICKERS = 16;
-const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
+const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
+  const [fetchUpdatedPrices, fetchAPISupportsTicker] = useFetchTickers();
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
-  const handleAddTicker = async (tickerName, type) => {
-    if (tickersArr.length >= MAX_ALLOWED_TICKERS)
-      return;
+  useEffect(async () => {
+    const fetchedTickersArr = await fetchUpdatedPrices(tickersArr);
+    setTickersArr(fetchedTickersArr);
+  }, []);
 
-    fetchAPI({ tickerName, type }).then(response => {
-      if (response.ok) {
-        let tickersArrCopy = [...tickersArr];
-        tickersArrCopy.push(response);
-        setTickersArr(tickersArrCopy);
-      } else {
-        console.log(`Could not add ${tickerName}`);
-      }
-    });
-  };
-
-  // Example URI: http://localhost:8080/stock/botz
-  const fetchAPI = async (ticker) => {
-    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
-    response = await response.json();
-    return response;
-  }
-
-  useEffect(() => {
-    const fetchUpdatedPrices = async () => {
-      let tickersArrCopy = [...tickersArr];
-      if (!DEBUG_USE_FAKE_PRICES) {
-        for (let i = 0; i < tickersArrCopy.length; i++) {
-          try {
-            let response = await fetchAPI(tickersArrCopy[i]);
-            tickersArrCopy[i].currentPrice = response.currentPrice;
-            tickersArrCopy[i].day.priceDifference = response.priceChanges.day.priceDifference;
-            tickersArrCopy[i].day.percentage = response.priceChanges.day.percentage;
-            tickersArrCopy[i].week.priceDifference = response.priceChanges.week.priceDifference;
-            tickersArrCopy[i].week.percentage = response.priceChanges.week.percentage;
-            tickersArrCopy[i].month.priceDifference = response.priceChanges.month.priceDifference;
-            tickersArrCopy[i].month.percentage = response.priceChanges.month.percentage;
-            tickersArrCopy[i].ytd.priceDifference = response.priceChanges.ytd.priceDifference;
-            tickersArrCopy[i].ytd.percentage = response.priceChanges.ytd.percentage;
-            tickersArrCopy[i].year.priceDifference = response.priceChanges.year.priceDifference;
-            tickersArrCopy[i].year.percentage = response.priceChanges.year.percentage;
-          } catch (exc) {
-            console.log(`There was an error handling ${tickersArrCopy[i].tickerName}`);
-          }
-        }
-      } else {
-        for (let i = 0; i < tickersArrCopy.length; i++) {
-          const prevPrice = tickersArr[i].currentPrice;
-          tickersArrCopy[i].currentPrice = (Math.random() * 10).toFixed(6);
-          tickersArrCopy[i].day.priceDifference = (tickersArrCopy[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
-          tickersArrCopy[i].day.percentage = (Math.random() * 4).toFixed(2);
-          tickersArrCopy[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          tickersArrCopy[i].week.percentage = (Math.random() * 5).toFixed(2);
-          tickersArrCopy[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          tickersArrCopy[i].month.percentage = (Math.random() * 6).toFixed(2);
-          tickersArrCopy[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          tickersArrCopy[i].ytd.percentage = (Math.random() * 7).toFixed(2);
-          tickersArrCopy[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-          tickersArrCopy[i].year.percentage = (Math.random() * 8).toFixed(2);
-        }
-      }
-      return tickersArrCopy;
-    }
-
-    let newTickerAdded = false;   // If true, fetched results will be ignored so that new ticker is not deleted.
+  useEffect(async () => {
+    let ignoreFetchResults = false;
     setTimeout(() => {
-      fetchUpdatedPrices().then(data => {
-        if (!newTickerAdded) {
+      fetchUpdatedPrices(tickersArr).then(data => {
+        if (!ignoreFetchResults) {
           setTickersArr(data);
         }
       })
     }, PRICE_UPDATE_DELAY);
 
-    return () => newTickerAdded = true;
-
+    return () => ignoreFetchResults = true;   // Ignore results so fetched results don't overwrite changes, such as user adding a new ticker before fetch is finished.
   }, [tickersArr]);
+
+  const handleAddTicker = () => { };  // only here to get rid of error.
+
+  // const handleAddTicker = async (tickerName, type) => {
+  //   if (tickersArr.length >= MAX_ALLOWED_TICKERS)
+  //     return;
+
+  //   fetchAPI({ tickerName, type }).then(response => {
+  //     if (response.ok) {
+  //       let tickersArrCopy = [...tickersArr];
+  //       tickersArrCopy.push(response);
+  //       setTickersArr(tickersArrCopy);
+  //     } else {
+  //       console.log(`Could not add ${tickerName}`);
+  //     }
+  //   });
+  // };
+
+  // // Example URI: http://localhost:8080/stock/botz
+  // const fetchAPI = async (ticker) => {
+  //   let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
+  //   response = await response.json();
+  //   return response;
+  // }
+
+  // useEffect(() => {
+  //   const fetchUpdatedPrices = async () => {
+  //     let tickersArrCopy = [...tickersArr];
+  //     if (!DEBUG_USE_FAKE_PRICES) {
+  //       for (let i = 0; i < tickersArrCopy.length; i++) {
+  //         try {
+  //           let response = await fetchAPI(tickersArrCopy[i]);
+  //           tickersArrCopy[i].currentPrice = response.currentPrice;
+  //           tickersArrCopy[i].day.priceDifference = response.priceChanges.day.priceDifference;
+  //           tickersArrCopy[i].day.percentage = response.priceChanges.day.percentage;
+  //           tickersArrCopy[i].week.priceDifference = response.priceChanges.week.priceDifference;
+  //           tickersArrCopy[i].week.percentage = response.priceChanges.week.percentage;
+  //           tickersArrCopy[i].month.priceDifference = response.priceChanges.month.priceDifference;
+  //           tickersArrCopy[i].month.percentage = response.priceChanges.month.percentage;
+  //           tickersArrCopy[i].ytd.priceDifference = response.priceChanges.ytd.priceDifference;
+  //           tickersArrCopy[i].ytd.percentage = response.priceChanges.ytd.percentage;
+  //           tickersArrCopy[i].year.priceDifference = response.priceChanges.year.priceDifference;
+  //           tickersArrCopy[i].year.percentage = response.priceChanges.year.percentage;
+  //         } catch (exc) {
+  //           console.log(`There was an error handling ${tickersArrCopy[i].tickerName}`);
+  //         }
+  //       }
+  //     } else {
+  //       for (let i = 0; i < tickersArrCopy.length; i++) {
+  //         const prevPrice = tickersArr[i].currentPrice;
+  //         tickersArrCopy[i].currentPrice = (Math.random() * 10).toFixed(6);
+  //         tickersArrCopy[i].day.priceDifference = (tickersArrCopy[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
+  //         tickersArrCopy[i].day.percentage = (Math.random() * 4).toFixed(2);
+  //         tickersArrCopy[i].week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+  //         tickersArrCopy[i].week.percentage = (Math.random() * 5).toFixed(2);
+  //         tickersArrCopy[i].month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+  //         tickersArrCopy[i].month.percentage = (Math.random() * 6).toFixed(2);
+  //         tickersArrCopy[i].ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+  //         tickersArrCopy[i].ytd.percentage = (Math.random() * 7).toFixed(2);
+  //         tickersArrCopy[i].year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+  //         tickersArrCopy[i].year.percentage = (Math.random() * 8).toFixed(2);
+  //       }
+  //     }
+  //     return tickersArrCopy;
+  //   }
+
+  //   let newTickerAdded = false;   // If true, fetched results will be ignored so that new ticker is not deleted.
+  //   setTimeout(() => {
+  //     fetchUpdatedPrices().then(data => {
+  //       if (!newTickerAdded) {
+  //         setTickersArr(data);
+  //       }
+  //     })
+  //   }, PRICE_UPDATE_DELAY);
+
+  //   return () => newTickerAdded = true;
+
+  // }, [tickersArr]);
 
   return (
     <>
