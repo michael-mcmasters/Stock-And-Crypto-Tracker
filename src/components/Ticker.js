@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
 const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
-  dragAndDropHandlers, beingDragged, hitboxDetectTicker, swapped }) => {
+  dragAndDropHandlers, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
@@ -23,7 +23,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
       draggable="true"
       onDragStart={() => handleDragStart(index)}
       onDragEnd={() => handleDragEnd(index)}
-      hitboxDetectingTicker={hitboxDetectTicker}
+      hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
@@ -33,7 +33,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
-      <DropIndicator hitboxDetectingTicker={hitboxDetectTicker} />
+      <DropIndicator hitboxDetectingDraggedItem={hitboxDetectingDraggedItem} />
 
       <CoinTicker>{tickerName}</CoinTicker>
       <Price>${price}</Price>
@@ -64,7 +64,7 @@ const Container = styled.div`
     opacity: 0.3;
   `}
   
-  ${props => props.hitboxDetectingTicker && css`
+  ${props => props.hitboxDetectingDraggedItem && css`
     border: 2px solid yellow;
   `}
   
@@ -89,7 +89,7 @@ const DropIndicator = styled.div`
   position: absolute;
   height: 4em;
   left: -1.15em;
-  border-left: ${props => props.hitboxDetectingTicker ? "4px solid yellow" : ""};
+  border-left: ${props => props.hitboxDetectingDraggedItem ? "4px solid yellow" : ""};
 `;
 
 const CoinTicker = styled.div`

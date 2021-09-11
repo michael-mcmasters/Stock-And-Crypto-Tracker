@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const useDragAndDrop = (initialItemsArr) => {
+const useDragAndDrop = (initialDragAndDropItems) => {
 
-  const [itemsArr, setItemsArr] = useState(initialItemsArr.map(item => {
+  const [dragAndDropItems, setDragAndDropItems] = useState(initialDragAndDropItems.map(item => {
     return {
       ...item,
       beingDragged: false,
-      hitboxDetectingTicker: false,
+      hitboxDetectingDraggedItem: false,
       swapped: false
     };
   }));
@@ -14,23 +14,22 @@ const useDragAndDrop = (initialItemsArr) => {
   const [hitboxDetectingIndex, setHitboxDetectingIndex] = useState(-1);
 
 
-  const swapItems = (copyArr, firstIndex, secondIndex) => {
-    const droppedItem = copyArr[firstIndex];
-
-    copyArr[firstIndex] = copyArr[secondIndex];
-    copyArr[secondIndex] = droppedItem;
-    copyArr[firstIndex].swapped = true;
-    copyArr[secondIndex].swapped = true;
-    return copyArr;
+  const swapItems = (itemsCopy, firstIndex, secondIndex) => {
+    const firstItem = itemsCopy[firstIndex];
+    itemsCopy[firstIndex] = itemsCopy[secondIndex];
+    itemsCopy[secondIndex] = firstItem;
+    itemsCopy[firstIndex].swapped = true;
+    itemsCopy[secondIndex].swapped = true;
+    return itemsCopy;
   }
 
 
   // Applies action to the item with the given index
   const handlers = {
 
-    handleDragStart: (index) => {
-      setItemsArr(itemsArr.map((item, i) => {
-        if (i === index) {
+    handleDragStart: (draggedItemIndex) => {
+      setDragAndDropItems(dragAndDropItems.map((item, ind) => {
+        if (ind === draggedItemIndex) {
           item.beingDragged = true;
         }
         item.swapped = false;
@@ -38,32 +37,32 @@ const useDragAndDrop = (initialItemsArr) => {
       }))
     },
 
-    handleDragEnd: (droppedTickerIndex) => {
+    handleDragEnd: (draggedItemIndex) => {
       setHitboxDetectingIndex(-1);
-      let copyArr = [...itemsArr];
-      if (hitboxDetectingIndex != -1) {
-        copyArr = swapItems(copyArr, droppedTickerIndex, hitboxDetectingIndex);
+      let itemsCopy = [...dragAndDropItems];
+      if (hitboxDetectingIndex !== -1) {
+        itemsCopy = swapItems(itemsCopy, draggedItemIndex, hitboxDetectingIndex);
       }
-      copyArr.forEach((i) => {
-        i.hitboxDetectingTicker = false;
-        i.beingDragged = false;
+      itemsCopy.forEach((item) => {
+        item.hitboxDetectingDraggedItem = false;
+        item.beingDragged = false;
       });
-      setItemsArr(copyArr);
+      setDragAndDropItems(itemsCopy);
     },
 
     handleHitboxEnter: (event, index) => {
       event.preventDefault();
       setHitboxDetectingIndex(index);
-      const copyArr = [...itemsArr];
-      copyArr[index].hitboxDetectingTicker = true;
-      setItemsArr(copyArr);
+      const itemsCopy = [...dragAndDropItems];
+      itemsCopy[index].hitboxDetectingDraggedItem = true;
+      setDragAndDropItems(itemsCopy);
     },
 
     handleHitboxLeave: (index) => {
       setHitboxDetectingIndex(-1);
-      const copyArr = [...itemsArr];
-      copyArr[index].hitboxDetectingTicker = false;
-      setItemsArr(copyArr);
+      const itemsCopy = [...dragAndDropItems];
+      itemsCopy[index].hitboxDetectingDraggedItem = false;
+      setDragAndDropItems(itemsCopy);
     },
   }
 
@@ -72,20 +71,20 @@ const useDragAndDrop = (initialItemsArr) => {
   const getters = {
 
     getBeingDragged: (index) => {
-      return itemsArr[index].beingDragged;
+      return dragAndDropItems[index].beingDragged;
     },
 
-    getHitboxDetectTicker: (index) => {
-      return itemsArr[index].hitboxDetectingTicker;
+    getHitboxDetectingDraggedItem: (index) => {
+      return dragAndDropItems[index].hitboxDetectingDraggedItem;
     },
 
     getSwapped: (index) => {
-      return itemsArr[index].swapped;
+      return dragAndDropItems[index].swapped;
     },
   }
 
 
-  return [itemsArr, setItemsArr, handlers, getters];
+  return [dragAndDropItems, setDragAndDropItems, handlers, getters];
 };
 
 export default useDragAndDrop;

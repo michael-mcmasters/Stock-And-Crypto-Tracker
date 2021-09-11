@@ -107,7 +107,7 @@ function TickerGallery() {
               percentage={t[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
-              hitboxDetectTicker={dragAndDropGetters.getHitboxDetectTicker(index)}
+              hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
               swapped={dragAndDropGetters.getSwapped(index)}
             />
           ))}
