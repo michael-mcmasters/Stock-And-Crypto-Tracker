@@ -22,7 +22,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
     <Container
       draggable="true"
       hitboxDetectingTicker={hitboxDetectTicker}
-      onMouseDown={() => handleDragStart(index)}
+      onDragStart={() => handleDragStart(index)}
       onDragEnd={() => handleDragEnd(index)}
       colors={COLORS}
       fontColor={fontColor}
@@ -32,7 +32,7 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
     >
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
-      <HitBox onDragOver={() => handleHitboxDetectTicker(index)} onDragLeave={() => handleHitboxUndetectTicker(index)} />
+      <HitBox onDragOver={(event) => handleHitboxDetectTicker(event, index)} onDragLeave={() => handleHitboxUndetectTicker(index)} />
       <DropIndicator hitboxDetectingTicker={hitboxDetectTicker} />
 
       <CoinTicker>{tickerName}</CoinTicker>

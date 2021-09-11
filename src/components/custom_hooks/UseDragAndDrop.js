@@ -11,34 +11,20 @@ const useDragAndDrop = (initialItemsArr) => {
     };
   }));
 
-  const [tickerDrugOverIndex, setTickerDrugOverIndex] = useState(-1);
+  const [drugOverIndex, setDrugOverIndex] = useState(-1);
 
 
-  // Edge case fix to make sure items don't have beingDragged styling when user drops them.
-  useEffect(() => {
-    const handleMouseUp = () => {
-      let copyArr = [...itemsArr];
-      copyArr.forEach(i => i.beingDragged = false);
-      setItemsArr(copyArr);
-    }
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => document.removeEventListener("mouseup", handleMouseUp);
-  });
-
-  const swapItems = (droppedTickerIndex) => {
+  const swapItems = (droppedIndex) => {
     const copyArr = [...itemsArr];
-    copyArr[droppedTickerIndex].beingDragged = false;
-
-    const tickerDrugOver = copyArr[tickerDrugOverIndex];
-    const droppedTicker = copyArr[droppedTickerIndex];
-    copyArr[tickerDrugOverIndex] = droppedTicker;
-    copyArr[droppedTickerIndex] = tickerDrugOver;
-    copyArr[tickerDrugOverIndex].swapped = true;
-    copyArr[droppedTickerIndex].swapped = true;
-
-    setItemsArr(copyArr);
-    setTickerDrugOverIndex(-1);
+    if (drugOverIndex != -1) {
+      const tickerDrugOver = copyArr[drugOverIndex];
+      const droppedTicker = copyArr[droppedIndex];
+      copyArr[drugOverIndex] = droppedTicker;
+      copyArr[droppedIndex] = tickerDrugOver;
+      copyArr[drugOverIndex].swapped = true;
+      copyArr[droppedIndex].swapped = true;
+    }
+    return copyArr;
   }
 
 
@@ -53,21 +39,28 @@ const useDragAndDrop = (initialItemsArr) => {
     },
 
     handleDragEnd: (droppedTickerIndex) => {
-      swapItems(droppedTickerIndex);
+      const copyArr = swapItems(droppedTickerIndex);
+      copyArr.forEach((i) => {
+        i.hitboxDetectingTicker = false;
+        i.beingDragged = false;
+      });
+      setItemsArr(copyArr);
+      setDrugOverIndex(-1);
     },
 
-    handleHitboxDetectTicker: (index) => {
+    handleHitboxDetectTicker: (event, index) => {
+      event.preventDefault();
       let copyArr = [...itemsArr];
       copyArr[index].hitboxDetectingTicker = true;
       setItemsArr(copyArr);
-      setTickerDrugOverIndex(index);
+      setDrugOverIndex(index);
     },
 
     handleHitboxUndetectTicker: (index) => {
       let copyArr = [...itemsArr];
       copyArr[index].hitboxDetectingTicker = false;
       setItemsArr(copyArr);
-      setTickerDrugOverIndex(index);
+      setDrugOverIndex(-1);
     },
   }
 
