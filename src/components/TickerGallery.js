@@ -12,7 +12,7 @@ const PRICE_UPDATE_DELAY = 15000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
-  const [tickersArr, setTickersArr, dragAndDropActions, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
+  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
   const handleAddTicker = async (tickerName, type) => {
@@ -105,7 +105,7 @@ function TickerGallery() {
               price={t.currentPrice}
               priceDifference={t[selectedHistoryOption].priceDifference}
               percentage={t[selectedHistoryOption].percentage}
-              dragAndDropActions={dragAndDropActions}
+              dragAndDropHandlers={dragAndDropHandlers}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectTicker={dragAndDropGetters.getHitboxDetectTicker(index)}
               swapped={dragAndDropGetters.getSwapped(index)}

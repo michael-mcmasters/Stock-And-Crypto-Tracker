@@ -11,12 +11,13 @@ const useDragAndDrop = (initialItemsArr) => {
     };
   }));
 
-  const [drugOverIndex, setDrugOverIndex] = useState(-1);
+  const [hitboxDetectingIndex, setHitboxDetectingIndex] = useState(-1);
 
 
+  // Returns a copy of the array with the two items swapped
   const swapItems = (firstIndex, secondIndex) => {
     const copyArr = [...itemsArr];
-    if (drugOverIndex > -1) {
+    if (hitboxDetectingIndex > -1) {
       const droppedItem = copyArr[firstIndex];
 
       copyArr[firstIndex] = copyArr[secondIndex];
@@ -29,38 +30,41 @@ const useDragAndDrop = (initialItemsArr) => {
 
 
   // Applies action to the item with the given index
-  const actions = {
+  const handlers = {
 
     handleDragStart: (index) => {
-      let copyArr = [...itemsArr];
-      copyArr.forEach(i => i.swapped = false);
-      copyArr[index].beingDragged = true;
-      setItemsArr(copyArr);
+      setItemsArr(itemsArr.map((item, i) => {
+        if (i === index) {
+          item.beingDragged = true;
+        }
+        item.swapped = false;
+        return item;
+      }))
     },
 
     handleDragEnd: (droppedTickerIndex) => {
-      const copyArr = swapItems(droppedTickerIndex, drugOverIndex);
+      setHitboxDetectingIndex(-1);
+      const copyArr = swapItems(droppedTickerIndex, hitboxDetectingIndex);
       copyArr.forEach((i) => {
         i.hitboxDetectingTicker = false;
         i.beingDragged = false;
       });
       setItemsArr(copyArr);
-      setDrugOverIndex(-1);
     },
 
-    handleHitboxDetectTicker: (event, index) => {
+    handleHitboxEnter: (event, index) => {
       event.preventDefault();
-      let copyArr = [...itemsArr];
+      setHitboxDetectingIndex(index);
+      const copyArr = [...itemsArr];
       copyArr[index].hitboxDetectingTicker = true;
       setItemsArr(copyArr);
-      setDrugOverIndex(index);
     },
 
-    handleHitboxUndetectTicker: (index) => {
-      let copyArr = [...itemsArr];
+    handleHitboxLeave: (index) => {
+      setHitboxDetectingIndex(-1);
+      const copyArr = [...itemsArr];
       copyArr[index].hitboxDetectingTicker = false;
       setItemsArr(copyArr);
-      setDrugOverIndex(-1);
     },
   }
 
@@ -82,7 +86,7 @@ const useDragAndDrop = (initialItemsArr) => {
   }
 
 
-  return [itemsArr, setItemsArr, actions, getters];
+  return [itemsArr, setItemsArr, handlers, getters];
 };
 
 export default useDragAndDrop;
