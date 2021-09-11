@@ -14,17 +14,13 @@ const useDragAndDrop = (initialItemsArr) => {
   const [hitboxDetectingIndex, setHitboxDetectingIndex] = useState(-1);
 
 
-  // Returns a copy of the array with the two items swapped
-  const swapItems = (firstIndex, secondIndex) => {
-    const copyArr = [...itemsArr];
-    if (firstIndex != -1 && secondIndex != -1) {
-      const droppedItem = copyArr[firstIndex];
+  const swapItems = (copyArr, firstIndex, secondIndex) => {
+    const droppedItem = copyArr[firstIndex];
 
-      copyArr[firstIndex] = copyArr[secondIndex];
-      copyArr[secondIndex] = droppedItem;
-      copyArr[firstIndex].swapped = true;
-      copyArr[secondIndex].swapped = true;
-    }
+    copyArr[firstIndex] = copyArr[secondIndex];
+    copyArr[secondIndex] = droppedItem;
+    copyArr[firstIndex].swapped = true;
+    copyArr[secondIndex].swapped = true;
     return copyArr;
   }
 
@@ -44,7 +40,10 @@ const useDragAndDrop = (initialItemsArr) => {
 
     handleDragEnd: (droppedTickerIndex) => {
       setHitboxDetectingIndex(-1);
-      const copyArr = swapItems(droppedTickerIndex, hitboxDetectingIndex);
+      let copyArr = [...itemsArr];
+      if (hitboxDetectingIndex != -1) {
+        copyArr = swapItems(copyArr, droppedTickerIndex, hitboxDetectingIndex);
+      }
       copyArr.forEach((i) => {
         i.hitboxDetectingTicker = false;
         i.beingDragged = false;
