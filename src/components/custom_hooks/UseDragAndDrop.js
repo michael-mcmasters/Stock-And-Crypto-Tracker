@@ -17,7 +17,7 @@ const useDragAndDrop = (initialItemsArr) => {
   // Returns a copy of the array with the two items swapped
   const swapItems = (firstIndex, secondIndex) => {
     const copyArr = [...itemsArr];
-    if (hitboxDetectingIndex > -1) {
+    if (firstIndex != -1 && secondIndex != -1) {
       const droppedItem = copyArr[firstIndex];
 
       copyArr[firstIndex] = copyArr[secondIndex];
