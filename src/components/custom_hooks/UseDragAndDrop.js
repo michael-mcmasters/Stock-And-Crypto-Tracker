@@ -48,16 +48,16 @@ const useDragAndDrop = (initialDragAndDropItems) => {
       setDragAndDropItems(itemsCopy);
     },
 
-    handleHitboxEnter: (event, index) => {
+    handleHitboxEnter: (event, detectorIndex) => {
       event.preventDefault();
       const itemsCopy = [...dragAndDropItems];
-      itemsCopy[index].hitboxDetectingDraggedItem = true;
+      itemsCopy[detectorIndex].hitboxDetectingDraggedItem = true;
       setDragAndDropItems(itemsCopy);
     },
 
-    handleHitboxLeave: (index) => {
+    handleHitboxLeave: (detectorIndex) => {
       const itemsCopy = [...dragAndDropItems];
-      itemsCopy[index].hitboxDetectingDraggedItem = false;
+      itemsCopy[detectorIndex].hitboxDetectingDraggedItem = false;
       setDragAndDropItems(itemsCopy);
     },
   }
