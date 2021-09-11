@@ -2,24 +2,11 @@ import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Ticker = ({ tickerName, index, type, price, priceDifference, percentage, dragAndDropFunctions }) => {
+const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
+  dragAndDropActions, beingDragged, hitboxDetectTicker, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
-  const {
-    handleDragStart,
-    handleDragEnd,
-    handleHitboxDetectTicker,
-    handleHitboxUndetectTicker,
-    setTickerDrugOverIndex,
-    swap,
-    getBeingDragged,
-    getHitboxDetectTicker,
-    getSwapped
-  } = dragAndDropFunctions;
-
-  let beingDragged = getBeingDragged(index)
-  let hitboxDetectTicker = getHitboxDetectTicker(index);
-  let swapped = getSwapped(index);
+  const { handleDragStart, handleDragEnd, handleHitboxDetectTicker, handleHitboxUndetectTicker } = dragAndDropActions;
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {

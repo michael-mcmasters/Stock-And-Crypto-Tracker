@@ -64,40 +64,34 @@ const useDragAndDrop = (initialItemsArr) => {
     setTickerDrugOverIndex(-1);
   }
 
-
-
-  // *** Getters ***
-
-  const getBeingDragged = (index) => {
-    return itemsArr[index].beingDragged;
-    return false;
-  }
-
-  const getHitboxDetectTicker = (index) => {
-    return itemsArr[index].hitboxDetectingTicker;
-    return false;
-  }
-
-  const getSwapped = (index) => {
-    return itemsArr[index].swapped;
-    return false;
-  }
-
-
-
-
-  const dragAndDropFunctions = {
+  const dragAndDropActions = {
     handleDragStart,
     handleDragEnd,
     handleHitboxDetectTicker,
     handleHitboxUndetectTicker,
-    setTickerDrugOverIndex,
-    swap,
+  };
+
+
+  const getBeingDragged = (index) => {
+    return itemsArr[index].beingDragged;
+  }
+
+  const getHitboxDetectTicker = (index) => {
+    return itemsArr[index].hitboxDetectingTicker;
+  }
+
+  const getSwapped = (index) => {
+    return itemsArr[index].swapped;
+  }
+
+  const dragAndDropGetters = {
     getBeingDragged,
     getHitboxDetectTicker,
     getSwapped
-  };
-  return [itemsArr, setItemsArr, dragAndDropFunctions];
+  }
+
+
+  return [itemsArr, setItemsArr, dragAndDropActions, dragAndDropGetters];
 };
 
 export default useDragAndDrop;
