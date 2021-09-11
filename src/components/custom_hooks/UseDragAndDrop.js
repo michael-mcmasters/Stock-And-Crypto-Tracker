@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
 const useDragAndDrop = (initialItemsArr) => {
-  const [itemsArr, setItemsArr] = useState(initialItemsArr.map(i => {
+
+  const [itemsArr, setItemsArr] = useState(initialItemsArr.map(item => {
     return {
-      ...i,
+      ...item,
       beingDragged: false,
       hitboxDetectingTicker: false,
       swapped: false
     };
   }));
+
   const [tickerDrugOverIndex, setTickerDrugOverIndex] = useState(-1);
 
 
@@ -24,32 +26,7 @@ const useDragAndDrop = (initialItemsArr) => {
     return () => document.removeEventListener("mouseup", handleMouseUp);
   });
 
-  const handleDragStart = (index) => {
-    let copyArr = [...itemsArr];
-    copyArr[index].beingDragged = true;
-    copyArr.forEach(i => i.swapped = false);
-    setItemsArr(copyArr);
-  }
-
-  const handleDragEnd = (index) => {
-    swap(index);
-  }
-
-  const handleHitboxDetectTicker = (index) => {
-    let copyArr = [...itemsArr];
-    copyArr[index].hitboxDetectingTicker = true;
-    setItemsArr(copyArr);
-    setTickerDrugOverIndex(index);
-  }
-
-  const handleHitboxUndetectTicker = (index) => {
-    let copyArr = [...itemsArr];
-    copyArr[index].hitboxDetectingTicker = false;
-    setItemsArr(copyArr);
-    setTickerDrugOverIndex(index);
-  }
-
-  const swap = (droppedTickerIndex) => {
+  const swapItems = (droppedTickerIndex) => {
     const copyArr = [...itemsArr];
     copyArr[droppedTickerIndex].beingDragged = false;
 
@@ -64,34 +41,55 @@ const useDragAndDrop = (initialItemsArr) => {
     setTickerDrugOverIndex(-1);
   }
 
-  const dragAndDropActions = {
-    handleDragStart,
-    handleDragEnd,
-    handleHitboxDetectTicker,
-    handleHitboxUndetectTicker,
-  };
 
+  // Applies action to the item with the given index
+  const actions = {
 
-  const getBeingDragged = (index) => {
-    return itemsArr[index].beingDragged;
+    handleDragStart: (index) => {
+      let copyArr = [...itemsArr];
+      copyArr[index].beingDragged = true;
+      copyArr.forEach(i => i.swapped = false);
+      setItemsArr(copyArr);
+    },
+
+    handleDragEnd: (droppedTickerIndex) => {
+      swapItems(droppedTickerIndex);
+    },
+
+    handleHitboxDetectTicker: (index) => {
+      let copyArr = [...itemsArr];
+      copyArr[index].hitboxDetectingTicker = true;
+      setItemsArr(copyArr);
+      setTickerDrugOverIndex(index);
+    },
+
+    handleHitboxUndetectTicker: (index) => {
+      let copyArr = [...itemsArr];
+      copyArr[index].hitboxDetectingTicker = false;
+      setItemsArr(copyArr);
+      setTickerDrugOverIndex(index);
+    },
   }
 
-  const getHitboxDetectTicker = (index) => {
-    return itemsArr[index].hitboxDetectingTicker;
+
+  // Gets status of the item at the given index
+  const getters = {
+
+    getBeingDragged: (index) => {
+      return itemsArr[index].beingDragged;
+    },
+
+    getHitboxDetectTicker: (index) => {
+      return itemsArr[index].hitboxDetectingTicker;
+    },
+
+    getSwapped: (index) => {
+      return itemsArr[index].swapped;
+    },
   }
 
-  const getSwapped = (index) => {
-    return itemsArr[index].swapped;
-  }
 
-  const dragAndDropGetters = {
-    getBeingDragged,
-    getHitboxDetectTicker,
-    getSwapped
-  }
-
-
-  return [itemsArr, setItemsArr, dragAndDropActions, dragAndDropGetters];
+  return [itemsArr, setItemsArr, actions, getters];
 };
 
 export default useDragAndDrop;
