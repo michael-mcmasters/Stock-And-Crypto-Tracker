@@ -11,8 +11,6 @@ const useDragAndDrop = (initialDragAndDropItems) => {
     };
   }));
 
-  const [hitboxDetectingIndex, setHitboxDetectingIndex] = useState(-1);
-
 
   const swapItems = (itemsCopy, firstIndex, secondIndex) => {
     const firstItem = itemsCopy[firstIndex];
@@ -38,8 +36,8 @@ const useDragAndDrop = (initialDragAndDropItems) => {
     },
 
     handleDragEnd: (draggedItemIndex) => {
-      setHitboxDetectingIndex(-1);
       let itemsCopy = [...dragAndDropItems];
+      const hitboxDetectingIndex = itemsCopy.findIndex(item => item.hitboxDetectingDraggedItem == true);
       if (hitboxDetectingIndex !== -1) {
         itemsCopy = swapItems(itemsCopy, draggedItemIndex, hitboxDetectingIndex);
       }
@@ -52,14 +50,12 @@ const useDragAndDrop = (initialDragAndDropItems) => {
 
     handleHitboxEnter: (event, index) => {
       event.preventDefault();
-      setHitboxDetectingIndex(index);
       const itemsCopy = [...dragAndDropItems];
       itemsCopy[index].hitboxDetectingDraggedItem = true;
       setDragAndDropItems(itemsCopy);
     },
 
     handleHitboxLeave: (index) => {
-      setHitboxDetectingIndex(-1);
       const itemsCopy = [...dragAndDropItems];
       itemsCopy[index].hitboxDetectingDraggedItem = false;
       setDragAndDropItems(itemsCopy);
