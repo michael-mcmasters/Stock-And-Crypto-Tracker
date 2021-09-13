@@ -5,26 +5,26 @@ import AddTickerInputField from "./AddTickerInputField";
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
-import useFetchTickers from "./custom_hooks/UseFetchTickers";
+import useTickersAPI from "./custom_hooks/UseTickersAPI";
 
 const MAX_ALLOWED_TICKERS = 16;
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
-  const [fetchUpdatedPrices, fetchAPISupportsTicker] = useFetchTickers();
+  const [fetchUpdatedPrices, fetchAPISupportsTicker] = useTickersAPI();
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
-  // Fetch prices immediately when page loads.
+  // Fetches prices immediately when page loads.
   useEffect(() => {
     fetchUpdatedPrices(tickersArr)
       .then(data => setTickersArr(data))
       .catch(err => console.log(err));
   }, []);
 
-  // Fetches prices on a delayed loop.
-  // Fetch is cancelled and a new fetch is started if tickersArr is modified, such as the user adding a new ticker, so that user's changes are not overwritten.
+  // Continusously fetches prices on a delayed loop.
+  // Fetch is cancelled and a new fetch is started if tickersArr is modified, such as the user adding a new ticker, so response doesn't overwrite user's changes.
   useEffect(() => {
     let cancelFetch = false;
     setTimeout(() => {
@@ -96,6 +96,7 @@ const GridContainer = styled.div`
 function getTickerObjects() {
   return [
     {
+      key: 0,
       tickerName: "TWTR",
       type: "stock",
       currentPrice: 0,
@@ -123,6 +124,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 1,
       tickerName: "AAPL",
       type: "stock",
       currentPrice: 0,
@@ -150,6 +152,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 2,
       tickerName: "BOTZ",
       type: "stock",
       currentPrice: 0,
@@ -177,6 +180,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 3,
       tickerName: "AMZN",
       type: "stock",
       currentPrice: 0,
@@ -204,6 +208,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 4,
       tickerName: "BTC",
       type: "crypto",
       currentPrice: 0,
@@ -231,6 +236,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 5,
       tickerName: "ETH",
       type: "crypto",
       currentPrice: 0,
@@ -258,6 +264,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 6,
       tickerName: "DOGE",
       type: "crypto",
       currentPrice: 0,
@@ -285,6 +292,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 7,
       tickerName: "GOOGL",
       type: "stock",
       currentPrice: 0,
@@ -312,6 +320,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 8,
       tickerName: "TSLA",
       type: "stock",
       currentPrice: 0,
@@ -339,6 +348,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 9,
       tickerName: "UBER",
       type: "stock",
       currentPrice: 0,
@@ -366,6 +376,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 10,
       tickerName: "LYFT",
       type: "stock",
       currentPrice: 0,
@@ -393,6 +404,7 @@ function getTickerObjects() {
       }
     },
     {
+      key: 11,
       tickerName: "VTSAX",
       type: "stock",
       currentPrice: 0,

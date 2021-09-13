@@ -2,7 +2,7 @@ import React from 'react';
 
 const DEBUG_USE_FAKE_PRICES = false;
 
-const UseFetchTickers = () => {
+const UseTickersAPI = () => {
 
   // Example URI: http://localhost:8080/stock/botz
   const fetchAPI = async (ticker) => {
@@ -64,4 +64,4 @@ const UseFetchTickers = () => {
   return [fetchTickers, fetchAPISupportsTicker];
 };
 
-export default UseFetchTickers;
+export default UseTickersAPI;
