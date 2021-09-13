@@ -4,35 +4,6 @@ const DEBUG_USE_FAKE_PRICES = false;
 
 const UseTickersAPI = () => {
 
-  // Example URI: http://localhost:8080/stock/botz
-  const fetchAPI = async (ticker) => {
-    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);
-    response = await response.json();
-    return response;
-  }
-
-  const fetchRealPrices = async (tickersArr) => {
-    for (let i = 0; i < tickersArr.length; i++) {
-      try {
-        let response = await fetchAPI(tickersArr[i]);
-        tickersArr[i].currentPrice = response.currentPrice;
-        tickersArr[i].priceChanges.day.priceDifference = response.priceChanges.day.priceDifference;
-        tickersArr[i].priceChanges.day.percentage = response.priceChanges.day.percentage;
-        tickersArr[i].priceChanges.week.priceDifference = response.priceChanges.week.priceDifference;
-        tickersArr[i].priceChanges.week.percentage = response.priceChanges.week.percentage;
-        tickersArr[i].priceChanges.month.priceDifference = response.priceChanges.month.priceDifference;
-        tickersArr[i].priceChanges.month.percentage = response.priceChanges.month.percentage;
-        tickersArr[i].priceChanges.ytd.priceDifference = response.priceChanges.ytd.priceDifference;
-        tickersArr[i].priceChanges.ytd.percentage = response.priceChanges.ytd.percentage;
-        tickersArr[i].priceChanges.year.priceDifference = response.priceChanges.year.priceDifference;
-        tickersArr[i].priceChanges.year.percentage = response.priceChanges.year.percentage;
-      } catch (exc) {
-        console.log(`There was an error handling ${tickersArr[i].tickerName}`);
-      }
-    }
-    return tickersArr;
-  }
-
   const generateFakePrices = async (tickersArr) => {
     for (let i = 0; i < tickersArr.length; i++) {
       const prevPrice = tickersArr[i].currentPrice;
@@ -52,12 +23,42 @@ const UseTickersAPI = () => {
   }
 
   const fetchPrices = async (tickersArr) => {
-    if (DEBUG_USE_FAKE_PRICES) return await generateFakePrices(tickersArr);
-    else return await fetchRealPrices(tickersArr);
+    if (DEBUG_USE_FAKE_PRICES)
+      return await generateFakePrices(tickersArr);
+
+    for (let i = 0; i < tickersArr.length; i++) {
+      try {
+        let response = await fetch(`http://localhost:8080/${tickersArr[i].type}/${tickersArr[i].tickerName}`);    // Example URI: http://localhost:8080/stock/botz
+        response = await response.json();
+
+        tickersArr[i].currentPrice = response.currentPrice;
+        tickersArr[i].priceChanges.day.priceDifference = response.priceChanges.day.priceDifference;
+        tickersArr[i].priceChanges.day.percentage = response.priceChanges.day.percentage;
+        tickersArr[i].priceChanges.week.priceDifference = response.priceChanges.week.priceDifference;
+        tickersArr[i].priceChanges.week.percentage = response.priceChanges.week.percentage;
+        tickersArr[i].priceChanges.month.priceDifference = response.priceChanges.month.priceDifference;
+        tickersArr[i].priceChanges.month.percentage = response.priceChanges.month.percentage;
+        tickersArr[i].priceChanges.ytd.priceDifference = response.priceChanges.ytd.priceDifference;
+        tickersArr[i].priceChanges.ytd.percentage = response.priceChanges.ytd.percentage;
+        tickersArr[i].priceChanges.year.priceDifference = response.priceChanges.year.priceDifference;
+        tickersArr[i].priceChanges.year.percentage = response.priceChanges.year.percentage;
+      } catch (exc) {
+        console.log(`There was an error handling ${tickersArr[i].tickerName}`);
+      }
+    }
+    return tickersArr;
   }
 
-  const fetchAPISupportsTicker = (tickerName) => {
-
+  /**
+   * 
+   * @param {String} tickerType "stock" or "crypto".
+   * @param {String} tickerName The abbreviation, such as TWTR or BBRY.
+   * @returns 
+   */
+  const fetchAPISupportsTicker = async (tickerType, tickerName) => {
+    let response = await fetch(`http://localhost:8080/${tickerType}/${tickerName}/verify`);
+    response = await response.json();
+    return response;
   }
 
   return [fetchPrices, fetchAPISupportsTicker];
