@@ -16,13 +16,15 @@ function TickerGallery() {
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
+  // Fetch prices immediately when page loads.
   useEffect(() => {
     fetchUpdatedPrices(tickersArr)
       .then(data => setTickersArr(data))
       .catch(err => console.log(err));
   }, []);
 
-  // Fetches prices on a loop. When tickersArr is modified, such as the user adding a new ticker, the fetch is cancelled so that user's changes are not overwritten.
+  // Fetches prices on a delayed loop.
+  // Fetch is cancelled and a new fetch is started if tickersArr is modified, such as the user adding a new ticker, so that user's changes are not overwritten.
   useEffect(() => {
     let cancelFetch = false;
     setTimeout(() => {
@@ -55,8 +57,8 @@ function TickerGallery() {
               tickerName={t.tickerName}
               type={t.type}
               price={t.currentPrice}
-              priceDifference={t[selectedHistoryOption].priceDifference}
-              percentage={t[selectedHistoryOption].percentage}
+              priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+              percentage={t.priceChanges[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
@@ -97,307 +99,324 @@ function getTickerObjects() {
       tickerName: "TWTR",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "AAPL",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "BOTZ",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "AMZN",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "BTC",
       type: "crypto",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "ETH",
       type: "crypto",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "DOGE",
       type: "crypto",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "GOOGL",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "TSLA",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
-    // {
-    //   tickerName: "VTSAX",
-    //   type: "stock",
-    //   currentPrice: 0,
-    //   priceDifference: 0,
-    //   percentage: 0.0,
-    // },
     {
       tickerName: "UBER",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "LYFT",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
     {
       tickerName: "VTSAX",
       type: "stock",
       currentPrice: 0,
-      day: {
-        priceDifference: 0,
-        percentage: 0.0,
-      },
-      week: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      month: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      ytd: {
-        priceDifference: 0,
-        percentage: 0,
-      },
-      year: {
-        priceDifference: 0,
-        percentage: 0
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
       }
     },
   ];
