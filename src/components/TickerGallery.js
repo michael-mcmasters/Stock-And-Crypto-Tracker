@@ -27,14 +27,14 @@ function TickerGallery() {
   // Fetch is cancelled and a new fetch is started if tickersArr is modified, such as the user adding a new ticker, so response doesn't overwrite user's changes.
   useEffect(() => {
     let cancelFetch = false;
+
     setTimeout(() => {
       if (!cancelFetch) {
-        fetchUpdatedPrices(tickersArr)
-          .then(data => {
-            if (!cancelFetch) {
-              setTickersArr(data);
-            };
-          })
+        fetchUpdatedPrices(tickersArr).then(data => {
+          if (!cancelFetch) {
+            setTickersArr(data);
+          };
+        })
           .catch(err => console.log(err));
       };
     }, PRICE_UPDATE_DELAY);
