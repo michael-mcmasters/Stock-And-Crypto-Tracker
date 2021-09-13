@@ -12,13 +12,14 @@ const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 
 function TickerGallery() {
 
-  const [fetchUpdatedPrices, fetchAPISupportsTicker] = useTickersAPI();
+  const [fetchPrices, fetchAPISupportsTicker] = useTickersAPI();
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
   // Fetches prices immediately when page loads.
   useEffect(() => {
-    fetchUpdatedPrices(tickersArr)
+    const tickersArrCopy = [...tickersArr];
+    fetchPrices(tickersArrCopy)
       .then(data => setTickersArr(data))
       .catch(err => console.log(err));
   }, []);
@@ -30,7 +31,8 @@ function TickerGallery() {
 
     setTimeout(() => {
       if (!cancelFetch) {
-        fetchUpdatedPrices(tickersArr).then(data => {
+        const tickersArrCopy = [...tickersArr];
+        fetchPrices(tickersArrCopy).then(data => {
           if (!cancelFetch) {
             setTickersArr(data);
           };
