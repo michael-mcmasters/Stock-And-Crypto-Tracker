@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
 
 const UseTickersAPI = () => {
 

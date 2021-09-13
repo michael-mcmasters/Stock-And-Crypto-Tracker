@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const useDragAndDrop = (initialDragAndDropItems) => {
 
@@ -10,6 +10,17 @@ const useDragAndDrop = (initialDragAndDropItems) => {
       swapped: false
     };
   }));
+
+
+  // Overrides set function to make sure objects have additional properties that this hook added.
+  const setDragAndDropItemsOverride = (newDragAndDropItems) => {
+    for (let i = 0; i < dragAndDropItems.length; i++) {
+      newDragAndDropItems[i].beingDragged = dragAndDropItems[i].beingDragged;
+      newDragAndDropItems[i].hitboxDetectingDraggedItem = dragAndDropItems[i].hitboxDetectingDraggedItem;
+      newDragAndDropItems[i].swapped = dragAndDropItems[i].swapped;
+    }
+    setDragAndDropItems(newDragAndDropItems);
+  }
 
 
   const swapItems = (itemsCopy, firstIndex, secondIndex) => {
@@ -80,7 +91,7 @@ const useDragAndDrop = (initialDragAndDropItems) => {
   }
 
 
-  return [dragAndDropItems, setDragAndDropItems, handlers, getters];
+  return [dragAndDropItems, setDragAndDropItemsOverride, handlers, getters];
 };
 
 export default useDragAndDrop;
