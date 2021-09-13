@@ -7,20 +7,22 @@ import HistoryOptions from "../constants/HistoryOptions";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 
+
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 const MAX_ALLOWED_TICKERS = 16;
+
 
 function TickerGallery() {
 
   const [fetchPrices, fetchAPISupportsTicker] = useTickersAPI();
-  const [firstFetchCompleted, setFirstFetchCompleted] = useState(false);
+  const [fetchImmediately, setFetchImmediately] = useState(true);
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
   // Fetches prices continuously on a delayed loop.
   useEffect(() => {
     let cancelFetch = false;
-    let timeoutDelay = (firstFetchCompleted === false) ? 0 : PRICE_UPDATE_DELAY;
+    let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
     setTimeout(() => {
       if (!cancelFetch) {
@@ -33,51 +35,49 @@ function TickerGallery() {
           .catch(err => console.log(err));
       };
     }, timeoutDelay);
-    setFirstFetchCompleted(true);
+    setFetchImmediately(false);
 
     return () => {
       cancelFetch = true                  // Cancel this fetch if tickersArr is updated, (such as user adding a new ticker), so fetched results don't overwrite user's changes.
-      setFirstFetchCompleted(true);       // First fetch happens immediately. Every fetch after has delay.
+      setFetchImmediately(false);         // Fetch on page load and when new ticker is added happens immediately. Every other fetch waits a few seconds.
     };
   }, [tickersArr]);
 
 
   const handleAddTicker = (name, type) => {
-    fetchAPISupportsTicker(type, name).then(data => {
-      if (data === false)
-        return;
+    if (tickersArr.length + 1 > MAX_ALLOWED_TICKERS)
+      return;
 
-      const tickersArrCopy = [...tickersArr];
-      tickersArrCopy.push({
-        tickerName: name,
-        type: type,
-        currentPrice: 0,
-        priceChanges: {
-          day: {
-            priceDifference: 0,
-            percentage: 0.0,
-          },
-          week: {
-            priceDifference: 0,
-            percentage: 0,
-          },
-          month: {
-            priceDifference: 0,
-            percentage: 0,
-          },
-          ytd: {
-            priceDifference: 0,
-            percentage: 0,
-          },
-          year: {
-            priceDifference: 0,
-            percentage: 0
-          }
+    let tickersArrCopy = [...tickersArr];
+    tickersArrCopy.push({
+      tickerName: name,
+      type: type,
+      currentPrice: 0,
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
         }
-      });
-
-      setTickersArr(tickersArrCopy);
-    })
+      }
+    });
+    setFetchImmediately(true);
+    setTickersArr(tickersArrCopy);
   };
 
 

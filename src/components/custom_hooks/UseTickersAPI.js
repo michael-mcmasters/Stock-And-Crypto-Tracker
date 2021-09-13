@@ -1,6 +1,8 @@
 import React from 'react';
 
-const DEBUG_USE_FAKE_PRICES = true;
+
+const DEBUG_USE_FAKE_PRICES = false;
+
 
 const UseTickersAPI = () => {
 
@@ -56,7 +58,7 @@ const UseTickersAPI = () => {
    * @returns 
    */
   const fetchAPISupportsTicker = async (tickerType, tickerName) => {
-    let response = await fetch(`http://localhost:8080/${tickerType}/${tickerName}/verify`);
+    let response = await fetch(`http://localhost:8080/${tickerType}/${tickerName}`);
     response = await response.json();
     return response;
   }
