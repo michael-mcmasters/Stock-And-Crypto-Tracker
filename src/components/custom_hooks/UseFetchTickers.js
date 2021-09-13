@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DEBUG_USE_FAKE_PRICES = true;
+const DEBUG_USE_FAKE_PRICES = false;
 
 const UseFetchTickers = () => {
 
@@ -11,7 +11,7 @@ const UseFetchTickers = () => {
     return response;
   }
 
-  const fetch = async (tickersArrCopy) => {
+  const fetchRealPrices = async (tickersArrCopy) => {
     for (let i = 0; i < tickersArrCopy.length; i++) {
       try {
         let response = await fetchAPI(tickersArrCopy[i]);
@@ -27,7 +27,7 @@ const UseFetchTickers = () => {
         tickersArrCopy[i].year.priceDifference = response.priceChanges.year.priceDifference;
         tickersArrCopy[i].year.percentage = response.priceChanges.year.percentage;
       } catch (exc) {
-        console.log(`There was an error handling ${tickersArrCopy[i].tickerName}`);
+        //console.log(`There was an error handling ${tickersArrCopy[i].tickerName}`);
       }
     }
     return tickersArrCopy;
@@ -54,7 +54,7 @@ const UseFetchTickers = () => {
   const fetchTickers = async (tickersArr) => {
     let tickersArrCopy = [...tickersArr];
     if (DEBUG_USE_FAKE_PRICES) return await generateFakePrices(tickersArrCopy);
-    else return await fetch(tickersArrCopy);
+    else return await fetchRealPrices(tickersArrCopy);
   }
 
   const fetchAPISupportsTicker = (tickerName) => {
