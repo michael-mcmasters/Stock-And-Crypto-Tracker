@@ -28,6 +28,7 @@ const UseTickersAPI = () => {
 
     for (let i = 0; i < tickersArr.length; i++) {
       try {
+        console.log("loop " + i);
         let response = await fetch(`http://localhost:8080/${tickersArr[i].type}/${tickersArr[i].tickerName}`);    // Example URI: http://localhost:8080/stock/botz
         response = await response.json();
 
