@@ -19,23 +19,23 @@ function TickerGallery() {
 
   const [fetchPrice, fetchPrices] = useTickersAPI();
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
-  const [fetchImmediately, setFetchImmediately] = useState(true);
+  const [fetchImmediately, setFetchImmediately] = useState(false);
 
-  // Fetch prices one by one on page load
+  // Fetches prices one-by-one on page load.
   useEffect(() => {
     for (let i = 0; i < tickersArr.length; i++) {
       fetchPrice(tickersArr[i])
         .then(ticker => {
-          const copy = [...tickersArr];
-          copy[i].loading = false;
-          copy[i] = ticker;
-          setTickersArr(copy);
+          const tickersArrCopy = [...tickersArr];
+          tickersArrCopy[i].loading = false;
+          tickersArrCopy[i] = ticker;
+          setTickersArr(tickersArrCopy);
         });
     }
     setInitialFetchCompleted(true);
   }, [])
 
-  // Fetches prices at same time and doesn't update page until all fetches are completed. Does so on a delayed loop.
+  // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
     if (!initialFetchCompleted) return;
 
@@ -58,8 +58,8 @@ function TickerGallery() {
     setFetchImmediately(false);
 
     return () => {
-      cancelFetch = true                  // Cancel this fetch if tickersArr is updated, (such as user adding a new ticker), so fetched results don't overwrite user's changes.
-      setFetchImmediately(false);         // Fetch on page load and when new ticker is added happens immediately. Every other fetch waits a few seconds.
+      cancelFetch = true;               // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don'g overwrite user's changes.
+      setFetchImmediately(false);
     };
   }, [tickersArr]);
 
