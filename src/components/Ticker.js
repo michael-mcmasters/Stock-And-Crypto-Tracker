@@ -4,7 +4,7 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage,
-  dragAndDropHandlers, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
+  dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
@@ -19,9 +19,11 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     priceDifference = "+" + priceDifference;
   }
 
+  console.log(allowDragAndDrop);
+
   return (
     <Container
-      draggable="true"
+      draggable={allowDragAndDrop}
       onDragStart={() => handleDragStart(index)}
       onDragEnd={() => handleDragEnd(index)}
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
@@ -66,7 +68,7 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
-  cursor: move;
+  cursor: ${props => props.draggable ? "move" : "pointer"};
   
   ${props => props.beingDragged && css`
     opacity: 0.3;

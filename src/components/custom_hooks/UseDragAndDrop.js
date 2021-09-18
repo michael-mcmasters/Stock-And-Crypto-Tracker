@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const useDragAndDrop = (initialDragAndDropItems) => {
+const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true) => {
 
+  const [allowDragAndDrop, setAllowDragAndDrop] = useState(false);
   const [dragAndDropItems, setDragAndDropItems] = useState(initialDragAndDropItems.map(item => {
     return {
       ...item,
@@ -33,8 +34,11 @@ const useDragAndDrop = (initialDragAndDropItems) => {
   }
 
 
-  // Applies action to the item with the given index
   const handlers = {
+
+    setAllowDragAndDrop: setAllowDragAndDrop,
+
+    // The following functions applies actions to the item at the given index
 
     handleDragStart: (draggedItemIndex) => {
       setDragAndDropItems(dragAndDropItems.map((item, ind) => {
@@ -74,8 +78,14 @@ const useDragAndDrop = (initialDragAndDropItems) => {
   }
 
 
-  // Gets status of the item at the given index
   const getters = {
+
+    getAllowDragAndDrop: () => {
+      // console.log("value is " + allowDragAndDrop)
+      return allowDragAndDrop;
+    },
+
+    // The following functions get the status of the item at the given index
 
     getBeingDragged: (index) => {
       return dragAndDropItems[index].beingDragged;
