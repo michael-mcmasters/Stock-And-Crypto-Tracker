@@ -15,24 +15,31 @@ const MAX_ALLOWED_TICKERS = 16;
 function TickerGallery() {
 
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
+  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
 
   const [fetchPrice, fetchPrices] = useTickersAPI();
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [fetchImmediately, setFetchImmediately] = useState(false);
 
-  // Fetches prices one-by-one on page load.
+  // Fetches prices one-by-one on page load. Re-renders for every price fetched.
   useEffect(() => {
+    let fetchPricePromises = [];
     for (let i = 0; i < tickersArr.length; i++) {
-      fetchPrice(tickersArr[i])
-        .then(ticker => {
+      fetchPricePromises.push(
+        new Promise(async (resolve, reject) => {
           const tickersArrCopy = [...tickersArr];
+          tickersArrCopy[i] = await fetchPrice(tickersArr[i]);
           tickersArrCopy[i].loading = false;
-          tickersArrCopy[i] = ticker;
           setTickersArr(tickersArrCopy);
-        });
+          resolve(tickersArrCopy[i]);
+        })
+      );
     }
-    setInitialFetchCompleted(true);
+    Promise.all(fetchPricePromises).then(values => {
+      setInitialFetchCompleted(true);
+      dragAndDropHandlers.setAllowDragAndDrop(true);
+      console.log("Completed fetching initial prices for tickers");
+    });
   }, [])
 
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
@@ -58,7 +65,7 @@ function TickerGallery() {
     setFetchImmediately(false);
 
     return () => {
-      cancelFetch = true;               // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don'g overwrite user's changes.
+      cancelFetch = true;               // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
       setFetchImmediately(false);
     };
   }, [tickersArr]);
@@ -118,6 +125,7 @@ function TickerGallery() {
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
+              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
               swapped={dragAndDropGetters.getSwapped(index)}
