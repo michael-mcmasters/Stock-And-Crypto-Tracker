@@ -14,10 +14,12 @@ const MAX_ALLOWED_TICKERS = 16;
 
 function TickerGallery() {
 
-  const [fetchPrices, fetchAPISupportsTicker] = useTickersAPI();
-  const [fetchImmediately, setFetchImmediately] = useState(true);
-  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
+  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
+
+  const [fetchPrices] = useTickersAPI();
+  const [fetchImmediately, setFetchImmediately] = useState(true);
+
 
   // Fetches prices continuously on a delayed loop.
   useEffect(() => {
