@@ -1,8 +1,9 @@
 import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
-const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
+const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage,
   dragAndDropHandlers, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
@@ -36,10 +37,17 @@ const Ticker = ({ tickerName, index, type, price, priceDifference, percentage,
       <DropIndicator hitboxDetectingDraggedItem={hitboxDetectingDraggedItem} />
 
       <CoinTicker>{tickerName}</CoinTicker>
-      <Price>${price}</Price>
-      <PriceChange>
-        {priceDifference} ({percentage}%)
-      </PriceChange>
+      {loading ? (
+        <ClipLoader />
+      ) : (
+        <>
+          <Price>{loading ? '?' : '$' + price}</Price>
+          <PriceChange>
+            {priceDifference} ({percentage}%)
+          </PriceChange>
+        </>
+      )}
+
     </Container >
   );
 };

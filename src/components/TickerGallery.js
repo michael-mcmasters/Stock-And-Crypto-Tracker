@@ -29,11 +29,13 @@ function TickerGallery() {
     setTimeout(() => {
       if (!cancelFetch) {
         const tickersArrCopy = [...tickersArr];
-        fetchPrices(tickersArrCopy).then(data => {
-          if (!cancelFetch) {
-            setTickersArr(data);
-          };
-        })
+        fetchPrices(tickersArrCopy)
+          .then(tickers => {
+            if (!cancelFetch) {
+              tickers.forEach(t => t.loading = false);
+              setTickersArr(tickers);
+            };
+          })
           .catch(err => console.log(err));
       };
     }, timeoutDelay);
@@ -54,6 +56,7 @@ function TickerGallery() {
     tickersArrCopy.push({
       tickerName: name,
       type: type,
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -94,6 +97,7 @@ function TickerGallery() {
               index={index}
               tickerName={t.tickerName}
               type={t.type}
+              loading={t.loading}
               price={t.currentPrice}
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
@@ -137,6 +141,7 @@ function getTickerObjects() {
       key: 0,
       tickerName: "TWTR",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -165,6 +170,7 @@ function getTickerObjects() {
       key: 1,
       tickerName: "AAPL",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -193,6 +199,7 @@ function getTickerObjects() {
       key: 2,
       tickerName: "BOTZ",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -221,6 +228,7 @@ function getTickerObjects() {
       key: 3,
       tickerName: "AMZN",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -249,6 +257,7 @@ function getTickerObjects() {
       key: 4,
       tickerName: "BTC",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -277,6 +286,7 @@ function getTickerObjects() {
       key: 5,
       tickerName: "ETH",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -305,6 +315,7 @@ function getTickerObjects() {
       key: 6,
       tickerName: "DOGE",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -333,6 +344,7 @@ function getTickerObjects() {
       key: 7,
       tickerName: "GOOGL",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -361,6 +373,7 @@ function getTickerObjects() {
       key: 8,
       tickerName: "TSLA",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -389,6 +402,7 @@ function getTickerObjects() {
       key: 9,
       tickerName: "UBER",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -417,6 +431,7 @@ function getTickerObjects() {
       key: 10,
       tickerName: "LYFT",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -445,6 +460,7 @@ function getTickerObjects() {
       key: 11,
       tickerName: "VTSAX",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
