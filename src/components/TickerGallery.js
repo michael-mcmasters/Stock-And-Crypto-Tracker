@@ -17,12 +17,28 @@ function TickerGallery() {
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
 
-  const [fetchPrices] = useTickersAPI();
+  const [fetchPrice, fetchPrices] = useTickersAPI();
+  const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [fetchImmediately, setFetchImmediately] = useState(true);
 
-
-  // Fetches prices continuously on a delayed loop.
+  // Fetch prices one by one on page load
   useEffect(() => {
+    for (let i = 0; i < tickersArr.length; i++) {
+      fetchPrice(tickersArr[i])
+        .then(ticker => {
+          const copy = [...tickersArr];
+          copy[i].loading = false;
+          copy[i] = ticker;
+          setTickersArr(copy);
+        });
+    }
+    setInitialFetchCompleted(true);
+  }, [])
+
+  // Fetches prices at same time and doesn't update page until all fetches are completed. Does so on a delayed loop.
+  useEffect(() => {
+    if (!initialFetchCompleted) return;
+
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
@@ -456,35 +472,35 @@ function getTickerObjects() {
         }
       }
     },
-    {
-      key: 11,
-      tickerName: "VTSAX",
-      type: "stock",
-      loading: true,
-      currentPrice: 0,
-      priceChanges: {
-        day: {
-          priceDifference: 0,
-          percentage: 0.0,
-        },
-        week: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        month: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        ytd: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        year: {
-          priceDifference: 0,
-          percentage: 0
-        }
-      }
-    },
+    // {
+    // key: 11,
+    // tickerName: "VTSAX",
+    // type: "stock",
+    // loading: true,
+    // currentPrice: 0,
+    // priceChanges: {
+    //   day: {
+    //     priceDifference: 0,
+    //     percentage: 0.0,
+    //   },
+    //   week: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   month: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   ytd: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   year: {
+    //     priceDifference: 0,
+    //     percentage: 0
+    //   }
+    // }
+    // },
   ];
 }
 

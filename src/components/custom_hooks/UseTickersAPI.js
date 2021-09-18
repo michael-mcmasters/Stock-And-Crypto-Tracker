@@ -24,9 +24,17 @@ const UseTickersAPI = () => {
     return tickersArr;
   }
 
+  const fetchPrice = async (ticker) => {
+    let tickersArr = await fetchPrices([ticker]);
+    return await tickersArr[0];
+  }
+
   const fetchPrices = async (tickersArr) => {
     if (DEBUG_USE_FAKE_PRICES)
       return await generateFakePrices(tickersArr);
+
+    // console.log("type of is " + typeof tickersArr);
+    // console.table(tickersArr);
 
     for (let i = 0; i < tickersArr.length; i++) {
       try {
@@ -63,7 +71,7 @@ const UseTickersAPI = () => {
     return response;
   }
 
-  return [fetchPrices, fetchAPISupportsTicker];
+  return [fetchPrice, fetchPrices, fetchAPISupportsTicker];
 };
 
 export default UseTickersAPI;
