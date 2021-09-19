@@ -28,12 +28,13 @@ function TickerGallery() {
 
     setTimeout(() => {
       if (!cancelFetch) {
-        const tickersArrCopy = [...tickersArr];
-        fetchPrices(tickersArrCopy).then(data => {
-          if (!cancelFetch) {
-            setTickersArr(data);
-          };
-        })
+        const tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
+        fetchPrices(tickersArrCopy)
+          .then(data => {
+            if (!cancelFetch) {
+              setTickersArr(data);
+            };
+          })
           .catch(err => console.log(err));
       };
     }, timeoutDelay);
