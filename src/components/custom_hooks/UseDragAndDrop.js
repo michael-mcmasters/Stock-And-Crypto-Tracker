@@ -34,8 +34,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
       if (indexDetectingDraggedItem !== -1) {
         setIndexDetectingDraggedItem(-1);
         setIndexBeingDragged(-1);
-        const itemsCopy = [...dragAndDropItems];
-        setDragAndDropItems(swapItems(itemsCopy, draggedItemIndex, indexDetectingDraggedItem));
+        swapItems([...dragAndDropItems], draggedItemIndex, indexDetectingDraggedItem);
       }
     },
 
