@@ -8,6 +8,8 @@ const UseTickersAPI = () => {
 
   const generateFakePrices = async (tickersArr) => {
     for (let i = 0; i < tickersArr.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 3500));
+
       const prevPrice = tickersArr[i].currentPrice;
       tickersArr[i].currentPrice = (Math.random() * 10).toFixed(6);
       tickersArr[i].priceChanges.day.priceDifference = (tickersArr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
@@ -22,6 +24,11 @@ const UseTickersAPI = () => {
       tickersArr[i].priceChanges.year.percentage = (Math.random() * 8).toFixed(2);
     }
     return tickersArr;
+  }
+
+  const fetchPrice = async (ticker) => {
+    let tickersArr = await fetchPrices([ticker]);
+    return await tickersArr[0];
   }
 
   const fetchPrices = async (tickersArr) => {
@@ -63,7 +70,7 @@ const UseTickersAPI = () => {
     return response;
   }
 
-  return [fetchPrices, fetchAPISupportsTicker];
+  return [fetchPrice, fetchPrices, fetchAPISupportsTicker];
 };
 
 export default UseTickersAPI;

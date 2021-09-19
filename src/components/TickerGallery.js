@@ -17,7 +17,7 @@ function TickerGallery() {
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
 
-  const [fetchPrices] = useTickersAPI();
+  const [fetchPrice, fetchPrices] = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
 
 
