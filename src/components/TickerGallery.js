@@ -25,22 +25,22 @@ function TickerGallery() {
   useEffect(() => {
     let fetchPricePromises = [];
     for (let i = 0; i < tickersArr.length; i++) {
-      fetchPricePromises.push(
-        new Promise(async (resolve, reject) => {
-          const tickersArrCopy = [...tickersArr];
-          tickersArrCopy[i] = await fetchPrice(tickersArr[i]);
-          tickersArrCopy[i].loading = false;
-          setTickersArr(tickersArrCopy);
-          resolve(tickersArrCopy[i]);
-        })
+      fetchPricePromises.push(new Promise(async (resolve, reject) => {
+        const tickersArrCopy = [...tickersArr];
+        tickersArrCopy[i] = await fetchPrice(tickersArr[i]);
+        tickersArrCopy[i].loading = false;
+        setTickersArr(tickersArrCopy);
+        resolve(tickersArrCopy[i]);
+      })
       );
     }
-    Promise.all(fetchPricePromises).then(values => {
+    Promise.all(fetchPricePromises).then(tickers => {
       setInitialFetchCompleted(true);
       dragAndDropHandlers.setAllowDragAndDrop(true);
       console.log("Completed fetching initial prices for tickers");
     });
   }, [])
+
 
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
@@ -50,25 +50,28 @@ function TickerGallery() {
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
     setTimeout(() => {
+      const tickersArrCopy = [...tickersArr];
+      let fetchPricePromises = [];
+      for (let i = 0; i < tickersArr.length; i++) {
+        fetchPricePromises.push(new Promise(async (resolve, reject) => {
+          tickersArrCopy[i] = await fetchPrice(tickersArr[i]);
+          tickersArrCopy[i].loading = false;
+          resolve(tickersArrCopy[i]);
+        }))
+      }
       if (!cancelFetch) {
-        const tickersArrCopy = [...tickersArr];
-        fetchPrices(tickersArrCopy)
-          .then(tickers => {
-            if (!cancelFetch) {
-              tickers.forEach(t => t.loading = false);
-              setTickersArr(tickers);
-            };
-          })
-          .catch(err => console.log(err));
-      };
+        Promise.all(fetchPricePromises).then(tickers => {
+          if (!cancelFetch) {
+            setTickersArr(tickers);
+            setFetchImmediately(false);
+          }
+        });
+      }
     }, timeoutDelay);
-    setFetchImmediately(false);
 
-    return () => {
-      cancelFetch = true;               // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
-      setFetchImmediately(false);
-    };
-  }, [tickersArr]);
+    // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
+    return () => cancelFetch = true;
+  }, [tickersArr, initialFetchCompleted]);
 
 
   const handleAddTicker = (name, type) => {
