@@ -1,13 +1,15 @@
 import React from 'react';
 
 
-const DEBUG_USE_FAKE_PRICES = false;
+const DEBUG_USE_FAKE_PRICES = true;
 
 
 const UseTickersAPI = () => {
 
   const generateFakePrices = async (tickersArr) => {
     for (let i = 0; i < tickersArr.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 3500));
+
       const prevPrice = tickersArr[i].currentPrice;
       tickersArr[i].currentPrice = (Math.random() * 10).toFixed(6);
       tickersArr[i].priceChanges.day.priceDifference = (tickersArr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
@@ -32,9 +34,6 @@ const UseTickersAPI = () => {
   const fetchPrices = async (tickersArr) => {
     if (DEBUG_USE_FAKE_PRICES)
       return await generateFakePrices(tickersArr);
-
-    // console.log("type of is " + typeof tickersArr);
-    // console.table(tickersArr);
 
     for (let i = 0; i < tickersArr.length; i++) {
       try {
