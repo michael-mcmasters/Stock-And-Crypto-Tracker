@@ -20,6 +20,7 @@ function TickerGallery() {
   const [fetchPrice, fetchPrices] = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
 
+  const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
 
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
@@ -27,7 +28,7 @@ function TickerGallery() {
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
     setTimeout(() => {
-      let tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
+      let tickersArrCopy = deepCopy(tickersArr);
       let fetchPricePromises = [];
       for (let i = 0; i < tickersArr.length; i++) {
         fetchPricePromises.push(new Promise(async (resolve, reject) => {
@@ -56,7 +57,7 @@ function TickerGallery() {
     if (tickersArr.length + 1 > MAX_ALLOWED_TICKERS)
       return;
 
-    let tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
+    let tickersArrCopy = deepCopy(tickersArr);
     tickersArrCopy.push({
       tickerName: name,
       type: type,
