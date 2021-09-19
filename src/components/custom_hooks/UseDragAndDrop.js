@@ -4,7 +4,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
 
   const [dragAndDropItems, setDragAndDropItems] = useState(initialDragAndDropItems);
 
-  const [allowDragAndDrop, setAllowDragAndDrop] = useState(false);
+  const [allowDragAndDrop, setAllowDragAndDrop] = useState(initialAllowDragAndDrop);
   const [indexBeingDragged, setIndexBeingDragged] = useState(-1);
   const [indexDetectingDraggedItem, setIndexDetectingDraggedItem] = useState(-1);
   const [indexSwapped, setIndexSwapped] = useState([]);

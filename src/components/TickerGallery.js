@@ -15,35 +15,40 @@ const MAX_ALLOWED_TICKERS = 16;
 function TickerGallery() {
 
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects());
+  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
 
   const [fetchPrice, fetchPrices] = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
 
 
-  // Fetches prices continuously on a delayed loop.
+  // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
     setTimeout(() => {
+      let tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
+      let fetchPricePromises = [];
+      for (let i = 0; i < tickersArr.length; i++) {
+        fetchPricePromises.push(new Promise(async (resolve, reject) => {
+          tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
+          tickersArrCopy[i].loading = false;
+          resolve(tickersArrCopy[i]);
+        }))
+      }
       if (!cancelFetch) {
-        const tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
-        fetchPrices(tickersArrCopy)
-          .then(data => {
-            if (!cancelFetch) {
-              setTickersArr(data);
-            };
-          })
-          .catch(err => console.log(err));
-      };
+        Promise.all(fetchPricePromises).then(tickers => {
+          if (!cancelFetch) {
+            setTickersArr(tickers);
+            setFetchImmediately(false);
+            dragAndDropHandlers.setAllowDragAndDrop(true);
+          }
+        });
+      }
     }, timeoutDelay);
-    setFetchImmediately(false);
 
-    return () => {
-      cancelFetch = true                  // Cancel this fetch if tickersArr is updated, (such as user adding a new ticker), so fetched results don't overwrite user's changes.
-      setFetchImmediately(false);         // Fetch on page load and when new ticker is added happens immediately. Every other fetch waits a few seconds.
-    };
+    // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
+    return () => cancelFetch = true;
   }, [tickersArr]);
 
 
@@ -51,10 +56,11 @@ function TickerGallery() {
     if (tickersArr.length + 1 > MAX_ALLOWED_TICKERS)
       return;
 
-    let tickersArrCopy = [...tickersArr];
+    let tickersArrCopy = JSON.parse(JSON.stringify(tickersArr))
     tickersArrCopy.push({
       tickerName: name,
       type: type,
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -95,10 +101,12 @@ function TickerGallery() {
               index={index}
               tickerName={t.tickerName}
               type={t.type}
+              loading={t.loading}
               price={t.currentPrice}
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
+              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
               swapped={dragAndDropGetters.getSwapped(index)}
@@ -138,6 +146,7 @@ function getTickerObjects() {
       key: 0,
       tickerName: "TWTR",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -166,6 +175,7 @@ function getTickerObjects() {
       key: 1,
       tickerName: "AAPL",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -194,6 +204,7 @@ function getTickerObjects() {
       key: 2,
       tickerName: "BOTZ",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -222,6 +233,7 @@ function getTickerObjects() {
       key: 3,
       tickerName: "AMZN",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -250,6 +262,7 @@ function getTickerObjects() {
       key: 4,
       tickerName: "BTC",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -278,6 +291,7 @@ function getTickerObjects() {
       key: 5,
       tickerName: "ETH",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -306,6 +320,7 @@ function getTickerObjects() {
       key: 6,
       tickerName: "DOGE",
       type: "crypto",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -334,6 +349,7 @@ function getTickerObjects() {
       key: 7,
       tickerName: "GOOGL",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -362,6 +378,7 @@ function getTickerObjects() {
       key: 8,
       tickerName: "TSLA",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -390,6 +407,7 @@ function getTickerObjects() {
       key: 9,
       tickerName: "UBER",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -418,6 +436,7 @@ function getTickerObjects() {
       key: 10,
       tickerName: "LYFT",
       type: "stock",
+      loading: true,
       currentPrice: 0,
       priceChanges: {
         day: {
@@ -442,34 +461,35 @@ function getTickerObjects() {
         }
       }
     },
-    {
-      key: 11,
-      tickerName: "VTSAX",
-      type: "stock",
-      currentPrice: 0,
-      priceChanges: {
-        day: {
-          priceDifference: 0,
-          percentage: 0.0,
-        },
-        week: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        month: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        ytd: {
-          priceDifference: 0,
-          percentage: 0,
-        },
-        year: {
-          priceDifference: 0,
-          percentage: 0
-        }
-      }
-    },
+    // {
+    // key: 11,
+    // tickerName: "VTSAX",
+    // type: "stock",
+    // loading: true,
+    // currentPrice: 0,
+    // priceChanges: {
+    //   day: {
+    //     priceDifference: 0,
+    //     percentage: 0.0,
+    //   },
+    //   week: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   month: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   ytd: {
+    //     priceDifference: 0,
+    //     percentage: 0,
+    //   },
+    //   year: {
+    //     priceDifference: 0,
+    //     percentage: 0
+    //   }
+    // }
+    // },
   ];
 }
 
