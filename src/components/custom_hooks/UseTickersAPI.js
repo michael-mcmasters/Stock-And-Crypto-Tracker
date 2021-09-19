@@ -1,8 +1,4 @@
-import React from 'react';
-
-
-const DEBUG_USE_FAKE_PRICES = false;
-
+const DEBUG_USE_FAKE_PRICES = true;
 
 const UseTickersAPI = () => {
 
@@ -26,15 +22,7 @@ const UseTickersAPI = () => {
     return tickersArr;
   }
 
-  const fetchPrice = async (ticker) => {
-    let tickersArr = await fetchPrices([ticker]);
-    return await tickersArr[0];
-  }
-
-  const fetchPrices = async (tickersArr) => {
-    if (DEBUG_USE_FAKE_PRICES)
-      return await generateFakePrices(tickersArr);
-
+  const fetchActualPrices = async (tickersArr) => {
     for (let i = 0; i < tickersArr.length; i++) {
       try {
         let response = await fetch(`http://localhost:8080/${tickersArr[i].type}/${tickersArr[i].tickerName}`);    // Example URI: http://localhost:8080/stock/botz
@@ -58,19 +46,18 @@ const UseTickersAPI = () => {
     return tickersArr;
   }
 
-  /**
-   * 
-   * @param {String} tickerType "stock" or "crypto".
-   * @param {String} tickerName The abbreviation, such as TWTR or BBRY.
-   * @returns 
-   */
-  const fetchAPISupportsTicker = async (tickerType, tickerName) => {
-    let response = await fetch(`http://localhost:8080/${tickerType}/${tickerName}`);
-    response = await response.json();
-    return response;
+  const fetchPrice = async (ticker) => {
+    if (DEBUG_USE_FAKE_PRICES) {
+      let tickersArr = await generateFakePrices([ticker]);
+      return await tickersArr[0];
+    }
+    else {
+      let tickersArr = await fetchActualPrices([ticker]);
+      return await tickersArr[0];
+    }
   }
 
-  return [fetchPrice, fetchPrices, fetchAPISupportsTicker];
+  return fetchPrice;
 };
 
 export default UseTickersAPI;

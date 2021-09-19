@@ -17,8 +17,9 @@ function TickerGallery() {
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
   const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
 
-  const [fetchPrice, fetchPrices] = useTickersAPI();
+  const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
+
 
   const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
 
@@ -462,35 +463,35 @@ function getTickerObjects() {
         }
       }
     },
-    // {
-    // key: 11,
-    // tickerName: "VTSAX",
-    // type: "stock",
-    // loading: true,
-    // currentPrice: 0,
-    // priceChanges: {
-    //   day: {
-    //     priceDifference: 0,
-    //     percentage: 0.0,
-    //   },
-    //   week: {
-    //     priceDifference: 0,
-    //     percentage: 0,
-    //   },
-    //   month: {
-    //     priceDifference: 0,
-    //     percentage: 0,
-    //   },
-    //   ytd: {
-    //     priceDifference: 0,
-    //     percentage: 0,
-    //   },
-    //   year: {
-    //     priceDifference: 0,
-    //     percentage: 0
-    //   }
-    // }
-    // },
+    {
+      key: 11,
+      tickerName: "VTSAX",
+      type: "stock",
+      loading: true,
+      currentPrice: 0,
+      priceChanges: {
+        day: {
+          priceDifference: 0,
+          percentage: 0.0,
+        },
+        week: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        month: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        ytd: {
+          priceDifference: 0,
+          percentage: 0,
+        },
+        year: {
+          priceDifference: 0,
+          percentage: 0
+        }
+      }
+    },
   ];
 }
 
