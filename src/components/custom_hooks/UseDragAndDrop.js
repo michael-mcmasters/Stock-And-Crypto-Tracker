@@ -15,6 +15,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
     itemsCopy[firstIndex] = itemsCopy[secondIndex];
     itemsCopy[secondIndex] = firstItem;
     setIndexSwapped([firstIndex, secondIndex]);
+    setDragAndDropItems(itemsCopy);
     return itemsCopy;
   }
 
@@ -34,7 +35,8 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
       if (indexDetectingDraggedItem !== -1) {
         setIndexDetectingDraggedItem(-1);
         setIndexBeingDragged(-1);
-        swapItems([...dragAndDropItems], draggedItemIndex, indexDetectingDraggedItem);
+        const itemsCopy = JSON.parse(JSON.stringify(dragAndDropItems));
+        swapItems(itemsCopy, draggedItemIndex, indexDetectingDraggedItem);
       }
     },
 
