@@ -28,8 +28,7 @@ function TickerGallery() {
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
-    setTimeout(() => {
-      let tickersArrCopy = deepCopy(tickersArr);
+    const createFetchPromises = (tickersArrCopy) => {
       let fetchPricePromises = [];
       for (let i = 0; i < tickersArr.length; i++) {
         fetchPricePromises.push(new Promise(async (resolve, reject) => {
@@ -38,6 +37,11 @@ function TickerGallery() {
           resolve(tickersArrCopy[i]);
         }))
       }
+      return fetchPricePromises;
+    }
+
+    setTimeout(() => {
+      const fetchPricePromises = createFetchPromises(deepCopy(tickersArr));
       if (!cancelFetch) {
         Promise.all(fetchPricePromises).then(tickers => {
           if (!cancelFetch) {
