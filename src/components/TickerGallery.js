@@ -38,7 +38,7 @@ function TickerGallery() {
             tickersArrCopy[i].loading = false;
             resolve(tickersArrCopy[i]);
           } catch (exc) {
-            reject(tickersArrCopy[i]);
+            resolve(tickersArrCopy[i]);
           }
         }))
       }
@@ -49,19 +49,16 @@ function TickerGallery() {
       if (cancelFetch) return;
 
       const fetchPricePromises = createFetchPromises();
-      Promise.all(fetchPricePromises)
-        .then(resolvedTickers => {
-          if (cancelFetch) return;
-          setTickersArr(resolvedTickers);
-          setFetchImmediately(false);
-          dragAndDropHandlers.setAllowDragAndDrop(true);
-        })
-        .catch(rejectedTickers => {
-          // ToDo: Have popup notify each ticker that can't be displayed.
-          console.log("Was unable to find " + rejectedTickers.tickerName);
-          const tickersArrCopy = deepCopy(tickersArr);
-          setTickersArr(tickersArrCopy.filter(t => t.key !== rejectedTickers.key));
-        });
+      Promise.all(fetchPricePromises).then(tickers => {
+        if (cancelFetch) return;
+        const fetchedTickers = tickers.filter(t => t.loading === false);
+        const failedTickers = tickers.filter(t => t.loading === true);
+        console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
+
+        setTickersArr(fetchedTickers);
+        setFetchImmediately(false);
+        dragAndDropHandlers.setAllowDragAndDrop(true);
+      })
     }, timeoutDelay);
 
     // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
