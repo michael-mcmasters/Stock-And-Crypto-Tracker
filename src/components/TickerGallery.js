@@ -46,23 +46,22 @@ function TickerGallery() {
     }
 
     setTimeout(() => {
+      if (cancelFetch) return;
+
       const fetchPricePromises = createFetchPromises();
-      if (!cancelFetch) {
-        Promise.all(fetchPricePromises)
-          .then(resolvedTickers => {
-            if (!cancelFetch) {
-              setTickersArr(resolvedTickers);
-              setFetchImmediately(false);
-              dragAndDropHandlers.setAllowDragAndDrop(true);
-            }
-          })
-          .catch(rejectedTickers => {
-            // ToDo: Have popup notify each ticker that can't be displayed.
-            console.log("Was unable to find " + rejectedTickers.tickerName);
-            const tickersArrCopy = deepCopy(tickersArr);
-            setTickersArr(tickersArrCopy.filter(t => t.key !== rejectedTickers.key));
-          });
-      }
+      Promise.all(fetchPricePromises)
+        .then(resolvedTickers => {
+          if (cancelFetch) return;
+          setTickersArr(resolvedTickers);
+          setFetchImmediately(false);
+          dragAndDropHandlers.setAllowDragAndDrop(true);
+        })
+        .catch(rejectedTickers => {
+          // ToDo: Have popup notify each ticker that can't be displayed.
+          console.log("Was unable to find " + rejectedTickers.tickerName);
+          const tickersArrCopy = deepCopy(tickersArr);
+          setTickersArr(tickersArrCopy.filter(t => t.key !== rejectedTickers.key));
+        });
     }, timeoutDelay);
 
     // Cancels fetch if user modifies tickersArr (such as adding/deleting a new ticker) so that fetched results don't overwrite user's changes.
