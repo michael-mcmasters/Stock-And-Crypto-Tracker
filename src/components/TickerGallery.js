@@ -99,8 +99,9 @@ function TickerGallery() {
         }
       }
     });
-    setFetchImmediately(true);
     setTickersArr(tickersArrCopy);
+    setFetchImmediately(true);
+    dragAndDropHandlers.setAllowDragAndDrop(false);
   };
 
 
