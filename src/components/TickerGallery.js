@@ -53,7 +53,8 @@ function TickerGallery() {
         if (cancelFetch) return;
         const fetchedTickers = tickers.filter(t => t.loading === false);
         const failedTickers = tickers.filter(t => t.loading === true);
-        console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
+        if (failedTickers.length > 0)
+          console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
 
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
