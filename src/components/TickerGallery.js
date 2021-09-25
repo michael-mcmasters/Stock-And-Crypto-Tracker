@@ -28,28 +28,40 @@ function TickerGallery() {
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
-    const createFetchPromises = (tickersArrCopy) => {
+    const createFetchPromises = () => {
+      let tickersArrCopy = deepCopy(tickersArr);
       let fetchPricePromises = [];
       for (let i = 0; i < tickersArr.length; i++) {
         fetchPricePromises.push(new Promise(async (resolve, reject) => {
-          tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
-          tickersArrCopy[i].loading = false;
-          resolve(tickersArrCopy[i]);
+          try {
+            tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
+            tickersArrCopy[i].loading = false;
+            resolve(tickersArrCopy[i]);
+          } catch (exc) {
+            reject(tickersArrCopy[i]);
+          }
         }))
       }
       return fetchPricePromises;
     }
 
     setTimeout(() => {
-      const fetchPricePromises = createFetchPromises(deepCopy(tickersArr));
+      const fetchPricePromises = createFetchPromises();
       if (!cancelFetch) {
-        Promise.all(fetchPricePromises).then(tickers => {
-          if (!cancelFetch) {
-            setTickersArr(tickers);
-            setFetchImmediately(false);
-            dragAndDropHandlers.setAllowDragAndDrop(true);
-          }
-        });
+        Promise.all(fetchPricePromises)
+          .then(resolvedTickers => {
+            if (!cancelFetch) {
+              setTickersArr(resolvedTickers);
+              setFetchImmediately(false);
+              dragAndDropHandlers.setAllowDragAndDrop(true);
+            }
+          })
+          .catch(rejectedTickers => {
+            // ToDo: Have popup notify each ticker that can't be displayed.
+            console.log("Was unable to find " + rejectedTickers.tickerName);
+            const tickersArrCopy = deepCopy(tickersArr);
+            setTickersArr(tickersArrCopy.filter(t => t.key !== rejectedTickers.key));
+          });
       }
     }, timeoutDelay);
 
