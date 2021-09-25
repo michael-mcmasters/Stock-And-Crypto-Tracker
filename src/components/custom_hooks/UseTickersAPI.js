@@ -2,59 +2,51 @@ const DEBUG_USE_FAKE_PRICES = true;
 
 const UseTickersAPI = () => {
 
-  const generateFakePrices = async (tickersArr) => {
-    for (let i = 0; i < tickersArr.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 3500));
+  const fetchActualPrices = async (ticker) => {
+    let response = await fetch(`http://localhost:8080/${ticker.type}/${ticker.tickerName}`);    // Example URI: http://localhost:8080/stock/botz
+    response = await response.json();
 
-      const prevPrice = tickersArr[i].currentPrice;
-      tickersArr[i].currentPrice = (Math.random() * 10).toFixed(6);
-      tickersArr[i].priceChanges.day.priceDifference = (tickersArr[i].currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
-      tickersArr[i].priceChanges.day.percentage = (Math.random() * 4).toFixed(2);
-      tickersArr[i].priceChanges.week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-      tickersArr[i].priceChanges.week.percentage = (Math.random() * 5).toFixed(2);
-      tickersArr[i].priceChanges.month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-      tickersArr[i].priceChanges.month.percentage = (Math.random() * 6).toFixed(2);
-      tickersArr[i].priceChanges.ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-      tickersArr[i].priceChanges.ytd.percentage = (Math.random() * 7).toFixed(2);
-      tickersArr[i].priceChanges.year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
-      tickersArr[i].priceChanges.year.percentage = (Math.random() * 8).toFixed(2);
-    }
-    return tickersArr;
+    ticker.currentPrice = response.currentPrice;
+    ticker.priceChanges.day.priceDifference = response.priceChanges.day.priceDifference;
+    ticker.priceChanges.day.percentage = response.priceChanges.day.percentage;
+    ticker.priceChanges.week.priceDifference = response.priceChanges.week.priceDifference;
+    ticker.priceChanges.week.percentage = response.priceChanges.week.percentage;
+    ticker.priceChanges.month.priceDifference = response.priceChanges.month.priceDifference;
+    ticker.priceChanges.month.percentage = response.priceChanges.month.percentage;
+    ticker.priceChanges.ytd.priceDifference = response.priceChanges.ytd.priceDifference;
+    ticker.priceChanges.ytd.percentage = response.priceChanges.ytd.percentage;
+    ticker.priceChanges.year.priceDifference = response.priceChanges.year.priceDifference;
+    ticker.priceChanges.year.percentage = response.priceChanges.year.percentage;
+    return ticker;
   }
 
-  const fetchActualPrices = async (tickersArr) => {
-    for (let i = 0; i < tickersArr.length; i++) {
-      try {
-        let response = await fetch(`http://localhost:8080/${tickersArr[i].type}/${tickersArr[i].tickerName}`);    // Example URI: http://localhost:8080/stock/botz
-        response = await response.json();
+  const generateFakePrice = async (ticker) => {
+    const randomDelay = () => new Promise(resolve => setTimeout(resolve, Math.random() * 3500));
+    await randomDelay();
 
-        tickersArr[i].currentPrice = response.currentPrice;
-        tickersArr[i].priceChanges.day.priceDifference = response.priceChanges.day.priceDifference;
-        tickersArr[i].priceChanges.day.percentage = response.priceChanges.day.percentage;
-        tickersArr[i].priceChanges.week.priceDifference = response.priceChanges.week.priceDifference;
-        tickersArr[i].priceChanges.week.percentage = response.priceChanges.week.percentage;
-        tickersArr[i].priceChanges.month.priceDifference = response.priceChanges.month.priceDifference;
-        tickersArr[i].priceChanges.month.percentage = response.priceChanges.month.percentage;
-        tickersArr[i].priceChanges.ytd.priceDifference = response.priceChanges.ytd.priceDifference;
-        tickersArr[i].priceChanges.ytd.percentage = response.priceChanges.ytd.percentage;
-        tickersArr[i].priceChanges.year.priceDifference = response.priceChanges.year.priceDifference;
-        tickersArr[i].priceChanges.year.percentage = response.priceChanges.year.percentage;
-      } catch (exc) {
-        console.log(`There was an error handling ${tickersArr[i].tickerName}`);
-      }
-    }
-    return tickersArr;
+    /* Uncomment next line to simulate a failed fetch */
+    // if (ticker.tickerName === "ABC") throw "Failed to fetch ticker.tickerName"
+
+    const prevPrice = ticker.currentPrice;
+    ticker.currentPrice = (Math.random() * 10).toFixed(6);
+    ticker.priceChanges.day.priceDifference = (ticker.currentPrice - prevPrice).toFixed(2);    // priceDifference and percentage are not mathematically correct. These numbers are just for visualizing.
+    ticker.priceChanges.day.percentage = (Math.random() * 4).toFixed(2);
+    ticker.priceChanges.week.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+    ticker.priceChanges.week.percentage = (Math.random() * 5).toFixed(2);
+    ticker.priceChanges.month.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+    ticker.priceChanges.month.percentage = (Math.random() * 6).toFixed(2);
+    ticker.priceChanges.ytd.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+    ticker.priceChanges.ytd.percentage = (Math.random() * 7).toFixed(2);
+    ticker.priceChanges.year.priceDifference = (Math.random() * 4 - prevPrice).toFixed(2);
+    ticker.priceChanges.year.percentage = (Math.random() * 8).toFixed(2);
+    return ticker;
   }
 
   const fetchPrice = async (ticker) => {
-    if (DEBUG_USE_FAKE_PRICES) {
-      let tickersArr = await generateFakePrices([ticker]);
-      return await tickersArr[0];
-    }
-    else {
-      let tickersArr = await fetchActualPrices([ticker]);
-      return await tickersArr[0];
-    }
+    if (DEBUG_USE_FAKE_PRICES)
+      return await generateFakePrice(ticker);
+    else
+      return await fetchActualPrices(ticker);
   }
 
   return fetchPrice;
