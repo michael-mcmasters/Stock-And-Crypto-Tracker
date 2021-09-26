@@ -143,25 +143,23 @@ function TickerGallery() {
 }
 
 const Container = styled.div`
-      width: min-content;
-      margin: 0 auto;
-      `;
+  width: min-content;
+  margin: 0 auto;
+`;
 
 const GridContainer = styled.div`
-      display: grid;
-      grid-template-columns: repeat(4, auto);
-      grid-template-rows: repeat(4, auto);
-
-      @media (max-width: 850px) {
-        grid - template - columns: repeat(3, auto);
-      grid-template-rows: repeat(3, auto);
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-template-rows: repeat(4, auto);
+  @media (max-width: 850px) {
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
   }
-
-      @media (max-width: 650px) {
-        grid - template - columns: repeat(2, auto);
-      grid-template-rows: repeat(2, auto);
+  @media (max-width: 650px) {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
   }
-      `;
+`;
 
 function getTickerObjects() {
   return [
