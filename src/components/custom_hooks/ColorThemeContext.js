@@ -11,7 +11,8 @@ export const COLORS = {
     darkRed: "darkred",
     red: "#B80662",
     black: "#23262E",
-    white: "#C6C6C6"
+    white: "#C6C6C6",
+    pureWhite: "white"
   },
   darkMode: {
     blue: "#00E8C5",
@@ -23,7 +24,8 @@ export const COLORS = {
     darkRed: "darkred",
     red: "#B80662",
     black: "#23262E",
-    white: "#C6C6C6"
+    white: "#C6C6C6",
+    pureWhite: "white"
   },
 };
 

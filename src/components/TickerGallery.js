@@ -57,11 +57,13 @@ function TickerGallery() {
         const failedTickers = tickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
           setPopupEnabled(true);
+          dragAndDropHandlers.setAllowDragAndDrop(false);
           console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
+        } else {
+          dragAndDropHandlers.setAllowDragAndDrop(true);
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
-        dragAndDropHandlers.setAllowDragAndDrop(true);
       })
     }, timeoutDelay);
 
@@ -111,10 +113,6 @@ function TickerGallery() {
 
   return (
     <>
-      {popupEnabled &&
-        <Popup />
-      }
-
       <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
         <GridContainer>
@@ -138,6 +136,10 @@ function TickerGallery() {
         </GridContainer>
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
+
+      {popupEnabled &&
+        <Popup />
+      }
     </>
   );
 }

@@ -19,8 +19,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     priceDifference = "+" + priceDifference;
   }
 
-  console.log(allowDragAndDrop);
-
   return (
     <Container
       draggable={allowDragAndDrop}
@@ -68,7 +66,7 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
-  cursor: ${props => props.draggable ? "move" : "pointer"};
+  cursor: ${props => props.draggable ? "move" : ""};
   
   ${props => props.beingDragged && css`
     opacity: 0.3;

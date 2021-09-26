@@ -92,7 +92,7 @@ const Button = styled.button`
   width: 4rem;
   height: 4rem;
   background-color: ${props => props.colors.blue};
-  color: white;
+  color: ${props => props.colors.pureWhite};
   font-size: 2em;
   margin: 0 1rem 0 0;
 `;
