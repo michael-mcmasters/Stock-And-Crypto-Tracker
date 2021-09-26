@@ -2,13 +2,24 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Popup = ({ handlePopupClick }) => {
+const Popup = ({ handlePopupClick, failedToFetchTickers }) => {
   const COLORS = useContext(ColorThemeContext);
+
+  let failedTickersStr = "";
+  if (failedToFetchTickers.length === 1) {
+    failedTickersStr = failedToFetchTickers[0];
+  } else if (failedToFetchTickers.length === 2) {
+    failedTickersStr = `${failedToFetchTickers[0]} and ${failedToFetchTickers[1]}`;
+  } else if (failedToFetchTickers.length >= 3) {
+    const lastTicker = failedToFetchTickers.pop();    // ToDo: Need to test this condition. Didn't see it working.
+    failedTickersStr = failedToFetchTickers.join(", ");
+    failedTickersStr += `and ${lastTicker}`;
+  }
 
   return (
     <Container colors={COLORS}>
       <Text colors={COLORS}>
-        Sorry, unable to fetch that ticker.
+        Sorry, unable to fetch {failedTickersStr}.
       </Text>
       <Button colors={COLORS} onClick={handlePopupClick}>
         Okay
@@ -33,7 +44,7 @@ const Container = styled.div`
 `;
 
 const Text = styled.p`
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.1rem 0;
   font-size: 1.3rem;
   color: ${props => props.colors.pureWhite};
 `;

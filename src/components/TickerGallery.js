@@ -20,7 +20,7 @@ function TickerGallery() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
-  const [popupEnabled, setPopupEnabled] = useState(false);
+  const [failedToFetchTickers, setFailedtoFetchTickers] = useState([]);
 
 
   const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
@@ -56,8 +56,8 @@ function TickerGallery() {
         const fetchedTickers = tickers.filter(t => t.loading === false);
         const failedTickers = tickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
-          setPopupEnabled(true);
-          dragAndDropHandlers.setAllowDragAndDrop(false);
+          setFailedtoFetchTickers(failedTickers.map(t => t.tickerName));
+          dragAndDropHandlers.setAllowDragAndDrop(false);   // ToDo: Don't worry about this. If user clicks screen away from popup, just disable the popup.
           console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
         } else {
           dragAndDropHandlers.setAllowDragAndDrop(true);
@@ -111,7 +111,7 @@ function TickerGallery() {
   };
 
   const handlePopupClick = () => {
-    setPopupEnabled(false);
+    setFailedtoFetchTickers([]);
     dragAndDropHandlers.setAllowDragAndDrop(true);
   }
 
@@ -132,7 +132,7 @@ function TickerGallery() {
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
-              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
+              allowDragAndDrop={failedToFetchTickers.length == 0 && dragAndDropGetters.getAllowDragAndDrop()}   // First condition is because user could drag when popup was enabled once tickers refreshed once.
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
               swapped={dragAndDropGetters.getSwapped(index)}
@@ -142,8 +142,8 @@ function TickerGallery() {
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
 
-      {popupEnabled &&
-        <Popup handlePopupClick={handlePopupClick} />
+      {failedToFetchTickers.length > 0 &&
+        <Popup handlePopupClick={handlePopupClick} failedToFetchTickers={failedToFetchTickers} />
       }
     </>
   );
