@@ -23,21 +23,26 @@ const Container = styled.div`
   top: 25%;
   transform: translateX(-50%);
   -webkit-transform:translateX(-50%);
-  border: 1px solid red;
+  padding: 1rem 1.3rem;
+  border: 2px solid ${props => props.colors.darkPurple};
   border-radius: 10px;
-  padding: 1rem;
+  box-shadow: 15px 15px 10px rgba(0, 0, 0, 0.8);
   background-color: ${props => props.colors.purple};
   z-index: 1;
   cursor: pointer;
 `;
 
 const Text = styled.p`
-  
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  color: ${props => props.colors.pureWhite};
 `;
 
 const Button = styled.button`
   display: block;
+  font-size: 1.1rem;
   margin-left: auto;
+  padding: 0.4rem 0.7rem;
   border: none;
   border-radius: 10px;
   background-color: ${props => props.colors.blue};
