@@ -20,7 +20,7 @@ function TickerGallery() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
-  const [popupEnabled, setPopupEnabled] = useState(true);
+  const [popupEnabled, setPopupEnabled] = useState(false);
 
 
   const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
@@ -110,6 +110,11 @@ function TickerGallery() {
     dragAndDropHandlers.setAllowDragAndDrop(false);
   };
 
+  const handlePopupClick = () => {
+    setPopupEnabled(false);
+    dragAndDropHandlers.setAllowDragAndDrop(true);
+  }
+
 
   return (
     <>
@@ -138,7 +143,7 @@ function TickerGallery() {
       </Container>
 
       {popupEnabled &&
-        <Popup />
+        <Popup handlePopupClick={handlePopupClick} />
       }
     </>
   );

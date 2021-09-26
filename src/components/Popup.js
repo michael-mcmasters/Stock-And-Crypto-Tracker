@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Popup = () => {
+const Popup = ({ handlePopupClick }) => {
   const COLORS = useContext(ColorThemeContext);
 
   return (
@@ -10,7 +10,7 @@ const Popup = () => {
       <Text colors={COLORS}>
         Sorry, unable to fetch that ticker.
       </Text>
-      <Button colors={COLORS}>
+      <Button colors={COLORS} onClick={handlePopupClick}>
         Okay
       </Button>
     </Container>
@@ -37,7 +37,6 @@ const Text = styled.p`
 
 const Button = styled.button`
   display: block;
-  /* margin: 0.5em; */
   margin-left: auto;
   border: none;
   border-radius: 10px;

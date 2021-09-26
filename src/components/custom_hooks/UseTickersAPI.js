@@ -25,7 +25,7 @@ const UseTickersAPI = () => {
     await randomDelay();
 
     /* Uncomment next line to simulate a failed fetch */
-    // if (ticker.tickerName === "ABC") throw "Failed to fetch ticker.tickerName"
+    if (ticker.tickerName === "BAD") throw "Failed to fetch ticker.tickerName"
 
     const prevPrice = ticker.currentPrice;
     ticker.currentPrice = (Math.random() * 10).toFixed(6);
