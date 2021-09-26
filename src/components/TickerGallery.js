@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
-import AddTickerInputField from "./AddTickerInputField";
+import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
+import AddTickerInputField from "./AddTickerInputField";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 
@@ -19,6 +20,7 @@ function TickerGallery() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
+  const [popupEnabled, setPopupEnabled] = useState(true);
 
 
   const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
@@ -53,9 +55,10 @@ function TickerGallery() {
         if (cancelFetch) return;
         const fetchedTickers = tickers.filter(t => t.loading === false);
         const failedTickers = tickers.filter(t => t.loading === true);
-        if (failedTickers.length > 0)
+        if (failedTickers.length > 0) {
+          setPopupEnabled(true);
           console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
-
+        }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
         dragAndDropHandlers.setAllowDragAndDrop(true);
@@ -108,6 +111,10 @@ function TickerGallery() {
 
   return (
     <>
+      {popupEnabled &&
+        <Popup />
+      }
+
       <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
         <GridContainer>
@@ -136,25 +143,25 @@ function TickerGallery() {
 }
 
 const Container = styled.div`
-  width: min-content;
-  margin: 0 auto;
-`;
+      width: min-content;
+      margin: 0 auto;
+      `;
 
 const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  grid-template-rows: repeat(4, auto);
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      grid-template-rows: repeat(4, auto);
 
-  @media (max-width: 850px) {
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(3, auto);
+      @media (max-width: 850px) {
+        grid - template - columns: repeat(3, auto);
+      grid-template-rows: repeat(3, auto);
   }
 
-  @media (max-width: 650px) {
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(2, auto);
+      @media (max-width: 650px) {
+        grid - template - columns: repeat(2, auto);
+      grid-template-rows: repeat(2, auto);
   }
-`;
+      `;
 
 function getTickerObjects() {
   return [
