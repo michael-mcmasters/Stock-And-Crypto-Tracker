@@ -143,7 +143,7 @@ function TickerGallery() {
       </Container>
 
       {failedToFetchTickers.length > 0 &&
-        <Popup handleClickOK={handlePopupClickOK} failedToFetchTickers={failedToFetchTickers} />
+        <Popup handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} failedToFetchTickers={failedToFetchTickers} />
       }
     </>
   );

@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Popup = ({ handleClickOK, failedToFetchTickers }) => {
+const Popup = ({ handleClickOK, handleClickCancel, failedToFetchTickers }) => {
+
   const COLORS = useContext(ColorThemeContext);
   const popupElement = useRef();
 
@@ -10,12 +11,17 @@ const Popup = ({ handleClickOK, failedToFetchTickers }) => {
     const handleClick = (event) => {
       const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
       if (clickedOutsidePopup(event)) {
-        handleClickOK();
+        handleClickCancel();
       }
     }
     const handleKeydown = (event) => {
-      if (event.keyCode === 27 || event.keyCode === 13) {   // escape and enter keys
-        handleClickOK();
+      switch (event.keyCode) {
+        case 13:                  // Enter key
+          handleClickOK();
+          break;
+        case 27:                  // Escape key
+          handleClickCancel();
+          break;
       }
     }
     document.addEventListener("click", handleClick);
