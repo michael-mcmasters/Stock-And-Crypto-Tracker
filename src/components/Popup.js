@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useContext } from 'react';
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
 const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
@@ -50,6 +50,18 @@ const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
   );
 };
 
+const BackgroundEnabledAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+`;
+
+const PopupEnabledAnimation = keyframes`
+  0% {
+    padding: 0rem;
+  }
+`;
+
 const Background = styled.div`
   position: fixed;
   top: 0;
@@ -58,6 +70,9 @@ const Background = styled.div`
   background-color: black;
   opacity: 0.35;
   z-index: 1;
+  
+  animation-name: ${BackgroundEnabledAnimation};
+  animation-duration: 0.8s;
 `;
 
 const Container = styled.div`
@@ -73,6 +88,9 @@ const Container = styled.div`
   background-color: ${props => props.colors.purple};
   z-index: 1;
   cursor: pointer;
+  
+  animation-name: ${PopupEnabledAnimation};
+  animation-duration: 0.8s;
 `;
 
 const Text = styled.p`
