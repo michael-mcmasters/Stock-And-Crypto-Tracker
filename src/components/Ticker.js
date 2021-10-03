@@ -41,7 +41,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         <ClipLoader />
       ) : (
         <>
-          <Price>{loading ? '?' : '$' + price}</Price>
+          <Price>{'$' + price}</Price>
           <PriceChange>
             {priceDifference} ({percentage}%)
           </PriceChange>
