@@ -7,15 +7,24 @@ const Popup = ({ handleClickOK, failedToFetchTickers }) => {
   const popupElement = useRef();
 
   useEffect(() => {
-    const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
     const handleClick = (event) => {
+      const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
       if (clickedOutsidePopup(event)) {
         handleClickOK();
       }
     }
+    const handleKeydown = (event) => {
+      if (event.keyCode === 27 || event.keyCode === 13) {   // escape and enter keys
+        handleClickOK();
+      }
+    }
     document.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKeydown);
 
-    return () => document.removeEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKeydown);
+    }
   }, [handleClickOK])
 
   let failedTickersStr = "";
