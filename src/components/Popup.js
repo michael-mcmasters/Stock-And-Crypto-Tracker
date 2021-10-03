@@ -72,7 +72,7 @@ const Background = styled.div`
   z-index: 1;
   
   animation-name: ${BackgroundEnabledAnimation};
-  animation-duration: 0.8s;
+  animation-duration: 0.5s;
 `;
 
 const Container = styled.div`
@@ -90,7 +90,7 @@ const Container = styled.div`
   cursor: pointer;
   
   animation-name: ${PopupEnabledAnimation};
-  animation-duration: 0.8s;
+  animation-duration: 0.5s;
 `;
 
 const Text = styled.p`
