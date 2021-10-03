@@ -1,25 +1,44 @@
 import { detect } from 'detect-browser';
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import styled, { css } from "styled-components"
 import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
 
 const AddTickerInputField = ({ handleAddTicker }) => {
   const browser = detect();
   const colors = useContext(ColorThemeContext);
-  const [tickerName, setTickerName] = useState('');
+
+  const inputElement = useRef();
+  const [tickerName, setTickerName] = useState("");
   const [tickerType, setTickerType] = useState('stock');
 
-  const handleOnClick = (tickerInput, typeInput) => {
-    if (tickerInput == null || typeInput == null || tickerInput == "" || typeInput == null)
+  useEffect(() => {
+    const handleKeydown = (event) => {
+      if (event.keyCode === 13 && tickerName !== '') {    // Enter Key
+        handleAddTicker(tickerName, tickerType);
+        setTickerName("");
+        inputElement.current.blur();
+      }
+      else if (event.keyCode === 27) {                    // Escape Key
+        setTickerName("");
+        inputElement.current.blur();
+      }
+    }
+    document.addEventListener("keydown", handleKeydown);
+
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, [handleAddTicker, tickerName, tickerType])
+
+  const handleOnClick = (inputtedTicker, inputtedType) => {
+    if (inputtedTicker === null || inputtedType === null || inputtedTicker === "" || inputtedType === null)
       return;
+    handleAddTicker(inputtedTicker, inputtedType);
     setTickerName("");
-    handleAddTicker(tickerInput.toUpperCase(), typeInput);
   }
 
   return (
     <Container>
       <InputContainer>
-        <Input browser={browser} colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value.toUpperCase())}></Input>
+        <Input ref={inputElement} browser={browser} colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value.toUpperCase())}></Input>
         <Select browser={browser} onChange={e => setTickerType(e.target.value)}>
           <option value="stock">Stock</option>
           <option value="crypto">Crypto</option>
@@ -82,8 +101,8 @@ const Select = styled.select`
   padding-left: 0.4rem;
   border: none;
   border-radius: 0 7px 7px 0;
-  width: ${(props) => (props.browser.name == "safari" ? "3.5rem" : "")};
-  -webkit-appearance: ${(props) => (props.browser.name == "safari" ? "none" : "")};
+  width: ${(props) => (props.browser.name === "safari" ? "3.5rem" : "")};
+  -webkit-appearance: ${(props) => (props.browser.name === "safari" ? "none" : "")};
 `;
 
 const Button = styled.button`

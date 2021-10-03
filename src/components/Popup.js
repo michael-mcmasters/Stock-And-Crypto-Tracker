@@ -8,6 +8,10 @@ const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
   const popupElement = useRef();
 
   useEffect(() => {
+    popupElement.current.focus();
+  }, []);
+
+  useEffect(() => {
     const handleMouseDown = (event) => {
       const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
       if (clickedOutsidePopup(event)) {
