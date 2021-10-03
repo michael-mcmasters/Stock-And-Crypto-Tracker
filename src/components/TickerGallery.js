@@ -52,13 +52,14 @@ function TickerGallery() {
 
       const fetchPricePromises = createFetchPromises();
       Promise.all(fetchPricePromises).then(tickers => {
-        if (cancelFetch) return;
+        if (cancelFetch) {
+          return;
+        }
         const fetchedTickers = tickers.filter(t => t.loading === false);
         const failedTickers = tickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
           setFailedtoFetchTickers(failedTickers.map(t => t.tickerName));
-          dragAndDropHandlers.setAllowDragAndDrop(false);   // ToDo: Don't worry about this. If user clicks screen away from popup, just disable the popup.
-          console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));   // ToDo: Have popup notify these tickers.
+          console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));
         } else {
           dragAndDropHandlers.setAllowDragAndDrop(true);
         }
@@ -110,9 +111,8 @@ function TickerGallery() {
     dragAndDropHandlers.setAllowDragAndDrop(false);
   };
 
-  const handlePopupClick = () => {
+  const handlePopupClickOK = () => {
     setFailedtoFetchTickers([]);
-    dragAndDropHandlers.setAllowDragAndDrop(true);
   }
 
 
@@ -132,7 +132,7 @@ function TickerGallery() {
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
               dragAndDropHandlers={dragAndDropHandlers}
-              allowDragAndDrop={failedToFetchTickers.length == 0 && dragAndDropGetters.getAllowDragAndDrop()}   // First condition is because user could drag when popup was enabled once tickers refreshed once.
+              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
               hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
               swapped={dragAndDropGetters.getSwapped(index)}
@@ -143,7 +143,7 @@ function TickerGallery() {
       </Container>
 
       {failedToFetchTickers.length > 0 &&
-        <Popup handlePopupClick={handlePopupClick} failedToFetchTickers={failedToFetchTickers} />
+        <Popup handleClickOK={handlePopupClickOK} failedToFetchTickers={failedToFetchTickers} />
       }
     </>
   );

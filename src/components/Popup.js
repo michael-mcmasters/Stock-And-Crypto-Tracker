@@ -1,9 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 
-const Popup = ({ handlePopupClick, failedToFetchTickers }) => {
+const Popup = ({ handleClickOK, failedToFetchTickers }) => {
   const COLORS = useContext(ColorThemeContext);
+  const popupElement = useRef();
+
+  useEffect(() => {
+    const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
+    const handleClick = (event) => {
+      if (clickedOutsidePopup(event)) {
+        handleClickOK();
+      }
+    }
+    document.addEventListener("click", handleClick);
+
+    return () => document.removeEventListener("click", handleClick);
+  }, [handleClickOK])
 
   let failedTickersStr = "";
   if (failedToFetchTickers.length === 1) {
@@ -17,11 +30,11 @@ const Popup = ({ handlePopupClick, failedToFetchTickers }) => {
   }
 
   return (
-    <Container colors={COLORS}>
+    <Container ref={popupElement} colors={COLORS}>
       <Text colors={COLORS}>
         Sorry, unable to fetch {failedTickersStr}.
       </Text>
-      <Button colors={COLORS} onClick={handlePopupClick}>
+      <Button colors={COLORS} onClick={handleClickOK}>
         Okay
       </Button>
     </Container>
