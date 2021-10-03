@@ -19,7 +19,7 @@ const AddTickerInputField = ({ handleAddTicker }) => {
   return (
     <Container>
       <InputContainer>
-        <Input browser={browser} colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value)}></Input>
+        <Input browser={browser} colors={colors} placeholder={"Ticker..."} value={tickerName} onInput={e => setTickerName(e.target.value.toUpperCase())}></Input>
         <Select browser={browser} onChange={e => setTickerType(e.target.value)}>
           <option value="stock">Stock</option>
           <option value="crypto">Crypto</option>
