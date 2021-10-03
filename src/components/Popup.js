@@ -35,16 +35,30 @@ const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
 
 
   return (
-    <Container ref={popupElement} colors={COLORS}>
-      <Text colors={COLORS}>
-        {errorMessage}
-      </Text>
-      <Button colors={COLORS} onClick={handleClickOK}>
-        Okay
-      </Button>
-    </Container>
+    <>
+      <Background />
+
+      <Container ref={popupElement} colors={COLORS}>
+        <Text colors={COLORS}>
+          {errorMessage}
+        </Text>
+        <Button colors={COLORS} onClick={handleClickOK}>
+          Okay
+        </Button>
+      </Container>
+    </>
   );
 };
+
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  opacity: 0.35;
+  z-index: 1;
+`;
 
 const Container = styled.div`
   position: fixed;
