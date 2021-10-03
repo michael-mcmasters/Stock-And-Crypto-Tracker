@@ -8,7 +8,7 @@ const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
   const popupElement = useRef();
 
   useEffect(() => {
-    const handleClick = (event) => {
+    const handleMouseDown = (event) => {
       const clickedOutsidePopup = (event) => popupElement.current !== null && !popupElement.current.contains(event.target);
       if (clickedOutsidePopup(event)) {
         handleClickCancel();
@@ -24,11 +24,11 @@ const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
           break;
       }
     }
-    document.addEventListener("click", handleClick);
+    document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("keydown", handleKeydown);
 
     return () => {
-      document.removeEventListener("click", handleClick);
+      document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("keydown", handleKeydown);
     }
   }, [handleClickOK])
