@@ -59,12 +59,10 @@ function TickerGallery() {
         const failedTickers = tickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
           setFailedtoFetchTickers(failedTickers.map(t => t.tickerName));
-          console.log("Was unable to find " + failedTickers.forEach(t => t.tickerName));
-        } else {
-          dragAndDropHandlers.setAllowDragAndDrop(true);
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
+        dragAndDropHandlers.setAllowDragAndDrop(true);
       })
     }, timeoutDelay);
 
@@ -111,6 +109,22 @@ function TickerGallery() {
     dragAndDropHandlers.setAllowDragAndDrop(false);
   };
 
+  const getPopupErrorMessage = (failedToFetchTickers) => {
+    let errorMessage = "";
+    switch (failedToFetchTickers.length) {
+      case 1:
+        errorMessage = `Unable to fetch the price of ${failedToFetchTickers[0]}`;
+        break;
+      case 2:
+        errorMessage = `Unable to fetch the prices of ${failedToFetchTickers[0]} and ${failedToFetchTickers[1]}`;
+        break;
+      case 3:
+        errorMessage = `Unable to fetch the prices of the most recently added tickers.`;
+        break;
+    }
+    return errorMessage;
+  }
+
   const handlePopupClickOK = () => {
     setFailedtoFetchTickers([]);
   }
@@ -143,7 +157,7 @@ function TickerGallery() {
       </Container>
 
       {failedToFetchTickers.length > 0 &&
-        <Popup handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} failedToFetchTickers={failedToFetchTickers} />
+        <Popup errorMessage={getPopupErrorMessage(failedToFetchTickers)} handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} />
       }
     </>
   );
