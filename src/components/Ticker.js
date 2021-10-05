@@ -60,11 +60,22 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   );
 };
 
+const ShakeAnimation = keyframes`
+  /* 25% { margin-left: 3rem; }
+  75% { margin-right: 3rem; } */
+  25% { transform: rotate(1deg) }
+  75% { transform: rotate(-1deg) }
+`;
+
 const FlashYellowAnimation = keyframes`
   50% { background-color: yellow; }
 `;
 
 const Container = styled.div`
+  animation-name: ${ShakeAnimation};
+  animation-duration: 0.3s;
+  animation-iteration-count:infinite;
+
   position: relative;
   margin: 1em 1em;
   padding: 1em 0;
@@ -134,14 +145,14 @@ const XButton = styled.button`
   border: 1px solid ${props => props.colors.darkRed};
   cursor: pointer;
   
-  visibility: hidden;
+  /* visibility: hidden;
   opacity: 0;
   ${props => props.showXButton == true && css`
     visibility: visible;
     opacity: 1;
     box-shadow: -1px 1px;
     /* transition: visibility 0s, opacity 0.2s linear; */
-  `}
+  `} */
 `;
 
 // const XButton = styled.div`
