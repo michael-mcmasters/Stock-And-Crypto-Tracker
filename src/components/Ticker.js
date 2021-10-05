@@ -37,15 +37,15 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       swapped={swapped}
     >
 
-
       <XButton
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showXButton}
-        onClick={() => console.log("clicked")}    // doesn't work
+        onClick={() => console.log("clicked")}
       >
         &#x2715;
       </XButton>
+
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
@@ -106,6 +106,7 @@ const HitBox = styled.div`
   bottom: -1em;
   left: -1.3em;
   z-index: 1;
+  pointer-events: none;
 `;
 
 const DropIndicator = styled.div`
