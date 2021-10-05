@@ -7,6 +7,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
+  const [showXButton, setShowXButton] = useState(false);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
 
   let bgColor, fontColor;
@@ -22,6 +23,8 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   return (
     <Container
       draggable={allowDragAndDrop}
+      onMouseEnter={() => setShowXButton(true)}
+      onMouseLeave={() => setShowXButton(false)}
       onDragStart={() => handleDragStart(index)}
       onDragEnd={() => handleDragEnd(index)}
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
@@ -31,6 +34,8 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       beingDragged={beingDragged}
       swapped={swapped}
     >
+
+      <XButton showXButton={showXButton}>&#x2715;</XButton>
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
@@ -111,6 +116,32 @@ const Price = styled.div`
 const PriceChange = styled.div`
   margin-top: 0.2rem;
   font-size: 0.9rem;
+`;
+
+// const XButton = styled.div`
+//   position: absolute;
+//   top: -0.7rem;
+//   left: 9rem;
+//   padding: 1rem;
+//   border-radius: 9999px;
+//   background-color: orange;
+//   transition: all 0.2s;
+// `;
+
+const XButton = styled.div`
+  position: absolute;
+  top: -0.7rem;
+  left: 0;
+  padding: 1rem;
+  border-radius: 9999px;
+  
+  visibility: hidden;
+  opacity: 0;
+  ${props => props.showXButton == true && css`
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.2s linear;
+  `}
 `;
 
 export default Ticker;
