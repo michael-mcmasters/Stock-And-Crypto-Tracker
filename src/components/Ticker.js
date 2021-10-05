@@ -22,12 +22,14 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   return (
     <Container
-      draggable={allowDragAndDrop}
       onMouseEnter={() => setShowXButton(true)}
       onMouseLeave={() => setShowXButton(false)}
-      onDragStart={() => handleDragStart(index)}
+
+      draggable={allowDragAndDrop}
+      onDragStart={() => { setShowXButton(false); handleDragStart(index); }}
       onDragEnd={() => handleDragEnd(index)}
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
+
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
@@ -35,7 +37,8 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       swapped={swapped}
     >
 
-      <XButton showXButton={showXButton}>&#x2715;</XButton>
+
+      <XButton colors={COLORS} showXButton={showXButton}>&#x2715;</XButton>
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
       <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
@@ -118,30 +121,43 @@ const PriceChange = styled.div`
   font-size: 0.9rem;
 `;
 
-// const XButton = styled.div`
-//   position: absolute;
-//   top: -0.7rem;
-//   left: 9rem;
-//   padding: 1rem;
-//   border-radius: 9999px;
-//   background-color: orange;
-//   transition: all 0.2s;
-// `;
-
-const XButton = styled.div`
+const XButton = styled.button`
   position: absolute;
-  top: -0.7rem;
-  left: 0;
-  padding: 1rem;
+  top: -0.5rem;
+  left: 9rem;
+  border: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
   border-radius: 9999px;
+  background-color: ${props => props.colors.red};
+  border: 1px solid ${props => props.colors.darkRed};
+  cursor: pointer;
   
   visibility: hidden;
   opacity: 0;
   ${props => props.showXButton == true && css`
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s, opacity 0.2s linear;
+    box-shadow: -1px 1px;
+    /* transition: visibility 0s, opacity 0.2s linear; */
   `}
 `;
+
+// const XButton = styled.div`
+//   position: absolute;
+//   top: -0.7rem;
+//   left: 0;
+//   padding: 1rem;
+//   border-radius: 9999px;
+
+//   visibility: hidden;
+//   opacity: 0;
+//   ${props => props.showXButton == true && css`
+//     visibility: visible;
+//     opacity: 1;
+//     transition: visibility 0s, opacity 0.2s linear;
+//   `}
+// `;
 
 export default Ticker;
