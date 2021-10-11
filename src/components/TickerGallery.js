@@ -7,6 +7,7 @@ import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
+import deepCopy from "./utils/DeepCopy";
 
 
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
@@ -21,9 +22,6 @@ function TickerGallery() {
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
   const [failedToFetchTickers, setFailedtoFetchTickers] = useState([]);
-
-
-  const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
 
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
