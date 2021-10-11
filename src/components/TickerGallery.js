@@ -39,7 +39,7 @@ function TickerGallery() {
       }))
     }
     return fetchPricePromises;
-  })
+  }, [fetchPrice, tickersArr])
   
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
