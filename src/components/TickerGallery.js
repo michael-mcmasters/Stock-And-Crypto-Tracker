@@ -21,7 +21,7 @@ function TickerGallery() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
-  const [failedToFetchTickers, setFailedtoFetchTickers] = useState([]);
+  const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
 
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
@@ -56,7 +56,7 @@ function TickerGallery() {
         const fetchedTickers = tickers.filter(t => t.loading === false);
         const failedTickers = tickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
-          setFailedtoFetchTickers(failedTickers.map(t => t.tickerName));
+          setTickersFailedToFetch(failedTickers.map(t => t.tickerName));
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
@@ -124,7 +124,7 @@ function TickerGallery() {
   }
 
   const handlePopupClickOK = () => {
-    setFailedtoFetchTickers([]);
+    setTickersFailedToFetch([]);
   }
 
 
@@ -154,8 +154,8 @@ function TickerGallery() {
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
 
-      {failedToFetchTickers.length > 0 &&
-        <Popup errorMessage={getPopupErrorMessage(failedToFetchTickers)} handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} />
+      {tickersFailedToFetch.length > 0 &&
+        <Popup errorMessage={getPopupErrorMessage(tickersFailedToFetch)} handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} />
       }
     </>
   );
