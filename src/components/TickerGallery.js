@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
 import Popup from './Popup';
@@ -23,38 +23,37 @@ function TickerGallery() {
   const [fetchImmediately, setFetchImmediately] = useState(true);
   const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
 
+  
+  const createFetchPromises = useCallback(() => {
+    let tickersArrCopy = deepCopy(tickersArr);
+    let fetchPricePromises = [];
+    for (let i = 0; i < tickersArr.length; i++) {
+      fetchPricePromises.push(new Promise(async (resolve, reject) => {
+        try {
+          tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
+          tickersArrCopy[i].loading = false;
+          resolve(tickersArrCopy[i]);
+        } catch (exc) {
+          resolve(tickersArrCopy[i]);
+        }
+      }))
+    }
+    return fetchPricePromises;
+  })
+  
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
-    const createFetchPromises = () => {
-      let tickersArrCopy = deepCopy(tickersArr);
-      let fetchPricePromises = [];
-      for (let i = 0; i < tickersArr.length; i++) {
-        fetchPricePromises.push(new Promise(async (resolve, reject) => {
-          try {
-            tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
-            tickersArrCopy[i].loading = false;
-            resolve(tickersArrCopy[i]);
-          } catch (exc) {
-            resolve(tickersArrCopy[i]);
-          }
-        }))
-      }
-      return fetchPricePromises;
-    }
-
     setTimeout(() => {
       if (cancelFetch) return;
 
-      const fetchPricePromises = createFetchPromises();
-      Promise.all(fetchPricePromises).then(tickers => {
-        if (cancelFetch) {
-          return;
-        }
-        const fetchedTickers = tickers.filter(t => t.loading === false);
-        const failedTickers = tickers.filter(t => t.loading === true);
+      Promise.all(createFetchPromises()).then(resolvedTickers => {
+        if (cancelFetch) return;
+        
+        const fetchedTickers = resolvedTickers.filter(t => t.loading === false);
+        const failedTickers = resolvedTickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
           setTickersFailedToFetch(failedTickers.map(t => t.tickerName));
         }
