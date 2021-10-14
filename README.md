@@ -17,6 +17,6 @@ npm install
 npm start
 ```
 
-To see real-time data, go to src/components/TickerGallery.js and set DEBUG_USE_FAKE_PRICES to false.
+To see real-time data, go to [src/components/custom_hooks/UseTickersAPI.js](https://github.com/michael-mcmasters/Stock-And-Crypto-Tracker/blob/master/src/components/custom_hooks/UseTickersAPI.js) and set DEBUG_USE_FAKE_PRICES to false.
 
 Then clone the [Spring back-end](https://github.com/michael-mcmasters/Stock-And-Crypto-Backend-WebScraper) and run it locally on port 8080 (the default for Spring applications). The back end will scrape the web for the real time prices.
