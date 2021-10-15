@@ -1,6 +1,8 @@
-## Stock-And-Crypto-Tracker
+## Stock-And-Crypto-Tracker (Front end)
 
-A full stack web application that shows real-time prices of various stocks and cryptocurrencies. It does this by making GET requests to the [Spring back end](https://github.com/michael-mcmasters/Stock-And-Crypto-Backend-WebScraper) every 5 seconds, which web scrapes various websites to return the ticker's current and historic prices. The user can add or remove any ticker they wish to see.
+[View the backend here](https://github.com/michael-mcmasters/Stock-And-Crypto-Backend-WebScraper).
+
+A full stack web application that shows real-time prices of various stocks and cryptocurrencies. It does this by making GET requests to the [Spring back end](https://github.com/michael-mcmasters/Stock-And-Crypto-Backend-WebScraper) every 5 seconds, which web scrapes various websites to return the ticker's current and historic prices. The user can add or remove any ticker and can drag and drop them around.
 <br>
 <br>
 This application is a work in progress.
