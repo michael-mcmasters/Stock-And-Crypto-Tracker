@@ -8,6 +8,7 @@ import AddTickerInputField from "./AddTickerInputField";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 import deepCopy from "./utils/DeepCopy";
+import generateKey from "./utils/KeyGenerator"
 
 
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
@@ -73,6 +74,7 @@ function TickerGallery() {
 
     let tickersArrCopy = deepCopy(tickersArr);
     tickersArrCopy.push({
+      key: generateKey(),
       tickerName: name,
       type: type,
       loading: true,
@@ -187,7 +189,7 @@ const GridContainer = styled.div`
 function getTickerObjects() {
   return [
     {
-      key: 0,
+      key: generateKey(),
       tickerName: "TWTR",
       type: "stock",
       loading: true,
@@ -216,7 +218,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 1,
+      key: generateKey(),
       tickerName: "AAPL",
       type: "stock",
       loading: true,
@@ -245,7 +247,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 2,
+      key: generateKey(),
       tickerName: "BOTZ",
       type: "stock",
       loading: true,
@@ -274,7 +276,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 3,
+      key: generateKey(),
       tickerName: "AMZN",
       type: "stock",
       loading: true,
@@ -303,7 +305,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 4,
+      key: generateKey(),
       tickerName: "BTC",
       type: "crypto",
       loading: true,
@@ -332,7 +334,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 5,
+      key: generateKey(),
       tickerName: "ETH",
       type: "crypto",
       loading: true,
@@ -361,7 +363,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 6,
+      key: generateKey(),
       tickerName: "DOGE",
       type: "crypto",
       loading: true,
@@ -390,7 +392,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 7,
+      key: generateKey(),
       tickerName: "GOOGL",
       type: "stock",
       loading: true,
@@ -419,7 +421,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 8,
+      key: generateKey(),
       tickerName: "TSLA",
       type: "stock",
       loading: true,
@@ -448,7 +450,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 9,
+      key: generateKey(),
       tickerName: "UBER",
       type: "stock",
       loading: true,
@@ -477,7 +479,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 10,
+      key: generateKey(),
       tickerName: "LYFT",
       type: "stock",
       loading: true,
@@ -506,7 +508,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 11,
+      key: generateKey(),
       tickerName: "VTSAX",
       type: "stock",
       loading: true,
