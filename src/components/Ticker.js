@@ -30,7 +30,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   return (
     <Container
-      onMouseEnter={() => setShowXButton(true)}
+      onMouseEnter={() => loading ? "" : setShowXButton(true)}
       onMouseLeave={() => setShowXButton(false)}
 
       draggable={allowDragAndDrop}
