@@ -138,7 +138,7 @@ function TickerGallery() {
         <GridContainer>
           {tickersArr.map((t, index) => (
             <Ticker
-              key={index}
+              key={t.key}
               index={index}
               tickerName={t.tickerName}
               type={t.type}
