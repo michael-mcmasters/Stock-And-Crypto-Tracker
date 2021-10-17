@@ -106,7 +106,6 @@ const HitBox = styled.div`
   bottom: -1em;
   left: -1.3em;
   z-index: 1;
-  pointer-events: none;
 `;
 
 const DropIndicator = styled.div`
@@ -162,6 +161,7 @@ const XButton = styled.button`
   background-color: transparent;
   color: ${props => props.fontColor};
   cursor: pointer;
+  z-index: 2;
 
   visibility: hidden;
   opacity: 0;
