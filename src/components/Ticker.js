@@ -13,7 +13,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   const COLORS = useContext(ColorThemeContext);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
-  const [ showXButton, setShowXButton ] = useState(isMobile ? true : false);
+  const [ showDeleteButton, setShowDeleteButton ] = useState(isMobile ? true : false);
   const [ beingDeleted, setBeingDeleted ] = useState(false);
 
   const handleClickDelete = () => {
@@ -33,11 +33,11 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   return (
     <Container
-      onMouseEnter={() => setShowXButton(true)}
-      onMouseLeave={() => isMobile ? "" : setShowXButton(false)}
+      onMouseEnter={() => setShowDeleteButton(true)}
+      onMouseLeave={() => isMobile ? "" : setShowDeleteButton(false)}
 
       draggable={allowDragAndDrop}
-      onDragStart={() => { setShowXButton(false); handleDragStart(index); }}
+      onDragStart={() => { setShowDeleteButton(false); handleDragStart(index); }}
       onDragEnd={() => handleDragEnd(index)}
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
 
@@ -49,14 +49,14 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       swapped={swapped}
     >
 
-      <XButton
+      <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={showXButton}
+        showXButton={showDeleteButton}
         onClick={handleClickDelete}
       >
         &#x2715;
-      </XButton>
+      </DeleteButton>
 
 
       {/* Hitbox is used to detect other tickers being dragged over this ticker */}
@@ -149,30 +149,7 @@ const PriceChange = styled.div`
   font-size: 0.9rem;
 `;
 
-// const XButton = styled.button`
-//   position: absolute;
-//   top: -0.5rem;
-//   left: 9rem;
-//   border: none;
-//   width: 1.5rem;
-//   height: 1.5rem;
-//   font-size: 0.75rem;
-//   border-radius: 9999px;
-//   background-color: ${props => props.colors.red};
-//   border: 1px solid ${props => props.colors.darkRed};
-//   cursor: pointer;
-
-//   visibility: hidden;
-//   opacity: 0;
-//   ${props => props.showXButton == true && css`
-//     visibility: visible;
-//     opacity: 1;
-//     box-shadow: -1px 1px;
-//     /* transition: visibility 0s, opacity 0.2s linear; */
-//   `}
-// `;
-
-const XButton = styled.button`
+const DeleteButton = styled.button`
   position: absolute;
   top: -0.7rem;
   left: -0.4rem;
