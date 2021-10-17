@@ -7,8 +7,16 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
-  const [showXButton, setShowXButton] = useState(false);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
+  const [ showXButton, setShowXButton ] = useState(false);
+  const [ beingDeleted, setBeingDeleted ] = useState(false);
+  
+  const handleClickedDelete = () => {
+    if (loading) return;
+    
+    setTimeout(() => handleDeleteTicker(index), 300);
+    setBeingDeleted(true);
+  }
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -33,6 +41,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
+      beingDeleted={beingDeleted}
       beingDragged={beingDragged}
       swapped={swapped}
     >
@@ -41,7 +50,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showXButton}
-        onClick={() => handleDeleteTicker(index)}
+        onClick={handleClickedDelete}
       >
         &#x2715;
       </XButton>
@@ -71,6 +80,10 @@ const FlashYellowAnimation = keyframes`
   50% { background-color: yellow; }
 `;
 
+const DeletedAnimation = keyframes`
+  100% { opacity: 0; }
+`;
+
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
@@ -82,6 +95,11 @@ const Container = styled.div`
   background-color: ${(props) => props.bgColor};
   text-align: center;
   cursor: ${props => props.draggable ? "move" : ""};
+
+  ${props => props.beingDeleted && css`
+    animation-name: ${DeletedAnimation};
+    animation-duration: 0.3s;
+  `}
   
   ${props => props.beingDragged && css`
     opacity: 0.3;

@@ -106,6 +106,7 @@ function TickerGallery() {
   }
   
   const handleDeleteTicker = (index) => {
+    console.log('del ticic')
     setTickersArr(tickersArr.filter((t, ind) => ind !== index));
   }
 
