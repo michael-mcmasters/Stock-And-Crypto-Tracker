@@ -29,17 +29,22 @@ const DragAndDropWrapper = ({dragAndDropHandlers, dragAndDropGetters, render}) =
       
       
       
+      {/* Hitbox is used to detect other tickers being dragged over this ticker */ }
       {tickers.map((ticker, index) => (
-        <Container
-          draggable={getAllowDragAndDrop}
-          onDragStart={() => handleDragStart(index)}
-          onDragEnd={() => handleDragEnd(index)}
-          hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
-        >
-          {ticker}
-        </Container>
+        <>
+          <Container
+            draggable={getAllowDragAndDrop()}
+            onDragStart={() => handleDragStart(index)}
+            onDragEnd={() => handleDragEnd(index)}
+            hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+          >
+          <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
+          <DropIndicator hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)} />
+            {ticker}
+          </Container>
+          
+        </>
       ))}
-    
     </>
   );
 };
@@ -49,6 +54,7 @@ const FlashYellowAnimation = keyframes`
 `;
 
 const Container = styled.div`
+  position: relative;
   border: 2px solid ${(props) => props.fontColor};
   padding: 0;
   cursor: ${props => props.draggable ? "move" : ""};
@@ -65,6 +71,24 @@ const Container = styled.div`
     animation-name: ${FlashYellowAnimation};
     animation-duration: 0.8s;
   `}
+`;
+
+// Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
+const HitBox = styled.div`
+  border: 1px solid blue;
+  position: absolute;
+  width: 12em;
+  height: 8em;
+  bottom: -1em;
+  left: -1.3em;
+  z-index: 1;
+`;
+
+const DropIndicator = styled.div`
+  position: absolute;
+  height: 4em;
+  left: -1.15em;
+  border-left: ${props => props.hitboxDetectingDraggedItem ? "4px solid yellow" : ""};
 `;
 
 export default DragAndDropWrapper;
