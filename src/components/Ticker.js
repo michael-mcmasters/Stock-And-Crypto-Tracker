@@ -2,6 +2,7 @@ import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
+import { isMobile } from 'react-device-detect';
 
 
 const DELETED_ANIMATION_LENGTH = 300;   // milliseconds
@@ -12,15 +13,16 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   const COLORS = useContext(ColorThemeContext);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
-  const [ showXButton, setShowXButton ] = useState(false);
+  const [ showXButton, setShowXButton ] = useState(isMobile ? true : false);
   const [ beingDeleted, setBeingDeleted ] = useState(false);
-  
-  const handleClickedDelete = () => {
+
+  const handleClickDelete = () => {
     if (loading) return;
     
     setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
     setBeingDeleted(true);
   }
+  
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -35,7 +37,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   return (
     <Container
       onMouseEnter={() => loading ? "" : setShowXButton(true)}
-      onMouseLeave={() => setShowXButton(false)}
+      onMouseLeave={() => isMobile ? "" : setShowXButton(false)}
 
       draggable={allowDragAndDrop}
       onDragStart={() => { setShowXButton(false); handleDragStart(index); }}
@@ -54,7 +56,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showXButton}
-        onClick={handleClickedDelete}
+        onClick={handleClickDelete}
       >
         &#x2715;
       </XButton>
