@@ -123,7 +123,7 @@ function TickerGallery() {
       case 2:
         errorMessage = `Unable to fetch the prices of ${failedToFetchTickers[0]} and ${failedToFetchTickers[1]}`;
         break;
-      case 3:
+      default:
         errorMessage = `Unable to fetch the prices of the most recently added tickers.`;
         break;
     }
@@ -160,7 +160,7 @@ function TickerGallery() {
           ))}
         </GridContainer> */}
         
-        <DragAndDropWrapper render={() => (
+        {/* <DragAndDropWrapper dragAndDropHandlers={dragAndDropHandlers} dragAndDropGetters={dragAndDropGetters} render={() => (
           <GridContainer>
             {tickersArr.map((t, index) => (
               <Ticker2
@@ -176,27 +176,26 @@ function TickerGallery() {
               />
             ))}
           </GridContainer>
-        )}/>
+        )}/> */}
         
-        {/* <GridContainer>
-          <DragAndDropWrapper render={() => {
-            return (
-                tickersArr.map((t, index) => (
-                  <Ticker2
-                    key={t.key}
-                    index={index}
-                    tickerName={t.tickerName}
-                    type={t.type}
-                    loading={t.loading}
-                    price={t.currentPrice}
-                    priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
-                    percentage={t.priceChanges[selectedHistoryOption].percentage}
-                    handleDeleteTicker={handleDeleteTicker}
-                  />
-                ))
-            )
-          }} />
-        </GridContainer> */}
+        <GridContainer>
+          <DragAndDropWrapper
+            dragAndDropHandlers={dragAndDropHandlers}
+            dragAndDropGetters={dragAndDropGetters}
+            render={() => (tickersArr.map((t, index) => (
+              <Ticker2
+                key={t.key}
+                index={index}
+                tickerName={t.tickerName}
+                type={t.type}
+                loading={t.loading}
+                price={t.currentPrice}
+                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+                percentage={t.priceChanges[selectedHistoryOption].percentage}
+                handleDeleteTicker={handleDeleteTicker}
+              />))
+          )} />
+        </GridContainer>
         
         
         
