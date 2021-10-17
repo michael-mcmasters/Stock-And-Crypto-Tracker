@@ -13,9 +13,11 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   const COLORS = useContext(ColorThemeContext);
   const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
+  
   const [ showDeleteButton, setShowDeleteButton ] = useState(isMobile ? true : false);
   const [ beingDeleted, setBeingDeleted ] = useState(false);
 
+  
   const handleClickDelete = () => {
     setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Delays delation while CSS animation plays.
     setBeingDeleted(true);
