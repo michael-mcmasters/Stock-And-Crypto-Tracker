@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
 import Popup from './Popup';
@@ -7,6 +7,8 @@ import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
+import deepCopy from "./utils/DeepCopy";
+import generateKey from "./utils/KeyGenerator"
 
 
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
@@ -20,45 +22,41 @@ function TickerGallery() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
-  const [failedToFetchTickers, setFailedtoFetchTickers] = useState([]);
+  const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
 
-
-  const deepCopy = () => JSON.parse(JSON.stringify(tickersArr));
-
+  
+  const createFetchPromises = useCallback(() => {
+    let tickersArrCopy = deepCopy(tickersArr);
+    let fetchPricePromises = [];
+    for (let i = 0; i < tickersArr.length; i++) {
+      fetchPricePromises.push(new Promise(async (resolve, reject) => {
+        try {
+          tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
+          tickersArrCopy[i].loading = false;
+          resolve(tickersArrCopy[i]);
+        } catch (exc) {
+          resolve(tickersArrCopy[i]);
+        }
+      }))
+    }
+    return fetchPricePromises;
+  }, [fetchPrice, tickersArr])
+  
   // Continuously fetches prices on a loop. Only re-renders once all prices are fetched.
   useEffect(() => {
     let cancelFetch = false;
     let timeoutDelay = fetchImmediately ? 0 : PRICE_UPDATE_DELAY;
 
-    const createFetchPromises = () => {
-      let tickersArrCopy = deepCopy(tickersArr);
-      let fetchPricePromises = [];
-      for (let i = 0; i < tickersArr.length; i++) {
-        fetchPricePromises.push(new Promise(async (resolve, reject) => {
-          try {
-            tickersArrCopy[i] = await fetchPrice(tickersArrCopy[i]);
-            tickersArrCopy[i].loading = false;
-            resolve(tickersArrCopy[i]);
-          } catch (exc) {
-            resolve(tickersArrCopy[i]);
-          }
-        }))
-      }
-      return fetchPricePromises;
-    }
-
     setTimeout(() => {
       if (cancelFetch) return;
 
-      const fetchPricePromises = createFetchPromises();
-      Promise.all(fetchPricePromises).then(tickers => {
-        if (cancelFetch) {
-          return;
-        }
-        const fetchedTickers = tickers.filter(t => t.loading === false);
-        const failedTickers = tickers.filter(t => t.loading === true);
+      Promise.all(createFetchPromises()).then(resolvedTickers => {
+        if (cancelFetch) return;
+        
+        const fetchedTickers = resolvedTickers.filter(t => t.loading === false);
+        const failedTickers = resolvedTickers.filter(t => t.loading === true);
         if (failedTickers.length > 0) {
-          setFailedtoFetchTickers(failedTickers.map(t => t.tickerName));
+          setTickersFailedToFetch(failedTickers.map(t => t.tickerName));
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
@@ -70,13 +68,13 @@ function TickerGallery() {
     return () => cancelFetch = true;
   }, [tickersArr]);
 
-
   const handleAddTicker = (name, type) => {
     if (tickersArr.length + 1 > MAX_ALLOWED_TICKERS)
       return;
 
     let tickersArrCopy = deepCopy(tickersArr);
     tickersArrCopy.push({
+      key: generateKey(),
       tickerName: name,
       type: type,
       loading: true,
@@ -107,7 +105,12 @@ function TickerGallery() {
     setTickersArr(tickersArrCopy);
     setFetchImmediately(true);
     dragAndDropHandlers.setAllowDragAndDrop(false);
-  };
+  }
+  
+  const handleDeleteTicker = (index) => {
+    console.log('del ticic')
+    setTickersArr(tickersArr.filter((t, ind) => ind !== index));
+  }
 
   const getPopupErrorMessage = (failedToFetchTickers) => {
     let errorMessage = "";
@@ -124,9 +127,9 @@ function TickerGallery() {
     }
     return errorMessage;
   }
-
+  
   const handlePopupClickOK = () => {
-    setFailedtoFetchTickers([]);
+    setTickersFailedToFetch([]);
   }
 
 
@@ -137,7 +140,7 @@ function TickerGallery() {
         <GridContainer>
           {tickersArr.map((t, index) => (
             <Ticker
-              key={index}
+              key={t.key}
               index={index}
               tickerName={t.tickerName}
               type={t.type}
@@ -145,6 +148,7 @@ function TickerGallery() {
               price={t.currentPrice}
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
+              handleDeleteTicker={handleDeleteTicker}
               dragAndDropHandlers={dragAndDropHandlers}
               allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
@@ -156,8 +160,8 @@ function TickerGallery() {
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
 
-      {failedToFetchTickers.length > 0 &&
-        <Popup errorMessage={getPopupErrorMessage(failedToFetchTickers)} handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} />
+      {tickersFailedToFetch.length > 0 &&
+        <Popup errorMessage={getPopupErrorMessage(tickersFailedToFetch)} handleClickOK={handlePopupClickOK} handleClickCancel={handlePopupClickOK} />
       }
     </>
   );
@@ -185,7 +189,7 @@ const GridContainer = styled.div`
 function getTickerObjects() {
   return [
     {
-      key: 0,
+      key: generateKey(),
       tickerName: "TWTR",
       type: "stock",
       loading: true,
@@ -214,7 +218,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 1,
+      key: generateKey(),
       tickerName: "AAPL",
       type: "stock",
       loading: true,
@@ -243,7 +247,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 2,
+      key: generateKey(),
       tickerName: "BOTZ",
       type: "stock",
       loading: true,
@@ -272,7 +276,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 3,
+      key: generateKey(),
       tickerName: "AMZN",
       type: "stock",
       loading: true,
@@ -301,7 +305,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 4,
+      key: generateKey(),
       tickerName: "BTC",
       type: "crypto",
       loading: true,
@@ -330,7 +334,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 5,
+      key: generateKey(),
       tickerName: "ETH",
       type: "crypto",
       loading: true,
@@ -359,7 +363,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 6,
+      key: generateKey(),
       tickerName: "DOGE",
       type: "crypto",
       loading: true,
@@ -388,7 +392,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 7,
+      key: generateKey(),
       tickerName: "GOOGL",
       type: "stock",
       loading: true,
@@ -417,7 +421,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 8,
+      key: generateKey(),
       tickerName: "TSLA",
       type: "stock",
       loading: true,
@@ -446,7 +450,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 9,
+      key: generateKey(),
       tickerName: "UBER",
       type: "stock",
       loading: true,
@@ -475,7 +479,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 10,
+      key: generateKey(),
       tickerName: "LYFT",
       type: "stock",
       loading: true,
@@ -504,7 +508,7 @@ function getTickerObjects() {
       }
     },
     {
-      key: 11,
+      key: generateKey(),
       tickerName: "VTSAX",
       type: "stock",
       loading: true,
