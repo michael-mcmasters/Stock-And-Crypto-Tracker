@@ -17,8 +17,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const [ beingDeleted, setBeingDeleted ] = useState(false);
 
   const handleClickDelete = () => {
-    if (loading) return;
-    
     setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
     setBeingDeleted(true);
   }
@@ -36,7 +34,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
 
   return (
     <Container
-      onMouseEnter={() => loading ? "" : setShowXButton(true)}
+      onMouseEnter={() => setShowXButton(true)}
       onMouseLeave={() => isMobile ? "" : setShowXButton(false)}
 
       draggable={allowDragAndDrop}
