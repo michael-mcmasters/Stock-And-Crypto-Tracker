@@ -1,11 +1,11 @@
 import styled, { css, keyframes } from "styled-components";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
 
 
-const DELETED_ANIMATION_LENGTH = 300;   // milliseconds
+const DELETED_ANIMATION_LENGTH = 300;   // Milliseconds
 
 
 const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
@@ -17,10 +17,9 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const [ beingDeleted, setBeingDeleted ] = useState(false);
 
   const handleClickDelete = () => {
-    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
+    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Delays delation while CSS animation plays.
     setBeingDeleted(true);
   }
-  
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
