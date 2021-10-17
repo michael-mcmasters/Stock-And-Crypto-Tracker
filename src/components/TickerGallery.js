@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
+import Ticker2 from "./Ticker2";
 import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
+import DragAndDropWrapper from "./DragAndDropWrapper";
 import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 import deepCopy from "./utils/DeepCopy";
@@ -137,7 +139,7 @@ function TickerGallery() {
     <>
       <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
-        <GridContainer>
+        {/* <GridContainer>
           {tickersArr.map((t, index) => (
             <Ticker
               key={t.key}
@@ -156,7 +158,52 @@ function TickerGallery() {
               swapped={dragAndDropGetters.getSwapped(index)}
             />
           ))}
-        </GridContainer>
+        </GridContainer> */}
+        
+        <DragAndDropWrapper render={() => (
+          <GridContainer>
+            {tickersArr.map((t, index) => (
+              <Ticker2
+                key={t.key}
+                index={index}
+                tickerName={t.tickerName}
+                type={t.type}
+                loading={t.loading}
+                price={t.currentPrice}
+                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+                percentage={t.priceChanges[selectedHistoryOption].percentage}
+                handleDeleteTicker={handleDeleteTicker}
+              />
+            ))}
+          </GridContainer>
+        )}/>
+        
+        {/* <GridContainer>
+          <DragAndDropWrapper render={() => {
+            return (
+                tickersArr.map((t, index) => (
+                  <Ticker2
+                    key={t.key}
+                    index={index}
+                    tickerName={t.tickerName}
+                    type={t.type}
+                    loading={t.loading}
+                    price={t.currentPrice}
+                    priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+                    percentage={t.priceChanges[selectedHistoryOption].percentage}
+                    handleDeleteTicker={handleDeleteTicker}
+                  />
+                ))
+            )
+          }} />
+        </GridContainer> */}
+        
+        
+        
+        {/* <DragAndDropWrapper props={tickersArr} /> */}
+        
+        {/* <DragAndDropWrapper comp={<tickersArr />} /> */}
+        
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
 

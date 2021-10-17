@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from "styled-components";
 import React, { useState, useContext } from "react";
+import styled, { css, keyframes } from "styled-components";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
