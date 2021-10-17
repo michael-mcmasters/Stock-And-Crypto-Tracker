@@ -3,6 +3,10 @@ import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 
+
+const DELETED_ANIMATION_LENGTH = 300;   // milliseconds
+
+
 const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
   dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
@@ -14,7 +18,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const handleClickedDelete = () => {
     if (loading) return;
     
-    setTimeout(() => handleDeleteTicker(index), 300);
+    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
     setBeingDeleted(true);
   }
 
