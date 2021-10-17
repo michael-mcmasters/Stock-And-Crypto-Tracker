@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage,
+const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
   dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
 
   const COLORS = useContext(ColorThemeContext);
@@ -41,7 +41,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showXButton}
-        onClick={() => console.log("clicked")}
+        onClick={() => handleDeleteTicker(index)}
       >
         &#x2715;
       </XButton>

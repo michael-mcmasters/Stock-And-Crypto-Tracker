@@ -67,7 +67,6 @@ function TickerGallery() {
     return () => cancelFetch = true;
   }, [tickersArr]);
 
-
   const handleAddTicker = (name, type) => {
     if (tickersArr.length + 1 > MAX_ALLOWED_TICKERS)
       return;
@@ -104,7 +103,11 @@ function TickerGallery() {
     setTickersArr(tickersArrCopy);
     setFetchImmediately(true);
     dragAndDropHandlers.setAllowDragAndDrop(false);
-  };
+  }
+  
+  const handleDeleteTicker = (index) => {
+    setTickersArr(tickersArr.filter((t, ind) => ind !== index));
+  }
 
   const getPopupErrorMessage = (failedToFetchTickers) => {
     let errorMessage = "";
@@ -121,7 +124,7 @@ function TickerGallery() {
     }
     return errorMessage;
   }
-
+  
   const handlePopupClickOK = () => {
     setTickersFailedToFetch([]);
   }
@@ -142,6 +145,7 @@ function TickerGallery() {
               price={t.currentPrice}
               priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
               percentage={t.priceChanges[selectedHistoryOption].percentage}
+              handleDeleteTicker={handleDeleteTicker}
               dragAndDropHandlers={dragAndDropHandlers}
               allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
               beingDragged={dragAndDropGetters.getBeingDragged(index)}
