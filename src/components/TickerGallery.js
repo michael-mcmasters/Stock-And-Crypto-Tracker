@@ -182,6 +182,7 @@ function TickerGallery() {
           <DragAndDropWrapper
             dragAndDropHandlers={dragAndDropHandlers}
             dragAndDropGetters={dragAndDropGetters}
+            margin={"1rem"}
             render={() => (tickersArr.map((t, index) => (
               <Ticker2
                 key={t.key}
@@ -222,6 +223,9 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, auto);
   grid-template-rows: repeat(4, auto);
+  /* column-gap: 2em; */
+  /* row-gap: 2em; */
+  
   @media (max-width: 850px) {
     grid-template-columns: repeat(3, auto);
     grid-template-rows: repeat(3, auto);

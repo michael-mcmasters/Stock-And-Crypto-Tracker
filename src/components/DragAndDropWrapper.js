@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css, keyframes } from "styled-components";
 
-const DragAndDropWrapper = ({dragAndDropHandlers, dragAndDropGetters, render}) => {
+const DragAndDropWrapper = ({dragAndDropHandlers, dragAndDropGetters, margin, render}) => {
   
   let tickers = render();
   
@@ -27,22 +27,40 @@ const DragAndDropWrapper = ({dragAndDropHandlers, dragAndDropGetters, render}) =
       {/* ToDo: Map over each element and wrap them with a draggable container that calls the above functions,
           gives them HitBox element, DropIndicator, etc. Tickers2 should only show the view. */}
       
-      
-      
       {/* Hitbox is used to detect other tickers being dragged over this ticker */ }
-      {tickers.map((ticker, index) => (
+      {/* {tickers.map((ticker, index) => (
         <>
           <Container
+            margin={margin}
             draggable={getAllowDragAndDrop()}
             onDragStart={() => handleDragStart(index)}
             onDragEnd={() => handleDragEnd(index)}
             hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+            onDragOver={(event) => handleHitboxEnter(event, index)}
+            onDragLeave={() => handleHitboxLeave(index)}
           >
-          <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
-          <DropIndicator hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)} />
             {ticker}
           </Container>
-          
+        </>
+      ))} */}
+      
+      {tickers.map((ticker, index) => (
+        <>
+          <HitBoxContainer
+            margin={margin}
+            draggable={getAllowDragAndDrop()}
+            onDragStart={() => handleDragStart(index)}
+            onDragEnd={() => handleDragEnd(index)}
+            onDragOver={(event) => handleHitboxEnter(event, index)}
+            // onDragLeave={() => handleHitboxLeave(index)}
+            >
+            <RegContainer
+              hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+              swapped={getSwapped(index)}
+            >
+              {ticker}
+            </RegContainer>
+          </HitBoxContainer>
         </>
       ))}
     </>
@@ -53,10 +71,50 @@ const FlashYellowAnimation = keyframes`
   50% { background-color: yellow; }
 `;
 
-const Container = styled.div`
+const HitBoxContainer = styled.div`
   position: relative;
-  border: 2px solid ${(props) => props.fontColor};
-  padding: 0;
+  padding: ${props => props.margin};
+`;
+
+
+const RegContainer = styled.div`
+  /* background-color: red; */
+  border: 2px solid transparent;
+  
+  ${props => props.hitboxDetectingDraggedItem && css`
+    border-radius: 10px;
+    border: 2px solid yellow;
+  `}
+    
+  ${props => props.swapped == true && css`
+    animation-name: ${FlashYellowAnimation};
+    animation-duration: 0.8s;
+  `}
+`;
+
+const Swapper = styled.div`
+  border: 1px solid red;
+  ${props => props.swapped == true && css`
+    animation-name: ${FlashYellowAnimation};
+    animation-duration: 0.8s;
+  `}
+`;
+
+
+
+
+
+
+
+
+const Container = styled.div`
+  /* margin: ${props => props.margin}; */
+  padding: ${props => props.margin};
+  position: relative;
+  /* padding: 0; */
+  border: 2px solid transparent;
+  /* border: 2px solid black; */
+  border-radius: 10px;
   cursor: ${props => props.draggable ? "move" : ""};
 
   ${props => props.beingDragged && css`
@@ -74,13 +132,30 @@ const Container = styled.div`
 `;
 
 // Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
-const HitBox = styled.div`
+// const Hitbox = styled.div`
+//   border: 1px solid blue;
+//   position: absolute;
+//   width: 12em;
+//   height: 8em;
+//   /* bottom: -1em; */
+//   /* left: -1.3em; */
+//   bottom: -1em;
+//   left: -1em;
+//   z-index: 1;
+// `;
+
+const Hitbox = styled.div`
   border: 1px solid blue;
   position: absolute;
-  width: 12em;
-  height: 8em;
-  bottom: -1em;
-  left: -1.3em;
+  padding: 4rem 6rem;
+  /* padding: max-content; */
+  /* width: max-content; */
+  /* width: 12em;
+  height: 8em; */
+  /* bottom: -1em; */
+  /* left: -1.3em; */
+  /* bottom: -1em;
+  left: -1em; */
   z-index: 1;
 `;
 

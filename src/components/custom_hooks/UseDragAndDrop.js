@@ -32,6 +32,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
     },
 
     handleDragEnd: (draggedItemIndex) => {
+      console.log("ayy")
       if (indexDetectingDraggedItem !== -1) {
         setIndexDetectingDraggedItem(-1);
         setIndexBeingDragged(-1);
@@ -41,11 +42,13 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
     },
 
     handleHitboxEnter: (event, detectorIndex) => {
+      console.log("hitbox enter")
       event.preventDefault();
       setIndexDetectingDraggedItem(detectorIndex);
     },
 
     handleHitboxLeave: (detectorIndex) => {
+      console.log("hitbox leave")
       setIndexDetectingDraggedItem(-1);
     },
   }
@@ -64,6 +67,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
     },
 
     getHitboxDetectingDraggedItem: (index) => {
+      console.log("detectin")
       return indexDetectingDraggedItem === index;
     },
 

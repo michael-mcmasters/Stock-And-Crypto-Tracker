@@ -29,14 +29,14 @@ const Ticker2 = ({ tickerName, index, type, loading, price, priceDifference, per
       beingDeleted={beingDeleted}
     >
 
-      <DeleteButton
+      {/* <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showDeleteButton}
         onClick={handleClickDelete}
       >
         &#x2715;
-      </DeleteButton>
+      </DeleteButton> */}
 
 
       <CoinTicker>{tickerName}</CoinTicker>
@@ -64,8 +64,8 @@ const DeletedAnimation = keyframes`
 `;
 
 const Container = styled.div`
-  position: relative;
-  margin: 1em 1em;
+  /* position: relative; */
+  /* margin: 1em 1em; */
   padding: 1em 0;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
