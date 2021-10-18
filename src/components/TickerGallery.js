@@ -178,12 +178,17 @@ function TickerGallery() {
           </GridContainer>
         )}/> */}
         
+        
+        
+        {/* ToDo: Render function only called once.
+        When called, pass an object with each index and the props for it. Ex {[index: 1, swapped: true], [{index: 2, swapped: false}], etc... } */}
+        
         <GridContainer>
           <DragAndDropWrapper
             dragAndDropHandlers={dragAndDropHandlers}
             dragAndDropGetters={dragAndDropGetters}
             margin={"1rem"}
-            render={() => (tickersArr.map((t, index) => (
+            render={(props) => (tickersArr.map((t, index) => (
               <Ticker2
                 key={t.key}
                 index={index}
@@ -194,6 +199,7 @@ function TickerGallery() {
                 priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
                 percentage={t.priceChanges[selectedHistoryOption].percentage}
                 handleDeleteTicker={handleDeleteTicker}
+                {...props}
               />))
           )} />
         </GridContainer>
