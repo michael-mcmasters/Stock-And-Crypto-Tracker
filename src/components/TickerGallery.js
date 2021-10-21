@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
 import Ticker2 from "./Ticker2";
+import Ticker3 from "./Ticker3";
 import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
@@ -133,56 +134,11 @@ function TickerGallery() {
   const handlePopupClickOK = () => {
     setTickersFailedToFetch([]);
   }
-
-
+  
   return (
     <>
-      <Container>
+      {/* <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
-        {/* <GridContainer>
-          {tickersArr.map((t, index) => (
-            <Ticker
-              key={t.key}
-              index={index}
-              tickerName={t.tickerName}
-              type={t.type}
-              loading={t.loading}
-              price={t.currentPrice}
-              priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
-              percentage={t.priceChanges[selectedHistoryOption].percentage}
-              handleDeleteTicker={handleDeleteTicker}
-              dragAndDropHandlers={dragAndDropHandlers}
-              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
-              beingDragged={dragAndDropGetters.getBeingDragged(index)}
-              hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
-              swapped={dragAndDropGetters.getSwapped(index)}
-            />
-          ))}
-        </GridContainer> */}
-        
-        {/* <DragAndDropWrapper dragAndDropHandlers={dragAndDropHandlers} dragAndDropGetters={dragAndDropGetters} render={() => (
-          <GridContainer>
-            {tickersArr.map((t, index) => (
-              <Ticker2
-                key={t.key}
-                index={index}
-                tickerName={t.tickerName}
-                type={t.type}
-                loading={t.loading}
-                price={t.currentPrice}
-                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
-                percentage={t.priceChanges[selectedHistoryOption].percentage}
-                handleDeleteTicker={handleDeleteTicker}
-              />
-            ))}
-          </GridContainer>
-        )}/> */}
-        
-        
-        
-        {/* ToDo: Render function only called once.
-        When called, pass an object with each index and the props for it. Ex {[index: 1, swapped: true], [{index: 2, swapped: false}], etc... } */}
-        
         <GridContainer>
           <DragAndDropWrapper
             dragAndDropHandlers={dragAndDropHandlers}
@@ -202,13 +158,33 @@ function TickerGallery() {
                 {...props}
               />))
           )} />
+        </GridContainer> */}
+        
+      <Container>
+        <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
+        <GridContainer>
+
+          <DragAndDropWrapper
+            dragAndDropHandlers={dragAndDropHandlers}
+            dragAndDropGetters={dragAndDropGetters}
+            margin={"1rem"}
+          >
+            {tickersArr.map((t, index) => (
+              <Ticker3
+                key={t.key}
+                index={index}
+                tickerName={t.tickerName}
+                type={t.type}
+                loading={t.loading}
+                price={t.currentPrice}
+                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+                percentage={t.priceChanges[selectedHistoryOption].percentage}
+                handleDeleteTicker={handleDeleteTicker}
+              />
+            ))}
+          </DragAndDropWrapper>
+          
         </GridContainer>
-        
-        
-        
-        {/* <DragAndDropWrapper props={tickersArr} /> */}
-        
-        {/* <DragAndDropWrapper comp={<tickersArr />} /> */}
         
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>

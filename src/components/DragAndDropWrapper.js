@@ -1,68 +1,32 @@
 import React from 'react';
 import styled, { css, keyframes } from "styled-components";
 
-const DragAndDropWrapper = ({dragAndDropHandlers, dragAndDropGetters, margin, render}) => {
+const DragAndDropWrapper = (props) => {
   
-  let tickers = render();
+  // const { children, dragAndDropHandlers, dragAndDropGetters, margin } = props;
   
-  const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
-  const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
+  
+  // const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
+  // const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
   
   // let elements = [];
   // for (let i = 0; i < tickers.length; i++) {
   //   elements.push(<Container>tickers[0]</Container>)
   // }
+  
+  console.log(props);
+  const {children} = props;
 
   return (
     <>
-      {/* <div
-        draggable={allowDragAndDrop}
-        onDragStart={() => { handleDragStart(index); }}
-        onDragEnd={() => handleDragEnd(index)}
-        hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem()}
-      >
-      {tickers}
-      </div> */}
-      
-      {/* ToDo: Map over each element and wrap them with a draggable container that calls the above functions,
-          gives them HitBox element, DropIndicator, etc. Tickers2 should only show the view. */}
-      
-      {/* Hitbox is used to detect other tickers being dragged over this ticker */ }
-      {/* {tickers.map((ticker, index) => (
-        <>
-          <Container
-            margin={margin}
-            draggable={getAllowDragAndDrop()}
-            onDragStart={() => handleDragStart(index)}
-            onDragEnd={() => handleDragEnd(index)}
-            hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
-            onDragOver={(event) => handleHitboxEnter(event, index)}
-            onDragLeave={() => handleHitboxLeave(index)}
-          >
-            {ticker}
-          </Container>
-        </>
+      {/* {React.Children.map(children, child => (
+        React.cloneElement(child)
       ))} */}
       
-      {tickers.map((ticker, index) => (
-        <>
-          <HitBoxContainer
-            margin={margin}
-            draggable={getAllowDragAndDrop()}
-            onDragStart={() => handleDragStart(index)}
-            onDragEnd={() => handleDragEnd(index)}
-            onDragOver={(event) => handleHitboxEnter(event, index)}
-            // onDragLeave={() => handleHitboxLeave(index)}
-            >
-            <RegContainer
-              hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
-              swapped={getSwapped(index)}
-            >
-              {ticker}
-            </RegContainer>
-          </HitBoxContainer>
-        </>
-      ))}
+            {/* {React.Children.map(children, (child) =>
+      <React.Fragment>{child}</React.Fragment>)} */}
+      
+      {children}
     </>
   );
 };
