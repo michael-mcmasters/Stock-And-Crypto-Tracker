@@ -9,14 +9,19 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
   return (
     <>
       {React.Children.map(children, (child, index) => (
-        React.cloneElement(child, {
-          dragAndDropHandlers: dragAndDropHandlers,
-          allowDragAndDrop: dragAndDropGetters.getAllowDragAndDrop(),
-          beingDragged: dragAndDropGetters.getBeingDragged(index),
-          hitboxDetectingDraggedItem: dragAndDropGetters.getHitboxDetectingDraggedItem(index),
-          swapped: dragAndDropGetters.getSwapped(index),
-        })
-      ))}
+          
+          <Container>
+            {React.cloneElement(child, {
+              dragAndDropHandlers: dragAndDropHandlers,
+              allowDragAndDrop: dragAndDropGetters.getAllowDragAndDrop(),
+              beingDragged: dragAndDropGetters.getBeingDragged(index),
+              hitboxDetectingDraggedItem: dragAndDropGetters.getHitboxDetectingDraggedItem(index),
+              swapped: dragAndDropGetters.getSwapped(index)
+            })}
+          </Container>
+        )
+      
+      )}
     </>
   );
 };
@@ -24,42 +29,6 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
 const FlashYellowAnimation = keyframes`
   50% { background-color: yellow; }
 `;
-
-const HitBoxContainer = styled.div`
-  position: relative;
-  padding: ${props => props.margin};
-`;
-
-
-const RegContainer = styled.div`
-  /* background-color: red; */
-  border: 2px solid transparent;
-  
-  ${props => props.hitboxDetectingDraggedItem && css`
-    border-radius: 10px;
-    border: 2px solid yellow;
-  `}
-    
-  ${props => props.swapped == true && css`
-    animation-name: ${FlashYellowAnimation};
-    animation-duration: 0.8s;
-  `}
-`;
-
-const Swapper = styled.div`
-  border: 1px solid red;
-  ${props => props.swapped == true && css`
-    animation-name: ${FlashYellowAnimation};
-    animation-duration: 0.8s;
-  `}
-`;
-
-
-
-
-
-
-
 
 const Container = styled.div`
   /* margin: ${props => props.margin}; */
