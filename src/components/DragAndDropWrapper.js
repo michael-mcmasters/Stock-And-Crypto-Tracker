@@ -10,18 +10,25 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
     <>
       {React.Children.map(children, (child, index) => (
           
-          <Container>
+          <Container
+            draggable={getAllowDragAndDrop()}
+            onDragStart={() => handleDragStart(index)}
+            onDragEnd={() => handleDragEnd(index)}
+            hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+          >
+          <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
+          <DropIndicator hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)} />
+            
             {React.cloneElement(child, {
-              dragAndDropHandlers: dragAndDropHandlers,
-              allowDragAndDrop: dragAndDropGetters.getAllowDragAndDrop(),
-              beingDragged: dragAndDropGetters.getBeingDragged(index),
-              hitboxDetectingDraggedItem: dragAndDropGetters.getHitboxDetectingDraggedItem(index),
-              swapped: dragAndDropGetters.getSwapped(index)
+              beingDragged: getBeingDragged(index),
+              hitboxDetectingDraggedItem: getHitboxDetectingDraggedItem(index),
+              swapped: getSwapped(index)
             })}
           </Container>
         )
       
       )}
+      
     </>
   );
 };
@@ -32,6 +39,7 @@ const FlashYellowAnimation = keyframes`
 
 const Container = styled.div`
   /* margin: ${props => props.margin}; */
+  margin: 1em 1em;
   padding: ${props => props.margin};
   position: relative;
   /* padding: 0; */
@@ -67,7 +75,7 @@ const Container = styled.div`
 //   z-index: 1;
 // `;
 
-const Hitbox = styled.div`
+const HitBox = styled.div`
   border: 1px solid blue;
   position: absolute;
   padding: 4rem 6rem;
