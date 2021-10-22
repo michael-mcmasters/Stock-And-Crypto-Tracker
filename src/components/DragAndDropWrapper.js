@@ -19,14 +19,9 @@ const DragAndDropWrapper = (props) => {
 
   return (
     <>
-      {/* {React.Children.map(children, child => (
-        React.cloneElement(child)
-      ))} */}
-      
-            {/* {React.Children.map(children, (child) =>
-      <React.Fragment>{child}</React.Fragment>)} */}
-      
-      {children}
+      {React.Children.map(children, child => (
+        React.cloneElement(child, {price: 0})
+      ))}
     </>
   );
 };
