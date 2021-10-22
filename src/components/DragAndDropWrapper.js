@@ -1,26 +1,21 @@
 import React from 'react';
 import styled, { css, keyframes } from "styled-components";
 
-const DragAndDropWrapper = (props) => {
+const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, margin}) => {
   
-  // const { children, dragAndDropHandlers, dragAndDropGetters, margin } = props;
+  const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
+  const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
   
-  
-  // const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
-  // const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
-  
-  // let elements = [];
-  // for (let i = 0; i < tickers.length; i++) {
-  //   elements.push(<Container>tickers[0]</Container>)
-  // }
-  
-  console.log(props);
-  const {children} = props;
-
   return (
     <>
-      {React.Children.map(children, child => (
-        React.cloneElement(child, {price: 0})
+      {React.Children.map(children, (child, index) => (
+        React.cloneElement(child, {
+          dragAndDropHandlers: dragAndDropHandlers,
+          allowDragAndDrop: dragAndDropGetters.getAllowDragAndDrop(),
+          beingDragged: dragAndDropGetters.getBeingDragged(index),
+          hitboxDetectingDraggedItem: dragAndDropGetters.getHitboxDetectingDraggedItem(index),
+          swapped: dragAndDropGetters.getSwapped(index),
+        })
       ))}
     </>
   );
