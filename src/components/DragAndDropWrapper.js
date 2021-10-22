@@ -15,9 +15,9 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
             onDragStart={() => handleDragStart(index)}
             onDragEnd={() => handleDragEnd(index)}
             hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+            beingDragged={getBeingDragged(index)}
           >
-          <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
-          <DropIndicator hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)} />
+            <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
             
             {React.cloneElement(child, {
               beingDragged: getBeingDragged(index),
@@ -33,13 +33,10 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
   );
 };
 
-const FlashYellowAnimation = keyframes`
-  50% { background-color: yellow; }
-`;
 
 const Container = styled.div`
   /* margin: ${props => props.margin}; */
-  margin: 1em 1em;
+  /* margin: 1em 1em; */
   padding: ${props => props.margin};
   position: relative;
   /* padding: 0; */
@@ -47,18 +44,9 @@ const Container = styled.div`
   /* border: 2px solid black; */
   border-radius: 10px;
   cursor: ${props => props.draggable ? "move" : ""};
-
+  
   ${props => props.beingDragged && css`
     opacity: 0.3;
-  `}
-  
-  ${props => props.hitboxDetectingDraggedItem && css`
-    border: 2px solid yellow;
-  `}
-  
-  ${props => props.swapped == true && css`
-    animation-name: ${FlashYellowAnimation};
-    animation-duration: 0.8s;
   `}
 `;
 
@@ -76,7 +64,7 @@ const Container = styled.div`
 // `;
 
 const HitBox = styled.div`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   position: absolute;
   padding: 4rem 6rem;
   /* padding: max-content; */
@@ -88,13 +76,6 @@ const HitBox = styled.div`
   /* bottom: -1em;
   left: -1em; */
   z-index: 1;
-`;
-
-const DropIndicator = styled.div`
-  position: absolute;
-  height: 4em;
-  left: -1.15em;
-  border-left: ${props => props.hitboxDetectingDraggedItem ? "4px solid yellow" : ""};
 `;
 
 export default DragAndDropWrapper;

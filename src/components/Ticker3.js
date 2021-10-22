@@ -4,12 +4,11 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
 
-const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleClickDelete }) => {
+const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleClickDelete, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
   const COLORS = useContext(ColorThemeContext);
 
   const [showDeleteButton, setShowDeleteButton] = useState(isMobile ? true : false);
   const [beingDeleted, setBeingDeleted] = useState(false);
-
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -27,16 +26,19 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       fontColor={fontColor}
       bgColor={bgColor}
       beingDeleted={beingDeleted}
+      beingDragged={beingDragged}
+      hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
+      swapped={swapped}
     >
 
-      {/* <DeleteButton
+      <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showDeleteButton}
         onClick={handleClickDelete}
       >
         &#x2715;
-      </DeleteButton> */}
+      </DeleteButton>
 
 
       <CoinTicker>{tickerName}</CoinTicker>
@@ -65,7 +67,7 @@ const DeletedAnimation = keyframes`
 
 const Container = styled.div`
   /* position: relative; */
-  /* margin: 1em 1em; */
+  margin: 1em 1em;
   padding: 1em 0;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
@@ -73,6 +75,15 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
+  
+  ${props => props.hitboxDetectingDraggedItem && css`
+    border: 2px solid yellow;
+  `}
+  
+  ${props => props.swapped == true && css`
+    animation-name: ${FlashYellowAnimation};
+    animation-duration: 0.8s;
+  `}
 `;
 
 const CoinTicker = styled.div`
