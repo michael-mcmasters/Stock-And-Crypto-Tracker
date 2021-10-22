@@ -1,7 +1,7 @@
 import React from 'react';
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 
-const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, margin}) => {
+const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters}) => {
   
   const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
   const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
@@ -9,7 +9,6 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
   return (
     <>
       {React.Children.map(children, (child, index) => (
-          
           <Container
             draggable={getAllowDragAndDrop()}
             onDragStart={() => handleDragStart(index)}
@@ -25,24 +24,14 @@ const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters, 
               swapped: getSwapped(index)
             })}
           </Container>
-        )
-      
-      )}
-      
+        ))}
     </>
   );
 };
 
 
 const Container = styled.div`
-  /* margin: ${props => props.margin}; */
-  /* margin: 1em 1em; */
-  padding: ${props => props.margin};
   position: relative;
-  /* padding: 0; */
-  border: 2px solid transparent;
-  /* border: 2px solid black; */
-  border-radius: 10px;
   cursor: ${props => props.draggable ? "move" : ""};
   
   ${props => props.beingDragged && css`
@@ -51,30 +40,13 @@ const Container = styled.div`
 `;
 
 // Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
-// const Hitbox = styled.div`
-//   border: 1px solid blue;
-//   position: absolute;
-//   width: 12em;
-//   height: 8em;
-//   /* bottom: -1em; */
-//   /* left: -1.3em; */
-//   bottom: -1em;
-//   left: -1em;
-//   z-index: 1;
-// `;
-
 const HitBox = styled.div`
   /* border: 1px solid blue; */
   position: absolute;
-  padding: 4rem 6rem;
-  /* padding: max-content; */
-  /* width: max-content; */
-  /* width: 12em;
-  height: 8em; */
-  /* bottom: -1em; */
-  /* left: -1.3em; */
-  /* bottom: -1em;
-  left: -1em; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 `;
 

@@ -167,7 +167,6 @@ function TickerGallery() {
           <DragAndDropWrapper
             dragAndDropHandlers={dragAndDropHandlers}
             dragAndDropGetters={dragAndDropGetters}
-            margin={"1rem"}
           >
             {tickersArr.map((t, index) => (
               <Ticker3
