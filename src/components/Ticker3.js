@@ -22,6 +22,8 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
 
   return (
     <Container
+      onMouseEnter={() => setShowDeleteButton(true)}
+      onMouseLeave={() => isMobile ? "" : setShowDeleteButton(false)}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
@@ -35,6 +37,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
         colors={COLORS}
         fontColor={fontColor}
         showXButton={showDeleteButton}
+        // showXButton={true}
         onClick={handleClickDelete}
       >
         &#x2715;
@@ -109,7 +112,6 @@ const DeleteButton = styled.button`
   background-color: transparent;
   color: ${props => props.fontColor};
   cursor: pointer;
-  z-index: 2;
 
   visibility: hidden;
   opacity: 0;
