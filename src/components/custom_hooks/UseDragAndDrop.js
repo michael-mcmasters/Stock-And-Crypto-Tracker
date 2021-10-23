@@ -37,6 +37,7 @@ const useDragAndDrop = (initialDragAndDropItems, initialAllowDragAndDrop = true)
         setIndexBeingDragged(-1);
         const itemsCopy = JSON.parse(JSON.stringify(dragAndDropItems));
         swapItems(itemsCopy, draggedItemIndex, indexDetectingDraggedItem);
+        setTimeout(() => setIndexSwapped([]), 500);
       }
     },
 

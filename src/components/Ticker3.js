@@ -7,14 +7,9 @@ import { isMobile } from 'react-device-detect';
 const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleClickDelete, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
   const COLORS = useContext(ColorThemeContext);
 
-  // const [showDeleteButton, setShowDeleteButton] = useState(isMobile ? true : false);
   const [isHovering, setIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
   
-  if (swapped && isHovering) {
-    setIsHovering(false);
-  }
-
   let bgColor, fontColor;
   if (priceDifference <= 0) {
     bgColor = COLORS.brightRed;
@@ -24,11 +19,18 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
     fontColor = COLORS.basicGreen;
     priceDifference = "+" + priceDifference;
   }
+  
+  const handleMouseEnter = () => beingDragged ? null : setIsHovering(true)
+  const handleMouseLeave = () => setIsHovering(false);
+  
+  if (swapped && isHovering) {
+    handleMouseLeave();         // Listener doesn't call onMouseLeave when tickers are swapped, so this simulates it.
+  }
 
   return (
     <Container
-      onMouseEnter={() => beingDragged ? null : setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
@@ -41,7 +43,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={(isMobile || isHovering) && beingDragged == false}
+        showXButton={!loading && !beingDragged && (isHovering || isMobile)}
         onClick={handleClickDelete}
       >
         &#x2715;
