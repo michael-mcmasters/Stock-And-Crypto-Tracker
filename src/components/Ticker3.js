@@ -7,8 +7,13 @@ import { isMobile } from 'react-device-detect';
 const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleClickDelete, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
   const COLORS = useContext(ColorThemeContext);
 
-  const [showDeleteButton, setShowDeleteButton] = useState(isMobile ? true : false);
+  // const [showDeleteButton, setShowDeleteButton] = useState(isMobile ? true : false);
+  const [isHovering, setIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
+  
+  if (swapped && isHovering) {
+    setIsHovering(false);
+  }
 
   let bgColor, fontColor;
   if (priceDifference <= 0) {
@@ -22,8 +27,8 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
 
   return (
     <Container
-      onMouseEnter={() => setShowDeleteButton(true)}
-      onMouseLeave={() => isMobile ? "" : setShowDeleteButton(false)}
+      onMouseEnter={() => beingDragged ? null : setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={bgColor}
@@ -36,8 +41,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={showDeleteButton}
-        // showXButton={true}
+        showXButton={(isMobile || isHovering) && beingDragged == false}
         onClick={handleClickDelete}
       >
         &#x2715;
