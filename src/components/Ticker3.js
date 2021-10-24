@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { css, keyframes } from "styled-components";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -10,30 +10,30 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   const [isHovering, setIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
   
-  let bgColor, fontColor;
+  let backgroundColor, fontColor;
   if (priceDifference <= 0) {
-    bgColor = COLORS.brightRed;
+    backgroundColor = COLORS.brightRed;
     fontColor = COLORS.darkRed;
   } else {
-    bgColor = COLORS.green;
+    backgroundColor = COLORS.green;
     fontColor = COLORS.basicGreen;
     priceDifference = "+" + priceDifference;
   }
   
-  const handleMouseEnter = () => beingDragged ? null : setIsHovering(true)
-  const handleMouseLeave = () => setIsHovering(false);
+  useEffect(() => {
+    if (swapped) {
+      setIsHovering(false);
+    }
+  }, [swapped])
   
-  if (swapped && isHovering) {
-    handleMouseLeave();         // Listener doesn't call onMouseLeave when tickers are swapped, so this simulates it.
-  }
-
+  
   return (
     <Container
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => !beingDragged && !swapped && setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       colors={COLORS}
       fontColor={fontColor}
-      bgColor={bgColor}
+      bgColor={backgroundColor}
       beingDeleted={beingDeleted}
       beingDragged={beingDragged}
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
@@ -43,7 +43,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={!loading && !beingDragged && (isHovering || isMobile)}
+        showXButton={(isHovering || isMobile) && !loading && !beingDragged}
         onClick={handleClickDelete}
       >
         &#x2715;
