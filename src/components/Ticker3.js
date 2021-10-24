@@ -8,10 +8,11 @@ import { isMobile } from 'react-device-detect';
 const DELETED_ANIMATION_LENGTH = 300;
 
 
-const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
+const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
+  beingDragged, hitboxDetectingDraggedItem, swapped }) => {
   
   const COLORS = useContext(ColorThemeContext);
-  const [isHovering, setIsHovering] = useState(false);
+  const [cursorIsHovering, setCursorIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
   
   const handleClickDelete = () => {
@@ -19,10 +20,10 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
     setBeingDeleted(true);
   }
   
-  // onMouseEnter listener sometimes returns true for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
+  // onMouseEnter will sometimes give a false positive for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
     setTimeout(() => {
-      if (swapped) setIsHovering(false);
+      if (swapped) setCursorIsHovering(false);
     }, 20)
   }, [swapped])
   
@@ -38,8 +39,8 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   
   return (
     <Container
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseEnter={() => setCursorIsHovering(true)}
+      onMouseLeave={() => setCursorIsHovering(false)}
       colors={COLORS}
       fontColor={fontColor}
       bgColor={backgroundColor}
@@ -48,18 +49,17 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
       swapped={swapped}
     >
-
+      
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={(isHovering || isMobile) && !loading && !beingDragged}
+        showXButton={(cursorIsHovering || isMobile) && !loading && !beingDragged}
         onClick={handleClickDelete}
       >
         &#x2715;
       </DeleteButton>
 
-
-      <CoinTicker>{tickerName}</CoinTicker>
+      <TickerName>{tickerName}</TickerName>
       {loading ? (
         <ClipLoader />
       ) : (
@@ -70,7 +70,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
           </PriceChange>
         </>
       )}
-
+      
     </Container >
   );
 };
@@ -109,7 +109,7 @@ const Container = styled.div`
   `}
 `;
 
-const CoinTicker = styled.div`
+const TickerName = styled.div`
   font-weight: bold;
 `;
 
