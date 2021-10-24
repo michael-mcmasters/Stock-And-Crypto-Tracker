@@ -84,7 +84,7 @@ const DeletedAnimation = keyframes`
 `;
 
 const Container = styled.div`
-  /* position: relative; */
+  position: relative;
   margin: 1em 1em;
   padding: 1em 0;
   border: 2px solid ${(props) => props.fontColor};
@@ -124,9 +124,8 @@ const PriceChange = styled.div`
 
 const DeleteButton = styled.button`
   position: absolute;
-  top: -0.7rem;
-  left: -0.4rem;
-  padding: 1rem;
+  left: 0.2rem;
+  top: 0.2rem;
   border-radius: 9999px;
   border: none;
   background-color: transparent;
@@ -140,6 +139,10 @@ const DeleteButton = styled.button`
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
   `}
+  
+  &:hover {
+    background-color: #00000080;
+  }
 `;
 
 export default Ticker3;
