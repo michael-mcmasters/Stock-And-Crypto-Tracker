@@ -4,11 +4,27 @@ import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
 
-const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleClickDelete, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
-  const COLORS = useContext(ColorThemeContext);
 
+const DELETED_ANIMATION_LENGTH = 300;
+
+
+const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
+  
+  const COLORS = useContext(ColorThemeContext);
   const [isHovering, setIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
+  
+  // Delays deletion while CSS animation plays.
+  const handleClickDelete = () => {
+    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
+    setBeingDeleted(true);
+  }
+  
+  useEffect(() => {
+    if (swapped) {
+      setIsHovering(false);
+    }
+  }, [swapped])
   
   let backgroundColor, fontColor;
   if (priceDifference <= 0) {
@@ -19,13 +35,6 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
     fontColor = COLORS.basicGreen;
     priceDifference = "+" + priceDifference;
   }
-  
-  useEffect(() => {
-    if (swapped) {
-      setIsHovering(false);
-    }
-  }, [swapped])
-  
   
   return (
     <Container
@@ -84,6 +93,11 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
+  
+  ${props => props.beingDeleted && css`
+    animation-name: ${DeletedAnimation};
+    animation-duration: 0.3s;
+  `}
   
   ${props => props.hitboxDetectingDraggedItem && css`
     border: 2px solid yellow;
