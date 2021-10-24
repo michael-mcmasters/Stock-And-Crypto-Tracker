@@ -21,8 +21,10 @@ const MAX_ALLOWED_TICKERS = 16;
 function TickerGallery() {
 
   const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
-
+  // const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
+  const [tickersArr, setTickersArr] = useState(getTickerObjects());
+  const [allowDragAndDrop, setAllowDragAndDrop] = useState(true);
+  
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
   const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
@@ -63,7 +65,7 @@ function TickerGallery() {
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
-        dragAndDropHandlers.setAllowDragAndDrop(true);
+        setAllowDragAndDrop(true);
       })
     }, timeoutDelay);
 
@@ -107,7 +109,7 @@ function TickerGallery() {
     });
     setTickersArr(tickersArrCopy);
     setFetchImmediately(true);
-    dragAndDropHandlers.setAllowDragAndDrop(false);
+    setAllowDragAndDrop(false);
   }
   
   const handleDeleteTicker = (index) => {
@@ -165,8 +167,9 @@ function TickerGallery() {
         <GridContainer>
 
           <DragAndDropWrapper
-            dragAndDropHandlers={dragAndDropHandlers}
-            dragAndDropGetters={dragAndDropGetters}
+            tickersArr={tickersArr}
+            setTickersArr={setTickersArr}
+            allowDragAndDrop={allowDragAndDrop}
           >
             {tickersArr.map((t, index) => (
               <Ticker3

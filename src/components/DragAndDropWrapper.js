@@ -1,33 +1,89 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled, { css } from "styled-components";
 
-const DragAndDropWrapper = ({children, dragAndDropHandlers, dragAndDropGetters}) => {
-  
-  const { setAllowDragAndDrop, handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
-  const { getAllowDragAndDrop, getBeingDragged, getHitboxDetectingDraggedItem, getSwapped } = dragAndDropGetters;
-  
-  const [dragging, setDragging] = React.useState(false);
-  
+const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndDrop }) => {
+
+  const [dragging, setDragging] = useState(false);
+
+  const [dragAndDropItems, setDragAndDropItems] = useState(tickersArr);
+  const [indexBeingDragged, setIndexBeingDragged] = useState(-1);
+  const [indexDetectingDraggedItem, setIndexDetectingDraggedItem] = useState(-1);
+  const [indexSwapped, setIndexSwapped] = useState([]);
+
+  const swapItems = (itemsCopy, firstIndex, secondIndex) => {
+    const firstItem = itemsCopy[firstIndex];
+    itemsCopy[firstIndex] = itemsCopy[secondIndex];
+    itemsCopy[secondIndex] = firstItem;
+    setIndexSwapped([firstIndex, secondIndex]);
+    setDragAndDropItems(itemsCopy);
+    return itemsCopy;
+  }
+
+
+
+  const handleDragStart = (draggedItemIndex) => {
+    setIndexBeingDragged(draggedItemIndex);
+    setIndexSwapped([]);
+  };
+
+  const handleDragEnd = (draggedItemIndex) => {
+    if (indexDetectingDraggedItem !== -1) {
+      setIndexDetectingDraggedItem(-1);
+      setIndexBeingDragged(-1);
+      const itemsCopy = JSON.parse(JSON.stringify(dragAndDropItems));
+      swapItems(itemsCopy, draggedItemIndex, indexDetectingDraggedItem);
+      setTimeout(() => setIndexSwapped([]), 500);
+    }
+  };
+
+  const handleHitboxEnter = (event, detectorIndex) => {
+    event.preventDefault();
+    setIndexDetectingDraggedItem(detectorIndex);
+  };
+
+  const handleHitboxLeave = (detectorIndex) => {
+    setIndexDetectingDraggedItem(-1);
+  };
+
+
+  const getAllowDragAndDrop = () => {
+    return allowDragAndDrop;
+  };
+
+  // The following functions get the status of the item at the given index
+
+  const getBeingDragged = (index) => {
+    return indexBeingDragged === index;
+  };
+
+  const getHitboxDetectingDraggedItem = (index) => {
+    return indexDetectingDraggedItem === index;
+  };
+
+  const getSwapped = (index) => {
+    return indexSwapped.includes(index);
+  };
+
   return (
     <>
       {React.Children.map(children, (child, index) => (
-          <Container
-            draggable={getAllowDragAndDrop()}
-            onDragStart={() => {handleDragStart(index); setDragging(true);}}
-            onDragEnd={() => {handleDragEnd(index); setDragging(false)}}
-            hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
-            beingDragged={getBeingDragged(index)}
-          >
-            
-            <HitBox dragging={dragging} onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
-            
-            {React.cloneElement(child, {
-              beingDragged: getBeingDragged(index),
-              hitboxDetectingDraggedItem: getHitboxDetectingDraggedItem(index),
-              swapped: getSwapped(index)
-            })}
-          </Container>
-        ))}
+        <Container
+          draggable={getAllowDragAndDrop()}
+          onDragStart={() => { handleDragStart(index); setDragging(true); }}
+          onDragEnd={() => { handleDragEnd(index); setDragging(false) }}
+          hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
+          beingDragged={getBeingDragged(index)}
+        >
+
+          <HitBox dragging={dragging} onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
+
+          {React.cloneElement(child, {
+            beingDragged: getBeingDragged(index),
+            hitboxDetectingDraggedItem: getHitboxDetectingDraggedItem(index),
+            swapped: getSwapped(index)
+          })}
+        </Container>
+      ))}
     </>
   );
 };
