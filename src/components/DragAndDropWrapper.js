@@ -1,86 +1,85 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from "styled-components";
+import deepCopy from "./utils/DeepCopy";
 
 const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndDrop }) => {
 
-  const [dragging, setDragging] = useState(false);
+  const [state, setState] = useState({
+    dragging: false,
+    indexBeingDragged: -1,
+    indexDetectingDraggedItem: -1,
+    indexesSwapped: []
+  })
+  
 
-  const [dragAndDropItems, setDragAndDropItems] = useState(tickersArr);
-  const [indexBeingDragged, setIndexBeingDragged] = useState(-1);
-  const [indexDetectingDraggedItem, setIndexDetectingDraggedItem] = useState(-1);
-  const [indexSwapped, setIndexSwapped] = useState([]);
-
-  const swapItems = (itemsCopy, firstIndex, secondIndex) => {
-    const firstItem = itemsCopy[firstIndex];
-    itemsCopy[firstIndex] = itemsCopy[secondIndex];
-    itemsCopy[secondIndex] = firstItem;
-    setIndexSwapped([firstIndex, secondIndex]);
-    setDragAndDropItems(itemsCopy);
-    return itemsCopy;
+  const swapItems = (tickersArr, setTickersArr, [indexBeingDragged, itemBeingDraggedIndex]) => {
+    const copy = deepCopy(tickersArr);
+    const store = copy[itemBeingDraggedIndex];
+    copy[itemBeingDraggedIndex] = copy[indexBeingDragged];
+    copy[indexBeingDragged] = store;
+    setTickersArr(copy);
   }
 
-
-
-  const handleDragStart = (draggedItemIndex) => {
-    setIndexBeingDragged(draggedItemIndex);
-    setIndexSwapped([]);
+  const handleDragStart = (indexBeingDragged) => {
+    setState({
+      ...state,
+      dragging: true,
+      indexBeingDragged: indexBeingDragged,
+      indexesSwapped: []
+    })
   };
 
-  const handleDragEnd = (draggedItemIndex) => {
-    if (indexDetectingDraggedItem !== -1) {
-      setIndexDetectingDraggedItem(-1);
-      setIndexBeingDragged(-1);
-      const itemsCopy = JSON.parse(JSON.stringify(dragAndDropItems));
-      swapItems(itemsCopy, draggedItemIndex, indexDetectingDraggedItem);
-      setTimeout(() => setIndexSwapped([]), 500);
+  const handleDragEnd = (indexBeingDragged) => {
+    if (state.indexDetectingDraggedItem !== -1) {
+      const indexesSwapped = [state.indexDetectingDraggedItem, indexBeingDragged];
+      swapItems(tickersArr, setTickersArr, indexesSwapped);
+      
+      setState({
+        ...state,
+        dragging: false,
+        indexBeingDragged: -1,
+        indexDetectingDraggedItem: -1,
+        indexesSwapped: indexesSwapped,
+      })
+      
+      setTimeout(() => {
+        setState({...state, indexesSwapped: []});
+      }, 500);
     }
   };
 
-  const handleHitboxEnter = (event, detectorIndex) => {
+  const handleHitboxEnter = (detectorIndex, event) => {
     event.preventDefault();
-    setIndexDetectingDraggedItem(detectorIndex);
+    setState({
+      ...state,
+      indexDetectingDraggedItem: detectorIndex
+    })
   };
 
-  const handleHitboxLeave = (detectorIndex) => {
-    setIndexDetectingDraggedItem(-1);
+  const handleHitboxLeave = () => {
+    setState({
+      ...state,
+      indexDetectingDraggedItem: -1
+    })
   };
-
-
-  const getAllowDragAndDrop = () => {
-    return allowDragAndDrop;
-  };
-
-  // The following functions get the status of the item at the given index
-
-  const getBeingDragged = (index) => {
-    return indexBeingDragged === index;
-  };
-
-  const getHitboxDetectingDraggedItem = (index) => {
-    return indexDetectingDraggedItem === index;
-  };
-
-  const getSwapped = (index) => {
-    return indexSwapped.includes(index);
-  };
+  
 
   return (
     <>
       {React.Children.map(children, (child, index) => (
         <Container
-          draggable={getAllowDragAndDrop()}
-          onDragStart={() => { handleDragStart(index); setDragging(true); }}
-          onDragEnd={() => { handleDragEnd(index); setDragging(false) }}
-          hitboxDetectingDraggedItem={getHitboxDetectingDraggedItem(index)}
-          beingDragged={getBeingDragged(index)}
+          draggable={allowDragAndDrop}
+          onDragStart={() => handleDragStart(index)}
+          onDragEnd={() => handleDragEnd(index)}
+          beingDragged={index === state.indexBeingDragged}
         >
 
-          <HitBox dragging={dragging} onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
+          <HitBox dragging={state.dragging} onDragOver={(event) => handleHitboxEnter(index, event)} onDragLeave={() => handleHitboxLeave()} />
 
           {React.cloneElement(child, {
-            beingDragged: getBeingDragged(index),
-            hitboxDetectingDraggedItem: getHitboxDetectingDraggedItem(index),
-            swapped: getSwapped(index)
+            beingDragged: index === state.indexBeingDragged,
+            hitboxDetectingDraggedItem: index === state.indexDetectingDraggedItem,
+            swapped: state.indexesSwapped.includes(index)
           })}
         </Container>
       ))}

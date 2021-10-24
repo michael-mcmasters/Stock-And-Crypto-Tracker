@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
 
 
-const DELETED_ANIMATION_LENGTH = 300;
+const BEING_DELETED_ANIMATION_LENGTH = 300;
 
 
 const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
@@ -16,14 +16,14 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   const [beingDeleted, setBeingDeleted] = useState(false);
   
   
-  // onMouseEnter will sometimes give a false positive for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
+  // onMouseEnter will sometimes give false positives for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
-    setTimeout(() => swapped && setCursorIsHovering(false), 20);
+    setTimeout(() => swapped && setCursorIsHovering(false), 40);
   }, [swapped])
   
   
   const handleClickDelete = () => {
-    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
+    setTimeout(() => handleDeleteTicker(index), BEING_DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
     setBeingDeleted(true);
   }
   const showDeleteButton = (cursorIsHovering || isMobile) && !loading && !beingDragged;
