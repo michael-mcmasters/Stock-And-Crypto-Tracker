@@ -22,9 +22,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   
   // onMouseEnter will sometimes give a false positive for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
-    setTimeout(() => {
-      if (swapped) setCursorIsHovering(false);
-    }, 20)
+    setTimeout(() => swapped && setCursorIsHovering(false), 20);
   }, [swapped])
   
   let backgroundColor, fontColor;
