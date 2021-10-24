@@ -14,16 +14,16 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   const [isHovering, setIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
   
-  // Delays deletion while CSS animation plays.
   const handleClickDelete = () => {
-    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);
+    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
     setBeingDeleted(true);
   }
   
+  // onMouseEnter listener sometimes returns true for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
-    if (swapped) {
-      setIsHovering(false);
-    }
+    setTimeout(() => {
+      if (swapped) setIsHovering(false);
+    }, 20)
   }, [swapped])
   
   let backgroundColor, fontColor;
@@ -38,7 +38,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   
   return (
     <Container
-      onMouseEnter={() => !beingDragged && !swapped && setIsHovering(true)}
+      onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       colors={COLORS}
       fontColor={fontColor}
@@ -141,7 +141,7 @@ const DeleteButton = styled.button`
   `}
   
   &:hover {
-    background-color: #00000080;
+    background-color: #00000060;
   }
 `;
 
