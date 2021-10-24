@@ -15,15 +15,19 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
   const [cursorIsHovering, setCursorIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
   
-  const handleClickDelete = () => {
-    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
-    setBeingDeleted(true);
-  }
   
   // onMouseEnter will sometimes give a false positive for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
     setTimeout(() => swapped && setCursorIsHovering(false), 20);
   }, [swapped])
+  
+  
+  const handleClickDelete = () => {
+    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
+    setBeingDeleted(true);
+  }
+  const showDeleteButton = (cursorIsHovering || isMobile) && !loading && !beingDragged;
+  
   
   let backgroundColor, fontColor;
   if (priceDifference <= 0) {
@@ -51,7 +55,7 @@ const Ticker3 = ({ tickerName, index, type, loading, price, priceDifference, per
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={(cursorIsHovering || isMobile) && !loading && !beingDragged}
+        showDeleteButton={showDeleteButton}
         onClick={handleClickDelete}
       >
         &#x2715;
@@ -132,7 +136,7 @@ const DeleteButton = styled.button`
 
   visibility: hidden;
   opacity: 0;
-  ${props => props.showXButton == true && css`
+  ${props => props.showDeleteButton == true && css`
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
