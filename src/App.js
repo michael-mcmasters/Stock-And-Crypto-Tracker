@@ -1,4 +1,4 @@
-import { ColorThemeProvider } from "./components/custom_hooks/ColorThemeContext";
+import { ColorThemeProvider } from "./components/wrappers/ColorThemeContext";
 import TickerGallery from "./components/TickerGallery";
 
 function App() {

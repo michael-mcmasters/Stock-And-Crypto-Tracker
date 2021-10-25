@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
+import { ColorThemeContext } from "./wrappers/ColorThemeContext";
 import HistoryOptions from "../constants/HistoryOptions";
 
 const HistoryOptionsGallery = ({ selectedHistoryOption, setSelectedHistoryOption }) => {

@@ -5,7 +5,7 @@ import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
-import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
+import DragAndDropWrapper from "./wrappers/DragAndDropWrapper";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 import deepCopy from "./utils/DeepCopy";
 import generateKey from "./utils/KeyGenerator"
@@ -17,12 +17,13 @@ const MAX_ALLOWED_TICKERS = 16;
 
 function TickerGallery() {
 
-  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
-
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
   const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
+  
+  const [tickersArr, setTickersArr] = useState(getTickerObjects());
+  const [allowDragAndDrop, setAllowDragAndDrop] = useState(false);
+  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
   
   const createFetchPromises = useCallback(() => {
@@ -60,7 +61,7 @@ function TickerGallery() {
         }
         setTickersArr(fetchedTickers);
         setFetchImmediately(false);
-        dragAndDropHandlers.setAllowDragAndDrop(true);
+        setAllowDragAndDrop(true);
       })
     }, timeoutDelay);
 
@@ -104,7 +105,7 @@ function TickerGallery() {
     });
     setTickersArr(tickersArrCopy);
     setFetchImmediately(true);
-    dragAndDropHandlers.setAllowDragAndDrop(false);
+    setAllowDragAndDrop(false);
   }
   
   const handleDeleteTicker = (index) => {
@@ -121,7 +122,7 @@ function TickerGallery() {
       case 2:
         errorMessage = `Unable to fetch the prices of ${failedToFetchTickers[0]} and ${failedToFetchTickers[1]}`;
         break;
-      case 3:
+      default:
         errorMessage = `Unable to fetch the prices of the most recently added tickers.`;
         break;
     }
@@ -131,32 +132,34 @@ function TickerGallery() {
   const handlePopupClickOK = () => {
     setTickersFailedToFetch([]);
   }
-
-
+  
   return (
     <>
       <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
+
         <GridContainer>
-          {tickersArr.map((t, index) => (
-            <Ticker
-              key={t.key}
-              index={index}
-              tickerName={t.tickerName}
-              type={t.type}
-              loading={t.loading}
-              price={t.currentPrice}
-              priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
-              percentage={t.priceChanges[selectedHistoryOption].percentage}
-              handleDeleteTicker={handleDeleteTicker}
-              dragAndDropHandlers={dragAndDropHandlers}
-              allowDragAndDrop={dragAndDropGetters.getAllowDragAndDrop()}
-              beingDragged={dragAndDropGetters.getBeingDragged(index)}
-              hitboxDetectingDraggedItem={dragAndDropGetters.getHitboxDetectingDraggedItem(index)}
-              swapped={dragAndDropGetters.getSwapped(index)}
-            />
-          ))}
+          <DragAndDropWrapper
+            dragAndDropItems={tickersArr}
+            setDragAndDropItems={setTickersArr}
+            allowDragAndDrop={allowDragAndDrop}
+          >
+            {tickersArr.map((t, index) => (
+              <Ticker
+                key={t.key}
+                index={index}
+                tickerName={t.tickerName}
+                type={t.type}
+                loading={t.loading}
+                price={t.currentPrice}
+                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
+                percentage={t.priceChanges[selectedHistoryOption].percentage}
+                handleDeleteTicker={handleDeleteTicker}
+              />
+            ))}
+          </DragAndDropWrapper>
         </GridContainer>
+        
         <AddTickerInputField handleAddTicker={handleAddTicker} />
       </Container>
 
@@ -176,6 +179,9 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, auto);
   grid-template-rows: repeat(4, auto);
+  /* column-gap: 2em; */
+  /* row-gap: 2em; */
+  
   @media (max-width: 850px) {
     grid-template-columns: repeat(3, auto);
     grid-template-rows: repeat(3, auto);

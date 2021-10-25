@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
+import { ColorThemeContext } from "./wrappers/ColorThemeContext";
 
 const Popup = ({ errorMessage, handleClickOK, handleClickCancel }) => {
 
