@@ -1,71 +1,67 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { css, keyframes } from "styled-components";
 import { ColorThemeContext } from "./custom_hooks/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isMobile } from 'react-device-detect';
 
 
-const DELETED_ANIMATION_LENGTH = 300;   // Milliseconds
+const BEING_DELETED_ANIMATION_LENGTH = 300;
 
 
 const Ticker = ({ tickerName, index, type, loading, price, priceDifference, percentage, handleDeleteTicker,
-  dragAndDropHandlers, allowDragAndDrop, beingDragged, hitboxDetectingDraggedItem, swapped }) => {
-
-  const COLORS = useContext(ColorThemeContext);
-  const { handleDragStart, handleDragEnd, handleHitboxEnter, handleHitboxLeave } = dragAndDropHandlers;
+  beingDragged, hitboxDetectingDraggedItem, swapped }) => {
   
-  const [ showDeleteButton, setShowDeleteButton ] = useState(isMobile ? true : false);
-  const [ beingDeleted, setBeingDeleted ] = useState(false);
-
+  const COLORS = useContext(ColorThemeContext);
+  const [cursorIsHovering, setCursorIsHovering] = useState(false);
+  const [beingDeleted, setBeingDeleted] = useState(false);
+  
+  
+  // onMouseEnter will sometimes give false positives for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
+  useEffect(() => {
+    setTimeout(() => swapped && setCursorIsHovering(false), 40);
+  }, [swapped])
+  
   
   const handleClickDelete = () => {
-    setTimeout(() => handleDeleteTicker(index), DELETED_ANIMATION_LENGTH);    // Delays delation while CSS animation plays.
+    setTimeout(() => handleDeleteTicker(index), BEING_DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
     setBeingDeleted(true);
   }
-
-  let bgColor, fontColor;
+  const showDeleteButton = (cursorIsHovering || isMobile) && !loading && !beingDragged;
+  
+  
+  let backgroundColor, fontColor;
   if (priceDifference <= 0) {
-    bgColor = COLORS.brightRed;
+    backgroundColor = COLORS.brightRed;
     fontColor = COLORS.darkRed;
   } else {
-    bgColor = COLORS.green;
+    backgroundColor = COLORS.green;
     fontColor = COLORS.basicGreen;
     priceDifference = "+" + priceDifference;
   }
-
+  
   return (
     <Container
-      onMouseEnter={() => setShowDeleteButton(true)}
-      onMouseLeave={() => isMobile ? "" : setShowDeleteButton(false)}
-
-      draggable={allowDragAndDrop}
-      onDragStart={() => { setShowDeleteButton(false); handleDragStart(index); }}
-      onDragEnd={() => handleDragEnd(index)}
-      hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
-
+      onMouseEnter={() => setCursorIsHovering(true)}
+      onMouseLeave={() => setCursorIsHovering(false)}
       colors={COLORS}
       fontColor={fontColor}
-      bgColor={bgColor}
+      bgColor={backgroundColor}
       beingDeleted={beingDeleted}
       beingDragged={beingDragged}
+      hitboxDetectingDraggedItem={hitboxDetectingDraggedItem}
       swapped={swapped}
     >
-
+      
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showXButton={showDeleteButton}
+        showDeleteButton={showDeleteButton}
         onClick={handleClickDelete}
       >
         &#x2715;
       </DeleteButton>
 
-
-      {/* Hitbox is used to detect other tickers being dragged over this ticker */}
-      <HitBox onDragOver={(event) => handleHitboxEnter(event, index)} onDragLeave={() => handleHitboxLeave(index)} />
-      <DropIndicator hitboxDetectingDraggedItem={hitboxDetectingDraggedItem} />
-
-      <CoinTicker>{tickerName}</CoinTicker>
+      <TickerName>{tickerName}</TickerName>
       {loading ? (
         <ClipLoader />
       ) : (
@@ -76,7 +72,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           </PriceChange>
         </>
       )}
-
+      
     </Container >
   );
 };
@@ -99,15 +95,10 @@ const Container = styled.div`
   color: ${(props) => props.fontColor};
   background-color: ${(props) => props.bgColor};
   text-align: center;
-  cursor: ${props => props.draggable ? "move" : ""};
-
+  
   ${props => props.beingDeleted && css`
     animation-name: ${DeletedAnimation};
     animation-duration: 0.3s;
-  `}
-  
-  ${props => props.beingDragged && css`
-    opacity: 0.3;
   `}
   
   ${props => props.hitboxDetectingDraggedItem && css`
@@ -120,25 +111,7 @@ const Container = styled.div`
   `}
 `;
 
-// Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
-const HitBox = styled.div`
-  /* border: 1px solid blue; */
-  position: absolute;
-  width: 12em;
-  height: 8em;
-  bottom: -1em;
-  left: -1.3em;
-  z-index: 1;
-`;
-
-const DropIndicator = styled.div`
-  position: absolute;
-  height: 4em;
-  left: -1.15em;
-  border-left: ${props => props.hitboxDetectingDraggedItem ? "4px solid yellow" : ""};
-`;
-
-const CoinTicker = styled.div`
+const TickerName = styled.div`
   font-weight: bold;
 `;
 
@@ -153,23 +126,25 @@ const PriceChange = styled.div`
 
 const DeleteButton = styled.button`
   position: absolute;
-  top: -0.7rem;
-  left: -0.4rem;
-  padding: 1rem;
+  left: 0.2rem;
+  top: 0.2rem;
   border-radius: 9999px;
   border: none;
   background-color: transparent;
   color: ${props => props.fontColor};
   cursor: pointer;
-  z-index: 2;
 
   visibility: hidden;
   opacity: 0;
-  ${props => props.showXButton == true && css`
+  ${props => props.showDeleteButton == true && css`
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
   `}
+  
+  &:hover {
+    background-color: #00000060;
+  }
 `;
 
 export default Ticker;

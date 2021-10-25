@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Ticker from "./Ticker";
-import Ticker2 from "./Ticker2";
-import Ticker3 from "./Ticker3";
 import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 import DragAndDropWrapper from "./DragAndDropWrapper";
-import useDragAndDrop from "./custom_hooks/UseDragAndDrop";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 import deepCopy from "./utils/DeepCopy";
 import generateKey from "./utils/KeyGenerator"
@@ -20,14 +17,13 @@ const MAX_ALLOWED_TICKERS = 16;
 
 function TickerGallery() {
 
-  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
-  // const [tickersArr, setTickersArr, dragAndDropHandlers, dragAndDropGetters] = useDragAndDrop(getTickerObjects(), false);
-  const [tickersArr, setTickersArr] = useState(getTickerObjects());
-  const [allowDragAndDrop, setAllowDragAndDrop] = useState(false);
-  
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
   const [tickersFailedToFetch, setTickersFailedToFetch] = useState([]);
+  
+  const [tickersArr, setTickersArr] = useState(getTickerObjects());
+  const [allowDragAndDrop, setAllowDragAndDrop] = useState(false);
+  const [selectedHistoryOption, setSelectedHistoryOption] = useState(HistoryOptions.DAY);
 
   
   const createFetchPromises = useCallback(() => {
@@ -139,40 +135,17 @@ function TickerGallery() {
   
   return (
     <>
-      {/* <Container>
-        <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
-        <GridContainer>
-          <DragAndDropWrapper
-            dragAndDropHandlers={dragAndDropHandlers}
-            dragAndDropGetters={dragAndDropGetters}
-            margin={"1rem"}
-            render={(props) => (tickersArr.map((t, index) => (
-              <Ticker2
-                key={t.key}
-                index={index}
-                tickerName={t.tickerName}
-                type={t.type}
-                loading={t.loading}
-                price={t.currentPrice}
-                priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
-                percentage={t.priceChanges[selectedHistoryOption].percentage}
-                handleDeleteTicker={handleDeleteTicker}
-                {...props}
-              />))
-          )} />
-        </GridContainer> */}
-        
       <Container>
         <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
-        <GridContainer>
 
+        <GridContainer>
           <DragAndDropWrapper
             dragAndDropItems={tickersArr}
             setDragAndDropItems={setTickersArr}
             allowDragAndDrop={allowDragAndDrop}
           >
             {tickersArr.map((t, index) => (
-              <Ticker3
+              <Ticker
                 key={t.key}
                 index={index}
                 tickerName={t.tickerName}
@@ -185,7 +158,6 @@ function TickerGallery() {
               />
             ))}
           </DragAndDropWrapper>
-          
         </GridContainer>
         
         <AddTickerInputField handleAddTicker={handleAddTicker} />
