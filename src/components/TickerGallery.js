@@ -108,9 +108,8 @@ function TickerGallery() {
     setAllowDragAndDrop(false);
   }
   
-  const handleDeleteTicker = (index) => {
-    console.log('del ticic')
-    setTickersArr(tickersArr.filter((t, ind) => ind !== index));
+  const handleDeleteTicker = (indexToDelete) => {
+    setTickersArr(tickersArr.filter((ticker, index) => index !== indexToDelete));
   }
 
   const getPopupErrorMessage = (failedToFetchTickers) => {
