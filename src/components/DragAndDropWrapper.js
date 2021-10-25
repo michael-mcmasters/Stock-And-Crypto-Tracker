@@ -11,7 +11,6 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
     indexesSwapped: []
   })
   
-
   const swapItems = (tickersArr, setTickersArr, [indexBeingDragged, itemBeingDraggedIndex]) => {
     const copy = deepCopy(tickersArr);
     const store = copy[itemBeingDraggedIndex];
@@ -43,12 +42,15 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
       })
       
       setTimeout(() => {
-        setState({...state, indexesSwapped: []});
+        setState((prevState) => ({
+          ...prevState,
+          indexesSwapped: []
+        }));
       }, 500);
     }
   };
 
-  const handleHitboxEnter = (detectorIndex, event) => {
+  const handleDropAreaEnter = (detectorIndex, event) => {
     event.preventDefault();
     setState({
       ...state,
@@ -56,14 +58,14 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
     })
   };
 
-  const handleHitboxLeave = () => {
+  const handleDropAreaLeave = () => {
     setState({
       ...state,
       indexDetectingDraggedItem: -1
     })
   };
-  
 
+  
   return (
     <>
       {React.Children.map(children, (child, index) => (
@@ -74,13 +76,18 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
           beingDragged={index === state.indexBeingDragged}
         >
 
-          <HitBox dragging={state.dragging} onDragOver={(event) => handleHitboxEnter(index, event)} onDragLeave={() => handleHitboxLeave()} />
+          <DropArea
+            dragging={state.dragging}
+            onDragOver={(event) => handleDropAreaEnter(index, event)}
+            onDragLeave={() => handleDropAreaLeave()}
+          />
 
           {React.cloneElement(child, {
             beingDragged: index === state.indexBeingDragged,
             hitboxDetectingDraggedItem: index === state.indexDetectingDraggedItem,
             swapped: state.indexesSwapped.includes(index)
           })}
+          
         </Container>
       ))}
     </>
@@ -98,7 +105,7 @@ const Container = styled.div`
 `;
 
 // Determines where a ticker can be dragged to. Not used for appearance. Uncomment the border to view hitbox area. 
-const HitBox = styled.div`
+const DropArea = styled.div`
   /* border: 1px solid blue; */
   pointer-events: ${props => props.dragging ? "" : "none"};
   position: absolute;
