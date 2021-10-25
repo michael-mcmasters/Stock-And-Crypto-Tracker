@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from "styled-components";
-import deepCopy from "./utils/DeepCopy";
+import deepCopy from "../utils/DeepCopy";
 
 const DragAndDropWrapper = ({ children, dragAndDropItems, setDragAndDropItems, allowDragAndDrop }) => {
 

@@ -5,7 +5,7 @@ import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
 import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
-import DragAndDropWrapper from "./DragAndDropWrapper";
+import DragAndDropWrapper from "./wrappers/DragAndDropWrapper";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
 import deepCopy from "./utils/DeepCopy";
 import generateKey from "./utils/KeyGenerator"

@@ -1,7 +1,7 @@
 import { detect } from 'detect-browser';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import styled, { css } from "styled-components"
-import { ColorThemeContext } from './custom_hooks/ColorThemeContext';
+import { ColorThemeContext } from './wrappers/ColorThemeContext';
 
 const AddTickerInputField = ({ handleAddTicker }) => {
   const browser = detect();
