@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled, { css } from "styled-components";
 import deepCopy from "./utils/DeepCopy";
 
-const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndDrop }) => {
+const DragAndDropWrapper = ({ children, dragAndDropItems, setDragAndDropItems, allowDragAndDrop }) => {
 
   const [state, setState] = useState({
     dragging: false,
@@ -11,12 +11,12 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
     indexesSwapped: []
   })
   
-  const swapItems = (tickersArr, setTickersArr, [indexBeingDragged, itemBeingDraggedIndex]) => {
-    const copy = deepCopy(tickersArr);
-    const store = copy[itemBeingDraggedIndex];
-    copy[itemBeingDraggedIndex] = copy[indexBeingDragged];
-    copy[indexBeingDragged] = store;
-    setTickersArr(copy);
+  const swapItems = ([indexBeingDragged, indexDetectingDraggedItem]) => {
+    const copy = deepCopy(dragAndDropItems);
+    const store = copy[indexBeingDragged];
+    copy[indexBeingDragged] = copy[indexDetectingDraggedItem];
+    copy[indexDetectingDraggedItem] = store;
+    setDragAndDropItems(copy);
   }
 
   const handleDragStart = (indexBeingDragged) => {
@@ -30,8 +30,8 @@ const DragAndDropWrapper = ({ children, tickersArr, setTickersArr, allowDragAndD
 
   const handleDragEnd = (indexBeingDragged) => {
     if (state.indexDetectingDraggedItem !== -1) {
-      const indexesSwapped = [state.indexDetectingDraggedItem, indexBeingDragged];
-      swapItems(tickersArr, setTickersArr, indexesSwapped);
+      const indexesSwapped = [indexBeingDragged, state.indexDetectingDraggedItem];
+      swapItems(indexesSwapped);
       
       setState({
         ...state,

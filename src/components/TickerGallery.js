@@ -167,8 +167,8 @@ function TickerGallery() {
         <GridContainer>
 
           <DragAndDropWrapper
-            tickersArr={tickersArr}
-            setTickersArr={setTickersArr}
+            dragAndDropItems={tickersArr}
+            setDragAndDropItems={setTickersArr}
             allowDragAndDrop={allowDragAndDrop}
           >
             {tickersArr.map((t, index) => (
