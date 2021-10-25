@@ -29,26 +29,35 @@ const DragAndDropWrapper = ({ children, dragAndDropItems, setDragAndDropItems, a
   };
 
   const handleDragEnd = (indexBeingDragged) => {
-    if (state.indexDetectingDraggedItem !== -1) {
-      const indexesSwapped = [indexBeingDragged, state.indexDetectingDraggedItem];
-      swapItems(indexesSwapped);
-      
+    if (state.indexDetectingDraggedItem === -1) {
       setState({
         ...state,
         dragging: false,
         indexBeingDragged: -1,
         indexDetectingDraggedItem: -1,
-        indexesSwapped: indexesSwapped,
+        indexesSwapped: []
       })
-      
-      setTimeout(() => {
-        setState((prevState) => ({
-          ...prevState,
-          indexesSwapped: []
-        }));
-      }, 500);
+      return;
     }
-  };
+    
+    const indexesSwapped = [indexBeingDragged, state.indexDetectingDraggedItem];
+    swapItems(indexesSwapped);
+    
+    setState({
+      ...state,
+      dragging: false,
+      indexBeingDragged: -1,
+      indexDetectingDraggedItem: -1,
+      indexesSwapped: indexesSwapped,
+    })
+    
+    setTimeout(() => {
+      setState((prevState) => ({
+        ...prevState,
+        indexesSwapped: []
+      }));
+    }, 500);
+  }
 
   const handleDropAreaEnter = (detectorIndex, event) => {
     event.preventDefault();
