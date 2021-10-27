@@ -30,7 +30,6 @@ const HistoryOptionsGallery = ({ selectedHistoryOption, setSelectedHistoryOption
 };
 
 const Head = styled.div`
-  margin-left: 1rem;
   display: flex;
 `;
 

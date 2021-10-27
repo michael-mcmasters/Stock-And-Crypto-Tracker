@@ -172,14 +172,17 @@ function TickerGallery() {
 const Container = styled.div`
   width: min-content;
   margin: 0 auto;
+  padding: 1rem;
+  margin-top: 0rem;
+  border: 1px solid red;
 `;
 
 const GridContainer = styled.div`
+  margin-left: -1rem;
+  margin-right: -1rem;
   display: grid;
   grid-template-columns: repeat(4, auto);
   grid-template-rows: repeat(4, auto);
-  /* column-gap: 2em; */
-  /* row-gap: 2em; */
   
   @media (max-width: 850px) {
     grid-template-columns: repeat(3, auto);
