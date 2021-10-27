@@ -15,7 +15,7 @@ const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 const MAX_ALLOWED_TICKERS = 16;
 
 
-function TickerGallery() {
+function TickersGrid() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
@@ -172,14 +172,15 @@ function TickerGallery() {
 const Container = styled.div`
   width: min-content;
   margin: 0 auto;
+  padding: 1rem;
 `;
 
 const GridContainer = styled.div`
+  margin-left: -1rem;
+  margin-right: -1rem;
   display: grid;
   grid-template-columns: repeat(4, auto);
   grid-template-rows: repeat(4, auto);
-  /* column-gap: 2em; */
-  /* row-gap: 2em; */
   
   @media (max-width: 850px) {
     grid-template-columns: repeat(3, auto);
@@ -544,4 +545,4 @@ function getTickerObjects() {
   ];
 }
 
-export default TickerGallery;
+export default TickersGrid;

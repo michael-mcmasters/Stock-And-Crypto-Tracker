@@ -113,7 +113,7 @@ const Button = styled.button`
   background-color: ${props => props.colors.blue};
   color: ${props => props.colors.pureWhite};
   font-size: 2em;
-  margin: 0 1rem 0 0;
+  margin: 0;
 `;
 
 export default AddTickerInputField;
