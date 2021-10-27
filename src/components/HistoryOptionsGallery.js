@@ -9,19 +9,19 @@ const HistoryOptionsGallery = ({ selectedHistoryOption, setSelectedHistoryOption
   return (
     <>
       <Head>
-        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.DAY} onClick={() => setSelectedHistoryOption(HistoryOptions.DAY)}>
+        <Button colors={COLORS} isSelected={selectedHistoryOption === HistoryOptions.DAY} onClick={() => setSelectedHistoryOption(HistoryOptions.DAY)}>
           Today
         </Button>
-        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.WEEK} onClick={() => setSelectedHistoryOption(HistoryOptions.WEEK)}>
+        <Button colors={COLORS} isSelected={selectedHistoryOption === HistoryOptions.WEEK} onClick={() => setSelectedHistoryOption(HistoryOptions.WEEK)}>
           Week
         </Button>
-        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.MONTH} onClick={() => setSelectedHistoryOption(HistoryOptions.MONTH)}>
+        <Button colors={COLORS} isSelected={selectedHistoryOption === HistoryOptions.MONTH} onClick={() => setSelectedHistoryOption(HistoryOptions.MONTH)}>
           Month
         </Button>
-        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.YTD} onClick={() => setSelectedHistoryOption(HistoryOptions.YTD)}>
+        <Button colors={COLORS} isSelected={selectedHistoryOption === HistoryOptions.YTD} onClick={() => setSelectedHistoryOption(HistoryOptions.YTD)}>
           YTD
         </Button>
-        <Button colors={COLORS} selected={selectedHistoryOption === HistoryOptions.YEAR} onClick={() => setSelectedHistoryOption(HistoryOptions.YEAR)}>
+        <Button colors={COLORS} isSelected={selectedHistoryOption === HistoryOptions.YEAR} onClick={() => setSelectedHistoryOption(HistoryOptions.YEAR)}>
           Year
         </Button>
       </Head>
@@ -30,24 +30,25 @@ const HistoryOptionsGallery = ({ selectedHistoryOption, setSelectedHistoryOption
 };
 
 const Head = styled.div`
-  display: flex;
-  color: white;
   margin-left: 1rem;
-  font-size: 1rem;
+  display: flex;
 `;
 
 const Button = styled.button`
-  border: none;
   background: none;
+  padding: 0.2rem 0.4rem;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
   color: white;
-  font-size: inherit;
   transition: 0.2s;
   
-  background-color: ${props => props.selected ? props.colors.purple : ""};
+  background-color: ${props => props.isSelected ? props.colors.purple : ""};
   
   :hover {
     cursor: pointer;
-    background-color: ${props => props.colors.purple};
+    border: 2px solid ${props => props.colors.purple};
   }
 `;
 
