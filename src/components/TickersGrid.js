@@ -15,7 +15,7 @@ const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
 const MAX_ALLOWED_TICKERS = 16;
 
 
-function TickerGallery() {
+function TickersGrid() {
 
   const fetchPrice = useTickersAPI();
   const [fetchImmediately, setFetchImmediately] = useState(true);
@@ -173,8 +173,6 @@ const Container = styled.div`
   width: min-content;
   margin: 0 auto;
   padding: 1rem;
-  margin-top: 0rem;
-  border: 1px solid red;
 `;
 
 const GridContainer = styled.div`
@@ -547,4 +545,4 @@ function getTickerObjects() {
   ];
 }
 
-export default TickerGallery;
+export default TickersGrid;

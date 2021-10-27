@@ -1,11 +1,11 @@
 import { ColorThemeProvider } from "./components/wrappers/ColorThemeContext";
-import TickerGallery from "./components/TickerGallery";
+import TickersGrid from "./components/TickersGrid";
 
 function App() {
   return (
     <>
       <ColorThemeProvider>
-        <TickerGallery />
+        <TickersGrid />
       </ColorThemeProvider>
     </>
   );
