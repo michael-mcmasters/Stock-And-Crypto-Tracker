@@ -12,12 +12,14 @@ const Toggle = () => {
 };
 
 const ToggleContainer = styled.div`
-  padding: 0.3rem;
+  padding: 0.2rem 0.3rem;
+  width: 2.2rem;
   border-radius: 100px;
   background-color: #CCCCCC;
-  width: 3rem;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
   
+  cursor: pointer;
   transition: 0.2s;
   ${props => props.enabled && css`
     background-color: #2096F3;
@@ -25,7 +27,7 @@ const ToggleContainer = styled.div`
 `;
 
 const Circle = styled.div`
-  padding: 0.7rem;
+  padding: 0.5rem;
   background-color: #FFFFFF;  
   border-radius: 9999px;
   width: 0.1rem;
