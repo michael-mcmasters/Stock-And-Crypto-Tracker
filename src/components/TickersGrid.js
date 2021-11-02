@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Ticker from "./Ticker";
 import Popup from './Popup';
 import HistoryOptionsGallery from "./HistoryOptionsGallery";
+import Toggle from "./Toggle"
 import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 import DragAndDropWrapper from "./wrappers/DragAndDropWrapper";
@@ -135,7 +136,11 @@ function TickersGrid() {
   return (
     <>
       <Container>
-        <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
+        
+        <TopContainer>
+          <HistoryOptionsGallery selectedHistoryOption={selectedHistoryOption} setSelectedHistoryOption={setSelectedHistoryOption} />
+          <Toggle />
+        </TopContainer>
 
         <GridContainer>
           <DragAndDropWrapper
@@ -173,6 +178,11 @@ const Container = styled.div`
   width: min-content;
   margin: 0 auto;
   padding: 1rem;
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const GridContainer = styled.div`

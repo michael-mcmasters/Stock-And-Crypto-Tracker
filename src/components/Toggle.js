@@ -12,7 +12,6 @@ const Toggle = () => {
 };
 
 const ToggleContainer = styled.div`
-  margin: 1rem;
   padding: 0.3rem;
   border-radius: 100px;
   background-color: #CCCCCC;
