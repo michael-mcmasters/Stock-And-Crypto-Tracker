@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { css } from "styled-components";
+import { ColorThemeContext } from "./wrappers/ColorThemeContext";
 
 const Toggle = () => {
+  const COLORS = useContext(ColorThemeContext);
   const [enabled, setEnabled] = useState(false);
   
   return (
-    <ToggleContainer enabled={enabled} onClick={() => setEnabled(!enabled)}>
+    <ToggleContainer COLORS={COLORS} enabled={enabled} onClick={() => setEnabled(!enabled)}>
       <Circle enabled={enabled}></Circle>
     </ToggleContainer>
   );
@@ -22,7 +24,7 @@ const ToggleContainer = styled.div`
   cursor: pointer;
   transition: 0.2s;
   ${props => props.enabled && css`
-    background-color: #2096F3;
+    background-color: ${props => props.COLORS.blue};
   `};
 `;
 
