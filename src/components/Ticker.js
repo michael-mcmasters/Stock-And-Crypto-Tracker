@@ -102,8 +102,10 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         <div>
           Shares
         </div>
-        <SharesButton visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
-        <SharesButton visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        <SharesButtonContainer>
+          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        </SharesButtonContainer>
         <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} value={shares} onChange={(e) => setShares(e.target.value)} />
       </ThirdRow>
       
@@ -193,14 +195,19 @@ const Triangle = styled.div`
   margin-right: 0.2rem;
 `;
 
+const SharesButtonContainer = styled.div`
+  margin-left: auto;
+  margin-right: 0.2rem;
+`;
+
 const SharesButton = styled.button`
   background-color: transparent;
-  border: 1px solid black;
+  border: 1px solid ${props => props.fontColor};
+  color: ${props => props.fontColor};
   border-radius: 10px;
   width: 0.9rem;
   height: 0.9rem;
-  margin: 0 0.2rem;
-  
+  margin: 0 0.15rem;
   padding: 0;
   
   visibility: hidden;
