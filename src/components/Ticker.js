@@ -174,7 +174,7 @@ const SecondRow = styled.div`
 
 const ThirdRow = styled.div`
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -196,12 +196,11 @@ const SharesButton = styled.button`
 `;
 
 const Shares = styled.input`
-  margin-left: auto;
-  width: 1rem;
+  width: 35%;
   border: none;
   border-radius: 10px;
-  text-align: center;
-  background-color: teal;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.3)
 `;
 
 // const TickerName = styled.div`
