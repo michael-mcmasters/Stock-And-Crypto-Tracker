@@ -27,7 +27,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     setTimeout(() => handleDeleteTicker(index), BEING_DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
     setBeingDeleted(true);
   }
-  const showDeleteButton = (cursorIsHovering || isMobile) && !loading && !beingDragged;
+  const showHoverButtons = (cursorIsHovering || isMobile) && !loading && !beingDragged;
   
   
   let backgroundColor, fontColor;
@@ -67,7 +67,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        showDeleteButton={showDeleteButton}
+        visible={showHoverButtons}
         onClick={handleClickDelete}
       >
         &#x2715;
@@ -100,8 +100,8 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         <div>
           Shares
         </div>
-        <SharesButton onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
-        <SharesButton onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+        <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
         <Shares value={shares} onChange={(e) => setShares(e.target.value)}>
         </Shares>
       </ThirdRow>
@@ -193,6 +193,14 @@ const SharesButton = styled.button`
   margin: 0 0.2rem;
   
   padding: 0;
+  
+  visibility: hidden;
+  opacity: 0;
+  ${props => props.visible == true && css`
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.2s linear;
+  `}
 `;
 
 const Shares = styled.input`
@@ -200,7 +208,7 @@ const Shares = styled.input`
   border: none;
   border-radius: 10px;
   text-align: right;
-  background-color: rgba(255, 255, 255, 0.3)
+  background-color: rgba(255, 255, 255, 0.3);
 `;
 
 // const TickerName = styled.div`
@@ -228,7 +236,7 @@ const DeleteButton = styled.button`
 
   visibility: hidden;
   opacity: 0;
-  ${props => props.showDeleteButton == true && css`
+  ${props => props.visible == true && css`
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
