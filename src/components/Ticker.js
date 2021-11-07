@@ -169,7 +169,9 @@ const FirstRow = styled.div`
 `;
 
 const SecondRow = styled.div`
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   font-size: 0.65rem;
 `;
 
@@ -186,12 +188,9 @@ const FourthRow = styled.div`
 `;
 
 const Triangle = styled.div`
-  display: inline-block;
-  /* color: black; */
-  text-align: center;
   padding: 0rem;
-  /* font-size: 0.5rem; */
-  margin-right: 0.1rem;
+  font-size: 0.55rem;
+  margin-right: 0.2rem;
 `;
 
 const SharesButton = styled.button`
