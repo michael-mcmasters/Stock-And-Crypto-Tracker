@@ -106,7 +106,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
           <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
         </SharesButtonContainer>
-        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} value={shares} onChange={(e) => setShares(e.target.value)} />
+        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
       </ThirdRow>
       
       <FourthRow>
@@ -231,6 +231,15 @@ const Shares = styled.input`
     color: black;  
     background-color: rgba(255, 255, 255, 0.3);
   `}
+  
+  ::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  ::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 
