@@ -37,7 +37,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   } else {
     backgroundColor = COLORS.green;
     fontColor = COLORS.basicGreen;
-    priceDifference = "+" + priceDifference;
   }
   
   const formatLengthOfPrice = (num) => {
@@ -50,6 +49,15 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   let total = price * shares;
   price = formatLengthOfPrice(price);
   total = formatLengthOfPrice(total);
+  
+  const getPriceDifference = (priceDifference, percentage) => {
+    if (priceDifference <= 0) {
+      priceDifference = Math.abs(priceDifference);
+      return <><Triangle>&#9660;</Triangle>{priceDifference} ({percentage}%)</>
+    } else {
+      return <><Triangle>&#9650;</Triangle>{priceDifference} ({percentage}%)</>
+    }
+  }
   
   return (
     <Container
@@ -73,12 +81,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         &#x2715;
       </DeleteButton>
 
-      {/* <TickerName>{tickerName}</TickerName>
-      <Price>{'$' + price}</Price>
-      <PriceChange>
-        {priceDifference} ({percentage}%)
-      </PriceChange> */}
-      
       <Title>
         {tickerName}
       </Title>
@@ -93,7 +95,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       </FirstRow>
       
       <SecondRow>
-        {priceDifference} ({percentage}%)
+        {getPriceDifference(priceDifference, percentage)}
       </SecondRow>
       
       <ThirdRow>
@@ -102,8 +104,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         </div>
         <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
         <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
-        <Shares value={shares} onChange={(e) => setShares(e.target.value)}>
-        </Shares>
+        <Shares value={shares} onChange={(e) => setShares(e.target.value)} />
       </ThirdRow>
       
       <FourthRow>
@@ -184,6 +185,15 @@ const FourthRow = styled.div`
   align-items: center;
 `;
 
+const Triangle = styled.div`
+  display: inline-block;
+  /* color: black; */
+  text-align: center;
+  padding: 0rem;
+  /* font-size: 0.5rem; */
+  margin-right: 0.1rem;
+`;
+
 const SharesButton = styled.button`
   background-color: transparent;
   border: 1px solid black;
@@ -210,6 +220,7 @@ const Shares = styled.input`
   text-align: right;
   background-color: rgba(255, 255, 255, 0.3);
 `;
+
 
 // const TickerName = styled.div`
 //   font-weight: bold;
