@@ -27,7 +27,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     setTimeout(() => handleDeleteTicker(index), BEING_DELETED_ANIMATION_LENGTH);    // Wait to delete while CSS animation plays.
     setBeingDeleted(true);
   }
-  const showHoverButtons = (cursorIsHovering || isMobile) && !loading && !beingDragged;
+  const showHoverStyling = (cursorIsHovering || isMobile) && !loading && !beingDragged;
   
   
   let backgroundColor, fontColor;
@@ -75,7 +75,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       <DeleteButton
         colors={COLORS}
         fontColor={fontColor}
-        visible={showHoverButtons}
+        visible={showHoverStyling}
         onClick={handleClickDelete}
       >
         &#x2715;
@@ -102,9 +102,9 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         <div>
           Shares
         </div>
-        <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
-        <SharesButton visible={showHoverButtons} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
-        <Shares value={shares} onChange={(e) => setShares(e.target.value)} />
+        <SharesButton visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+        <SharesButton visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} value={shares} onChange={(e) => setShares(e.target.value)} />
       </ThirdRow>
       
       <FourthRow>
@@ -218,7 +218,13 @@ const Shares = styled.input`
   border: none;
   border-radius: 10px;
   text-align: right;
-  background-color: rgba(255, 255, 255, 0.3);
+  color: ${props => props.fontColor};
+  background-color: rgba(255, 255, 255, 0);
+  
+  ${props => props.showHoverStyling && css`
+    color: black;  
+    background-color: rgba(255, 255, 255, 0.3);
+  `}
 `;
 
 
