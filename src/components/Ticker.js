@@ -82,6 +82,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       <Title>
         {tickerName}
       </Title>
+      
       <FirstRow>
         <div>
           Price
@@ -90,17 +91,21 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           {"$" + price}
         </div>
       </FirstRow>
+      
       <SecondRow>
         {priceDifference} ({percentage}%)
       </SecondRow>
+      
       <ThirdRow>
         <div>
           Shares
         </div>
-        <div>
-          {shares}
-        </div>
+        <SharesButton onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+        <SharesButton onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        <Shares value={shares} onChange={(e) => setShares(e.target.value)}>
+        </Shares>
       </ThirdRow>
+      
       <FourthRow>
         <div>
           Total
@@ -159,6 +164,7 @@ const FirstRow = styled.div`
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;  
+  align-items: center;
 `;
 
 const SecondRow = styled.div`
@@ -168,12 +174,34 @@ const SecondRow = styled.div`
 
 const ThirdRow = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  align-items: center;
 `;
 
 const FourthRow = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const SharesButton = styled.button`
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0 0.2rem;
+  
+  padding: 0;
+`;
+
+const Shares = styled.input`
+  margin-left: auto;
+  width: 1rem;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  background-color: teal;
 `;
 
 // const TickerName = styled.div`
