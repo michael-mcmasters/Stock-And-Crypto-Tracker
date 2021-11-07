@@ -155,7 +155,7 @@ function TickersGrid() {
                 tickerName={t.tickerName}
                 type={t.type}
                 loading={t.loading}
-                price={t.currentPrice}
+                price={Number(t.currentPrice)}
                 priceDifference={t.priceChanges[selectedHistoryOption].priceDifference}
                 percentage={t.priceChanges[selectedHistoryOption].percentage}
                 handleDeleteTicker={handleDeleteTicker}

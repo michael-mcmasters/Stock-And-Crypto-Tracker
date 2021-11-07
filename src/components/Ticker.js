@@ -14,6 +14,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const COLORS = useContext(ColorThemeContext);
   const [cursorIsHovering, setCursorIsHovering] = useState(false);
   const [beingDeleted, setBeingDeleted] = useState(false);
+  const [shares, setShares] = useState(1);
   
   
   // onMouseEnter will sometimes give false positives for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
@@ -39,6 +40,17 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     priceDifference = "+" + priceDifference;
   }
   
+  const formatLengthOfPrice = (num) => {
+    if (num >= 0.0099) {
+      return num.toFixed(2);
+    } else {
+      return num.toFixed(6);
+    }
+  }
+  let total = price * shares;
+  price = formatLengthOfPrice(price);
+  total = formatLengthOfPrice(total);
+  
   return (
     <Container
       onMouseEnter={() => setCursorIsHovering(true)}
@@ -61,21 +73,47 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         &#x2715;
       </DeleteButton>
 
-      <TickerName>{tickerName}</TickerName>
-      {loading ? (
-        <ClipLoader />
-      ) : (
-        <>
-          <Price>{'$' + price}</Price>
-          <PriceChange>
-            {priceDifference} ({percentage}%)
-          </PriceChange>
-        </>
-      )}
+      {/* <TickerName>{tickerName}</TickerName>
+      <Price>{'$' + price}</Price>
+      <PriceChange>
+        {priceDifference} ({percentage}%)
+      </PriceChange> */}
       
+      <Title>
+        {tickerName}
+      </Title>
+      <FirstRow>
+        <div>
+          Price
+        </div>
+        <div>
+          {"$" + price}
+        </div>
+      </FirstRow>
+      <SecondRow>
+        {priceDifference} ({percentage}%)
+      </SecondRow>
+      <ThirdRow>
+        <div>
+          Shares
+        </div>
+        <div>
+          {shares}
+        </div>
+      </ThirdRow>
+      <FourthRow>
+        <div>
+          Total
+        </div>
+        <div>
+          {"$" + total}
+        </div>
+      </FourthRow>
+  
     </Container >
   );
 };
+
 
 const FlashYellowAnimation = keyframes`
   50% { background-color: yellow; }
@@ -88,7 +126,7 @@ const DeletedAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
-  padding: 1em 0;
+  padding: 0.5rem 0.5rem;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
   width: 10em;
@@ -111,18 +149,45 @@ const Container = styled.div`
   `}
 `;
 
-const TickerName = styled.div`
+const Title = styled.div`
   font-weight: bold;
+  border-bottom: 1px solid black;
+  padding-bottom: 0.5rem;
 `;
 
-const Price = styled.div`
-  margin-top: 0.5em;
+const FirstRow = styled.div`
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;  
 `;
 
-const PriceChange = styled.div`
-  margin-top: 0.2rem;
-  font-size: 0.9rem;
+const SecondRow = styled.div`
+  text-align: right;
+  font-size: 0.65rem;
 `;
+
+const ThirdRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const FourthRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+// const TickerName = styled.div`
+//   font-weight: bold;
+// `;
+
+// const Price = styled.div`
+//   margin-top: 0.5em;
+// `;
+
+// const PriceChange = styled.div`
+//   margin-top: 0.2rem;
+//   font-size: 0.9rem;
+// `;
 
 const DeleteButton = styled.button`
   position: absolute;
