@@ -136,8 +136,7 @@ const DeletedAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
-  /* padding: 0.5rem 0.5rem; */
-  padding: 1rem 1rem;
+  padding: 0.8rem 0.8rem;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
   width: 10em;
@@ -175,7 +174,6 @@ const PriceDiff = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  /* font-size: 0.65rem; */
   font-size: 0.8rem;
 `;
 
@@ -276,29 +274,5 @@ const DeleteButton = styled.button`
     background-color: #00000060;
   }
 `;
-
-
-// const DeleteButton = styled.button`
-//   position: absolute;
-//   left: 0.2rem;
-//   top: 0.2rem;
-//   border-radius: 9999px;
-//   border: none;
-//   background-color: transparent;
-//   color: ${props => props.fontColor};
-//   cursor: pointer;
-
-//   visibility: hidden;
-//   opacity: 0;
-//   ${props => props.visible == true && css`
-//     visibility: visible;
-//     opacity: 1;
-//     transition: visibility 0s, opacity 0.2s linear;
-//   `}
-  
-//   &:hover {
-//     background-color: #00000060;
-//   }
-// `;
 
 export default Ticker;
