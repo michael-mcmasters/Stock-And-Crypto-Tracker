@@ -162,7 +162,7 @@ const Container = styled.div`
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${props => props.fontColor};
   padding-bottom: 0.5rem;
 `;
 
