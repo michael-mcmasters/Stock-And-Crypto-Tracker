@@ -41,7 +41,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   }
   
   const formatLengthOfPrice = (num) => {
-    if (num >= 0.0099) {
+    if (num === 0 || num >= 0.0099) {
       return num.toFixed(2);
     } else {
       return num.toFixed(6);
@@ -51,7 +51,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   price = formatLengthOfPrice(price);
   total = formatLengthOfPrice(total);
   
-  const getPriceDifference = (priceDifference, percentage) => {
+  const getPriceChange = (priceDifference, percentage) => {
     if (priceDifference <= 0) {
       priceDifference = Math.abs(priceDifference);
       return <><Triangle>&#9660;</Triangle>{priceDifference} ({percentage}%)</>
@@ -67,7 +67,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           {tickerName}
         </Title>
         <PriceChange>
-          {getPriceDifference(priceDifference, percentage)}
+          {getPriceChange(priceDifference, percentage)}
         </PriceChange>
       </TitleRow>
 
@@ -85,7 +85,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           Shares
         </div>
         <SharesButtonContainer>
-          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => (shares > 0) && setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
           <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
         </SharesButtonContainer>
         <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
