@@ -83,29 +83,25 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         &#x2715;
       </DeleteButton>
 
-    <TitleContainer>
-      <Title>
-        {tickerName}
-      </Title>
-      <PriceDiff>
-        {getPriceDifference(priceDifference, percentage)}
-      </PriceDiff>
-    </TitleContainer>
+      <TitleRow>
+        <Title>
+          {tickerName}
+        </Title>
+        <PriceDiff>
+          {getPriceDifference(priceDifference, percentage)}
+        </PriceDiff>
+      </TitleRow>
       
-      <FirstRow>
+      <PriceRow>
         <div>
           Price
         </div>
         <div>
           {"$" + price}
         </div>
-      </FirstRow>
+      </PriceRow>
       
-      <SecondRow>
-        {/* {getPriceDifference(priceDifference, percentage)} */}
-      </SecondRow>
-      
-      <ThirdRow>
+      <SharesRow>
         <div>
           Shares
         </div>
@@ -114,16 +110,16 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
         </SharesButtonContainer>
         <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
-      </ThirdRow>
+      </SharesRow>
       
-      <FourthRow>
+      <TotalRow>
         <div>
           Total
         </div>
         <div>
           {"$" + total}
         </div>
-      </FourthRow>
+      </TotalRow>
   
     </Container >
   );
@@ -164,7 +160,7 @@ const Container = styled.div`
   `}
 `;
 
-const TitleContainer = styled.div`
+const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid black;
@@ -183,27 +179,20 @@ const PriceDiff = styled.div`
   font-size: 0.8rem;
 `;
 
-const FirstRow = styled.div`
+const PriceRow = styled.div`
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;  
   align-items: center;
 `;
 
-const SecondRow = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 0.65rem;
-`;
-
-const ThirdRow = styled.div`
+const SharesRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const FourthRow = styled.div`
+const TotalRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
