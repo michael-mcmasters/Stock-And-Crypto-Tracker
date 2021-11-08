@@ -137,7 +137,8 @@ const DeletedAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
-  padding: 0.5rem 0.5rem;
+  /* padding: 0.5rem 0.5rem; */
+  padding: 1rem 1rem;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
   width: 10em;
@@ -251,26 +252,15 @@ const Shares = styled.input`
   }
 `;
 
-
-// const TickerName = styled.div`
-//   font-weight: bold;
-// `;
-
-// const Price = styled.div`
-//   margin-top: 0.5em;
-// `;
-
-// const PriceChange = styled.div`
-//   margin-top: 0.2rem;
-//   font-size: 0.9rem;
-// `;
-
 const DeleteButton = styled.button`
   position: absolute;
-  left: 0.2rem;
-  top: 0.2rem;
-  border-radius: 9999px;
+  left: 0.15rem;
+  top: 0.15rem;
   border: none;
+  border-radius: 9999px;
+  height: 1rem;
+  width: 1rem;
+  padding: 0rem;
   background-color: transparent;
   color: ${props => props.fontColor};
   cursor: pointer;
@@ -287,5 +277,29 @@ const DeleteButton = styled.button`
     background-color: #00000060;
   }
 `;
+
+
+// const DeleteButton = styled.button`
+//   position: absolute;
+//   left: 0.2rem;
+//   top: 0.2rem;
+//   border-radius: 9999px;
+//   border: none;
+//   background-color: transparent;
+//   color: ${props => props.fontColor};
+//   cursor: pointer;
+
+//   visibility: hidden;
+//   opacity: 0;
+//   ${props => props.visible == true && css`
+//     visibility: visible;
+//     opacity: 1;
+//     transition: visibility 0s, opacity 0.2s linear;
+//   `}
+  
+//   &:hover {
+//     background-color: #00000060;
+//   }
+// `;
 
 export default Ticker;
