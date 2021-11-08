@@ -75,7 +75,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     >
       
       <DeleteButton
-        colors={COLORS}
         fontColor={fontColor}
         visible={showHoverStyling}
         onClick={handleClickDelete}
@@ -254,8 +253,8 @@ const Shares = styled.input`
 
 const DeleteButton = styled.button`
   position: absolute;
-  left: 0.15rem;
   top: 0.15rem;
+  right: 0.15rem;
   border: none;
   border-radius: 9999px;
   height: 1rem;
