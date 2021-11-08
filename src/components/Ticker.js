@@ -17,6 +17,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const [shares, setShares] = useState(1);
   
   
+  
   // onMouseEnter will sometimes give false positives for a ticker that isn't under the cursor when swapping. This sets isHovering back to false.
   useEffect(() => {
     setTimeout(() => swapped && setCursorIsHovering(false), 40);
@@ -59,6 +60,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     }
   }
   
+  
   return (
     <Container
       onMouseEnter={() => setCursorIsHovering(true)}
@@ -81,9 +83,14 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
         &#x2715;
       </DeleteButton>
 
+    <TitleContainer>
       <Title>
         {tickerName}
       </Title>
+      <PriceDiff>
+        {getPriceDifference(priceDifference, percentage)}
+      </PriceDiff>
+    </TitleContainer>
       
       <FirstRow>
         <div>
@@ -95,7 +102,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       </FirstRow>
       
       <SecondRow>
-        {getPriceDifference(priceDifference, percentage)}
+        {/* {getPriceDifference(priceDifference, percentage)} */}
       </SecondRow>
       
       <ThirdRow>
@@ -157,10 +164,23 @@ const Container = styled.div`
   `}
 `;
 
-const Title = styled.div`
-  font-weight: bold;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid black;
   padding-bottom: 0.5rem;
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+`;
+
+const PriceDiff = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  /* font-size: 0.65rem; */
+  font-size: 0.8rem;
 `;
 
 const FirstRow = styled.div`
