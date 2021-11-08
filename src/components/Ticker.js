@@ -60,6 +60,47 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     }
   }
   
+  const innerContent = (
+    <>
+      <TitleRow>
+        <Title>
+          {tickerName}
+        </Title>
+        <PriceChange>
+          {getPriceDifference(priceDifference, percentage)}
+        </PriceChange>
+      </TitleRow>
+
+      <PriceRow>
+        <div>
+          Price
+        </div>
+        <div>
+          {"$" + price}
+        </div>
+      </PriceRow>
+
+      <SharesRow>
+        <div>
+          Shares
+        </div>
+        <SharesButtonContainer>
+          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
+          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+        </SharesButtonContainer>
+        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
+      </SharesRow>
+
+      <TotalRow>
+        <div>
+          Total
+        </div>
+        <div>
+          {"$" + total}
+        </div>
+      </TotalRow>
+    </>
+  )
   
   return (
     <Container
@@ -81,44 +122,8 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       >
         &#x2715;
       </DeleteButton>
-
-      <TitleRow>
-        <Title>
-          {tickerName}
-        </Title>
-        <PriceDiff>
-          {getPriceDifference(priceDifference, percentage)}
-        </PriceDiff>
-      </TitleRow>
       
-      <PriceRow>
-        <div>
-          Price
-        </div>
-        <div>
-          {"$" + price}
-        </div>
-      </PriceRow>
-      
-      <SharesRow>
-        <div>
-          Shares
-        </div>
-        <SharesButtonContainer>
-          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
-          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
-        </SharesButtonContainer>
-        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
-      </SharesRow>
-      
-      <TotalRow>
-        <div>
-          Total
-        </div>
-        <div>
-          {"$" + total}
-        </div>
-      </TotalRow>
+      {loading ? <ClipLoader /> : innerContent}
   
     </Container >
   );
@@ -159,6 +164,31 @@ const Container = styled.div`
   `}
 `;
 
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  border: none;
+  height: 1rem;
+  width: 1rem;
+  padding: 0rem;
+  background-color: transparent;
+  color: ${props => props.fontColor};
+  cursor: pointer;
+
+  visibility: hidden;
+  opacity: 0;
+  ${props => props.visible == true && css`
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.2s linear;
+  `}
+  
+  &:hover {
+    background-color: #00000060;
+  }
+`;
+
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -170,7 +200,13 @@ const Title = styled.div`
   font-weight: bold;
 `;
 
-const PriceDiff = styled.div`
+const Triangle = styled.div`
+  padding: 0rem;
+  font-size: 0.55rem;
+  margin-right: 0.2rem;
+`;
+
+const PriceChange = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -188,18 +224,6 @@ const SharesRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const TotalRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Triangle = styled.div`
-  padding: 0rem;
-  font-size: 0.55rem;
-  margin-right: 0.2rem;
 `;
 
 const SharesButtonContainer = styled.div`
@@ -249,30 +273,10 @@ const Shares = styled.input`
   }
 `;
 
-const DeleteButton = styled.button`
-  position: absolute;
-  top: 0.15rem;
-  right: 0.15rem;
-  border: none;
-  border-radius: 9999px;
-  height: 1rem;
-  width: 1rem;
-  padding: 0rem;
-  background-color: transparent;
-  color: ${props => props.fontColor};
-  cursor: pointer;
-
-  visibility: hidden;
-  opacity: 0;
-  ${props => props.visible == true && css`
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.2s linear;
-  `}
-  
-  &:hover {
-    background-color: #00000060;
-  }
+const TotalRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default Ticker;
