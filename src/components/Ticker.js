@@ -141,7 +141,7 @@ const DeletedAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   margin: 1em 1em;
-  padding: 0.8rem 0.8rem;
+  padding: 1rem;
   border: 2px solid ${(props) => props.fontColor};
   border-radius: 10px;
   width: 10em;
@@ -166,12 +166,12 @@ const Container = styled.div`
 
 const DeleteButton = styled.button`
   position: absolute;
-  top: 0.15rem;
+  top: 0.13rem;
   right: 0.15rem;
   border: none;
+  border-radius: 9999px;
   height: 1rem;
-  width: 1rem;
-  padding: 0rem;
+  width: 1.25rem;
   background-color: transparent;
   color: ${props => props.fontColor};
   cursor: pointer;
