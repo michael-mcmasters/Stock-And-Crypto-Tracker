@@ -248,6 +248,10 @@ const SharesButton = styled.button`
     opacity: 1;
     transition: visibility 0s, opacity 0.2s linear;
   `}
+  
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Shares = styled.input`
