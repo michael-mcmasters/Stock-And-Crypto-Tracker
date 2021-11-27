@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled, { css, keyframes } from "styled-components";
 import { ColorThemeContext } from "./wrappers/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
+import TickerButton from "../TickerButton"
 import { isMobile } from 'react-device-detect';
 
 
@@ -85,8 +86,19 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           Shares
         </div>
         <SharesButtonContainer>
-          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => (shares > 0) && setShares(prevShares => prevShares - 1)}>&#8722;</SharesButton>
-          <SharesButton fontColor={fontColor} visible={showHoverStyling} onClick={() => setShares(prevShares => prevShares + 1)}>&#43;</SharesButton>
+          <TickerButton
+            visible={showHoverStyling}
+            fontColor={fontColor}
+            innerText={<span>&#8722;</span>}
+            handleOnClick={() => (shares > 0) && setShares(prevShares => prevShares - 1)}
+          />
+          
+          <TickerButton
+            visible={showHoverStyling}
+            fontColor={fontColor}
+            innerText={<span>&#43;</span>}
+            handleOnClick={() => setShares(prevShares => prevShares + 1)}
+          />
         </SharesButtonContainer>
         <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
       </SharesRow>
@@ -229,29 +241,6 @@ const SharesRow = styled.div`
 const SharesButtonContainer = styled.div`
   margin-left: auto;
   margin-right: 0.2rem;
-`;
-
-const SharesButton = styled.button`
-  background-color: transparent;
-  border: 1px solid ${props => props.fontColor};
-  color: ${props => props.fontColor};
-  border-radius: 10px;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin: 0 0.15rem;
-  padding: 0;
-  
-  visibility: hidden;
-  opacity: 0;
-  ${props => props.visible == true && css`
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.2s linear;
-  `}
-  
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const Shares = styled.input`
