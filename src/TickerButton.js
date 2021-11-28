@@ -38,13 +38,13 @@ const SharesButton = styled.button`
     transition: visibility 0s, opacity 0.2s linear;
   `}
   
-  transition: background-color 0.2s;
   ${props => props.pressed == true && css`
     background-color: ${props => props.fontColor};
-  `}
-  
-  ${props => !props.pressed == true && css`
+    `}
+    
+    ${props => props.pressed == false && css`
     background-color: transparent;
+    transition: background-color 0.2s;
   `}
   
   &:hover {
