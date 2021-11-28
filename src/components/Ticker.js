@@ -3,6 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import { ColorThemeContext } from "./wrappers/ColorThemeContext";
 import ClipLoader from "react-spinners/ClipLoader";
 import TickerButton from "../TickerButton"
+import TickerSharesInputField from './TickerSharesInputField';
 import { isMobile } from 'react-device-detect';
 
 
@@ -30,6 +31,11 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
     setBeingDeleted(true);
   }
   const showHoverStyling = (cursorIsHovering || isMobile) && !loading && !beingDragged;
+  
+  
+  const handleUpdateShares = (event) => {
+    setShares(Number(event.target.value))
+  }
   
   
   let backgroundColor, fontColor;
@@ -100,7 +106,12 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
             handleOnClick={() => setShares(prevShares => prevShares + 1)}
           />
         </SharesButtonContainer>
-        <Shares fontColor={fontColor} showHoverStyling={showHoverStyling} type="number" value={shares} onChange={(e) => setShares(Number(e.target.value))} />
+        <TickerSharesInputField
+          visible={showHoverStyling}
+          fontColor={fontColor}
+          shares={shares}
+          handleUpdateShares={handleUpdateShares}
+        />
       </SharesRow>
 
       <TotalRow>
@@ -224,29 +235,6 @@ const SharesButtonContainer = styled.div`
   width: 30%;
   display: flex;
   justify-content: space-evenly;
-`;
-
-const Shares = styled.input`
-  width: 35%;
-  border: none;
-  border-radius: 10px;
-  text-align: right;
-  color: ${props => props.fontColor};
-  background-color: rgba(255, 255, 255, 0);
-  
-  ${props => props.showHoverStyling && css`
-    color: black;  
-    background-color: rgba(255, 255, 255, 0.3);
-  `}
-  
-  ::-webkit-inner-spin-button{
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button{
-    -webkit-appearance: none;
-    margin: 0;
-  }
 `;
 
 const TotalRow = styled.div`
