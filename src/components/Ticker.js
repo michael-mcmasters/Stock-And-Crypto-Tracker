@@ -55,9 +55,9 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const getPriceChange = (priceDifference, percentage) => {
     if (priceDifference <= 0) {
       priceDifference = Math.abs(priceDifference);
-      return <><Triangle>&#9660;</Triangle>{priceDifference} ({percentage}%)</>
+      return <> <Triangle>&#9660;</Triangle>{priceDifference} ({percentage}%) </>
     } else {
-      return <><Triangle>&#9650;</Triangle>{priceDifference} ({percentage}%)</>
+      return <> <Triangle>&#9650;</Triangle>{priceDifference} ({percentage}%) </>
     }
   }
   
@@ -127,13 +127,14 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
       swapped={swapped}
     >
       
-      <DeleteButton
-        fontColor={fontColor}
-        visible={showHoverStyling}
-        onClick={handleClickDelete}
-      >
-        &#x2715;
-      </DeleteButton>
+      <DeleteButtonContainer>
+        <TickerButton 
+          visible={showHoverStyling}
+          fontColor={fontColor}
+          innerText={<span>&#x2715;</span>}
+          handleOnClick={handleClickDelete}
+        />
+      </DeleteButtonContainer>
       
       {loading ? <ClipLoader /> : innerContent}
   
@@ -176,29 +177,10 @@ const Container = styled.div`
   `}
 `;
 
-const DeleteButton = styled.button`
+const DeleteButtonContainer = styled.div`
   position: absolute;
   top: 0.13rem;
-  right: 0.15rem;
-  border: none;
-  border-radius: 9999px;
-  height: 1rem;
-  width: 1.25rem;
-  background-color: transparent;
-  color: ${props => props.fontColor};
-  cursor: pointer;
-
-  visibility: hidden;
-  opacity: 0;
-  ${props => props.visible == true && css`
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0.2s linear;
-  `}
-  
-  &:hover {
-    background-color: #00000060;
-  }
+  right: 0.13rem;
 `;
 
 const TitleRow = styled.div`
@@ -239,8 +221,9 @@ const SharesRow = styled.div`
 `;
 
 const SharesButtonContainer = styled.div`
-  margin-left: auto;
-  margin-right: 0.2rem;
+  width: 30%;
+  display: flex;
+  justify-content: space-evenly;
 `;
 
 const Shares = styled.input`

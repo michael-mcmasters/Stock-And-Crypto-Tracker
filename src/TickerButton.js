@@ -26,10 +26,9 @@ const SharesButton = styled.button`
   border: 1px solid ${props => props.fontColor};
   color: ${props => props.fontColor};
   border-radius: 10px;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin: 0 0.15rem;
-  padding: 0;
+  height: 1rem;
+  width: 1rem;
+  padding: 0rem;
   
   visibility: hidden;
   opacity: 0;
