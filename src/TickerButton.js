@@ -41,7 +41,7 @@ const SharesButton = styled.button`
   
   transition: background-color 0.2s;
   ${props => props.pressed == true && css`
-    background-color: black;
+    background-color: ${props => props.fontColor};
   `}
   
   ${props => !props.pressed == true && css`
