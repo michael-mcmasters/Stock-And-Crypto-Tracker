@@ -4,7 +4,13 @@ import styled, { css } from "styled-components";
 const TickerSharesInputField = ({visible, fontColor, shares, handleUpdateShares}) => {
   
   return (
-    <Shares showHoverStyling={visible} fontColor={fontColor} type="number" value={shares} onChange={handleUpdateShares} />
+    <Shares
+      type="number"
+      visible={visible}
+      fontColor={fontColor}
+      value={shares}
+      onChange={handleUpdateShares}
+    />
   );
 };
 
@@ -16,7 +22,7 @@ const Shares = styled.input`
   color: ${props => props.fontColor};
   background-color: rgba(255, 255, 255, 0);
   
-  ${props => props.showHoverStyling && css`
+  ${props => props.visible && css`
     color: black;  
     background-color: rgba(255, 255, 255, 0.3);
   `}
