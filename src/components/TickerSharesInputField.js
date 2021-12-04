@@ -3,13 +3,19 @@ import styled, { css } from "styled-components";
 
 const TickerSharesInputField = ({visible, fontColor, shares, handleUpdateShares}) => {
   
+  const handleUserInput = (event) => {
+    const num = Number(event.target.value);
+    if (!isNaN(num)) {
+      handleUpdateShares(num);
+    }
+  }
+  
   return (
     <Shares
-      type="number"
       visible={visible}
       fontColor={fontColor}
       value={shares}
-      onChange={handleUpdateShares}
+      onChange={handleUserInput}
     />
   );
 };

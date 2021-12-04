@@ -33,10 +33,6 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
   const showHoverStyling = (cursorIsHovering || isMobile) && !loading && !beingDragged;
   
   
-  const handleUpdateShares = (event) => {
-    setShares(Number(event.target.value))
-  }
-  
   
   let backgroundColor, fontColor;
   if (priceDifference <= 0) {
@@ -110,7 +106,7 @@ const Ticker = ({ tickerName, index, type, loading, price, priceDifference, perc
           visible={showHoverStyling}
           fontColor={fontColor}
           shares={shares}
-          handleUpdateShares={handleUpdateShares}
+          handleUpdateShares={num => setShares(num)}
         />
       </SharesRow>
 
