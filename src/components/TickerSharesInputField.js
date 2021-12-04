@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled, { css } from "styled-components";
 
 const TickerSharesInputField = ({visible, fontColor, shares, handleUpdateShares}) => {
+  
+  const sharesElement = useRef(null);
+  
+  useEffect(() => {
+    const exitInputFieldOnButton = (event) => {
+      if (event.keyCode === 13 || event.keyCode === 27) {       // Enter or Escape key
+        sharesElement.current.blur();
+      }
+    }
+    document.addEventListener("keydown", exitInputFieldOnButton);
+
+    return () => document.removeEventListener("keydown", exitInputFieldOnButton);
+  }, [])
+  
   
   const handleUserInput = (event) => {
     const num = Number(event.target.value);
@@ -12,6 +26,8 @@ const TickerSharesInputField = ({visible, fontColor, shares, handleUpdateShares}
   
   return (
     <Shares
+      input="text"
+      ref={sharesElement}
       visible={visible}
       fontColor={fontColor}
       value={shares}
