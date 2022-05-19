@@ -8,8 +8,8 @@ import HistoryOptions from "../constants/HistoryOptions";
 import AddTickerInputField from "./AddTickerInputField";
 import DragAndDropWrapper from "./wrappers/DragAndDropWrapper";
 import useTickersAPI from "./custom_hooks/UseTickersAPI";
-import deepCopy from "./utils/DeepCopy";
-import generateKey from "./utils/KeyGenerator"
+import deepCopy from "../utils/DeepCopy";
+import generateKey from "../utils/KeyGenerator"
 
 
 const PRICE_UPDATE_DELAY = 5000; // 5000 is 5 seconds
